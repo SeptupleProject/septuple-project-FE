@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserHistory } from 'history';
+import { Switch } from 'react-router-dom';
+import Home from './pages/Home/Home';
+import { HomeTemplate } from './templates/HomeTemplate';
+import { Router } from 'react-router-dom';
+import DashBoard from './pages/Staff/DashBoard';
 
+export const history = createBrowserHistory();
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+   return (
+      <Router history={history}>
+         <Switch>
+            <HomeTemplate
+               path='/home'
+               component={Home}
+            />
+            <HomeTemplate
+               path='/staff-dash-board'
+               component={DashBoard}
+            />
+            <HomeTemplate
+               path='/'
+               component={Home}
+            />
+         </Switch>
+      </Router>
+   );
 }
 
 export default App;
