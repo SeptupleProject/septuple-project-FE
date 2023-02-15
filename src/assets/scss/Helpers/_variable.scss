@@ -22,9 +22,7 @@ $-pd-4: 16px;
 $-pd-5: 24px;
 $-pd-6: 48px;
 
-//Font:
-// $-font-1: Inter
-// $-font-2: Poppins
+$-poppin: 'Poppins', sans-serif;
 
 //Border-radius:
 $-br-1: 2px;
@@ -34,3 +32,6 @@ $-br-3: 10px;
 //Border
 $-border-1: 1px solid #e2e8f0;
 $-border-2: 1px solid #3182ce;
+
+//Line Height
+$-lh-1: 24px;

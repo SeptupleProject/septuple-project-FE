@@ -1,0 +1,12 @@
+@import '../Helpers/_variable.scss';
+.button-blue {
+   background-color: $-blue-2;
+   transition: all 0.3s;
+   border-radius: $-br-2;
+   font-family: $-poppin;
+   line-height: $-lh-1;
+   color: $-white-1;
+   &:hover {
+      background-color: $-blue-1;
+   }
+}
