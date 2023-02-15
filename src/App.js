@@ -4,6 +4,8 @@ import Home from './pages/Home/Home';
 import { HomeTemplate } from './templates/HomeTemplate';
 import { Router } from 'react-router-dom';
 import DashBoard from './pages/Staff/DashBoard';
+import { FormTemplate } from './templates/FormTemplate';
+import LogIn from './pages/LogIn/LogIn';
 
 export const history = createBrowserHistory();
 function App() {
@@ -17,6 +19,10 @@ function App() {
             <HomeTemplate
                path='/staff-dash-board'
                component={DashBoard}
+            />
+            <FormTemplate
+               path='/login'
+               component={LogIn}
             />
             <HomeTemplate
                path='/'
