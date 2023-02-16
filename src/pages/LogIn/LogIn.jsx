@@ -24,7 +24,7 @@ const LogIn = () => {
                      <div className='d-inline mr-2 my-auto'>
                         <i
                            style={{ fontSize: '15px' }}
-                           class='fa-regular fa-keyboard'
+                           className='fa-regular fa-keyboard'
                         ></i>
                      </div>
                      <Input
