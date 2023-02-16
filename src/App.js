@@ -1,4 +1,4 @@
-import { createBrowserHistory } from 'history';
+ import { createBrowserHistory } from 'history';
 import { Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import { HomeTemplate } from './templates/HomeTemplate';
@@ -6,6 +6,11 @@ import { Router } from 'react-router-dom';
 import DashBoard from './pages/Staff/DashBoard';
 import { FormTemplate } from './templates/FormTemplate';
 import LogIn from './pages/LogIn/LogIn';
+import AdminTemplate from './templates/AdminTemplate';
+import AdminDashboard from './pages/Admin/User/UserDashboard';
+import CreateUser from './pages/Admin/User/CreateUser';
+import UserDashboard from './pages/Admin/User/UserDashboard';
+import AcademicDashboard from './pages/Admin/AcademicYear/AcademicDashboard';
 
 export const history = createBrowserHistory();
 function App() {
@@ -23,6 +28,15 @@ function App() {
             <FormTemplate
                path='/login'
                component={LogIn}
+            />
+
+            <AdminTemplate
+               path='/user-dashboard'
+               component={UserDashboard}
+            />
+            <AdminTemplate
+               path='/academic-dashboard'
+               component={AcademicDashboard}
             />
             <HomeTemplate
                path='/'
