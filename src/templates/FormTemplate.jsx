@@ -1,9 +1,12 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import hehe from '../assets/img/formImg.jpg';
+import formImage from '../assets/img/formImg.jpg';
 export const FormTemplate = (props) => {
    const bgImageStyle = {
       height: '100vh',
+      position: 'relative',
+      objectFit: 'cover',
+      zIndex: '1',
    };
    return (
       <Route
@@ -17,10 +20,11 @@ export const FormTemplate = (props) => {
                         <img
                            style={bgImageStyle}
                            className='py-0 '
-                           src={hehe}
+                           src={formImage}
                         />
+                        <div className='img-overlay'></div>
                      </div>
-                     <div className='col-4 text-center form-template'>
+                     <div className='col-4 text-center px-0'>
                         <props.component {...propsRoute} />
                      </div>
                   </div>

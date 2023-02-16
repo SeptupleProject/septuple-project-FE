@@ -1,0 +1,11 @@
+@import '../Helpers/_variable.scss';
+.img-overlay {
+   position: absolute;
+   left: 0;
+   z-index: 2;
+   background: $-blue-1;
+   opacity: 0.5;
+   top: 0;
+   bottom: 0;
+   right: 0;
+}
