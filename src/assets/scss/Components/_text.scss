@@ -1,3 +1,8 @@
-.title-1{
-    
+@import '../Helpers/_variable.scss';
+.title-1 {
+   font-family: $-poppin;
+   font-weight: 700;
+   font-size: 1.7rem;
+   line-height: $-lh-1;
+   margin-bottom: 5%;
 }

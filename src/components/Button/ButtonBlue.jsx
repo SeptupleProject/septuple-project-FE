@@ -1,4 +1,3 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
 
 const ButtonBlue = (props) => {
@@ -8,13 +7,12 @@ const ButtonBlue = (props) => {
       fontWeight: `${props.fontWeigt}`,
    };
    return (
-      <Button
+      <button
          style={btnBlue}
          className='button-blue'
-         variant='solid'
       >
          {props.text}
-      </Button>
+      </button>
    );
 };
 
