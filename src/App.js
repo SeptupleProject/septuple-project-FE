@@ -38,6 +38,10 @@ function App() {
                path='/academic-dashboard'
                component={AcademicDashboard}
             />
+            <AdminTemplate
+               path='/create-user'
+               component={CreateUser}
+            />
             <HomeTemplate
                path='/'
                component={Home}
