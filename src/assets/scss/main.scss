@@ -1,5 +1,4 @@
 @import './Base/reset';
-
 @import './Components/header';
 @import './Components/button';
 @import './Components/text';
@@ -8,5 +7,20 @@
 @import './Components/ideapreview';
 
 @import './Helpers/variable';
-
 @import './Layouts/home';
+
+.table-user {
+    box-sizing: border-box;
+    padding: 12px;
+    margin: 30px 20px;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+}
+.create-button {
+    margin: 20px;
+}
+
+.search-area {
+    margin: 20px;
+}
