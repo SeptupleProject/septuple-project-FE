@@ -10,6 +10,7 @@ import AdminTemplate from './templates/AdminTemplate';
 import AdminDashboard from './pages/Admin/User/UserDashboard';
 import CreateUser from './pages/Admin/User/CreateUser';
 import UserDashboard from './pages/Admin/User/UserDashboard';
+import UpdateUser from './pages/Admin/User/UpdateUser';
 import AcademicDashboard from './pages/Admin/AcademicYear/AcademicDashboard';
 
 export const history = createBrowserHistory();
@@ -34,6 +35,10 @@ function App() {
                exact
                path='/user-dashboard'
                component={UserDashboard}
+            />
+            <AdminTemplate
+               path='/user-update'
+               component={UpdateUser}
             />
             <AdminTemplate
                path='/academic-dashboard'
