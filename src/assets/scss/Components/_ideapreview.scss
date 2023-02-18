@@ -1,0 +1,47 @@
+@import '../Helpers/_variable.scss';
+
+.post {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.idea {
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    height: 80px;
+}
+
+.staffName {
+    font-family: $-poppin;
+}
+
+.categoryTag {
+    align-self: flex-start;
+    margin: 0;
+    margin-top: 1.6%;
+}
+
+
+.ideaTitle {
+    align-content: end;
+    justify-content: space-around;
+    font-family: $-poppin;
+    margin-top: 1%;
+}
+
+.skeleton {
+    padding-left: 3%;
+    padding-right: 2%;
+    text-align: center;
+    height: 120px;
+}
+
+.revealBtn {
+    position: relative;
+    bottom: 60px;
+}
+
+
+
