@@ -1,7 +1,10 @@
 import React from 'react';
+import IdeaPreview from '../../components/IdeaPreview/IdeaPreview';
 
 const DashBoard = () => {
-   return <div>Dash Board</div>;
+   return <div>
+      <IdeaPreview />
+   </div>;
 };
 
 export default DashBoard;
