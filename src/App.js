@@ -1,4 +1,4 @@
- import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history';
 import { Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import { HomeTemplate } from './templates/HomeTemplate';
@@ -31,12 +31,18 @@ function App() {
             />
 
             <AdminTemplate
+               exact
                path='/user-dashboard'
                component={UserDashboard}
             />
             <AdminTemplate
                path='/academic-dashboard'
                component={AcademicDashboard}
+            />
+            <AdminTemplate
+               exact
+               path='/user-dashboard/create-user'
+               component={CreateUser}
             />
             <HomeTemplate
                path='/'

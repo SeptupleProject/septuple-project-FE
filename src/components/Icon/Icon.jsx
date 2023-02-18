@@ -1,15 +1,20 @@
-import React from 'react'
+import React from 'react';
 
 const Icon = (props) => {
-    const iconStyle = {
-        color: `${props.color}`,
-        fontSize: `${props.fontSize}`,
-    }
-  return (
-    <div className='icon-component' style={iconStyle}>
-      <i className={`${props.content}`}></i>
-    </div>
-  )
-}
+   const iconStyle = {
+      color: `${props.color}`,
+      fontSize: `${props.fontSize}`,
+      paddingRight: `${props.paddingRight}`,
+   };
 
-export default Icon
+   return (
+      <div
+         className='icon-component'
+         style={iconStyle}
+      >
+         <i className={`${props.content}`}></i>
+      </div>
+   );
+};
+
+export default Icon;

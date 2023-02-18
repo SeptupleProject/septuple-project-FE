@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, Route } from 'react-router-dom';
 import Icon from '../components/Icon/Icon';
 import logoVertical from '../assets/img/logo-vertical.png';
+import { history } from '../App';
 export const AdminTemplate = (props) => {
    return (
       <Route
@@ -57,10 +58,16 @@ export const AdminTemplate = (props) => {
                         <nav className='navbar navbar-light py-4'>
                            <div className='header d-flex justify-content-between mx-auto'>
                               <p className='title-2'>Hello, username</p>
-                              <Icon
-                                 content='fa-solid fa-arrow-right-from-bracket'
-                                 color='#FF0000'
-                              />
+                              <div
+                                 onClick={() => {
+                                    history.push('/login');
+                                 }}
+                              >
+                                 <Icon
+                                    content='fa-solid fa-arrow-right-from-bracket'
+                                    color='#FF0000'
+                                 />
+                              </div>
                            </div>
                         </nav>
                         <props.component {...propsRoute} />
