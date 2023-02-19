@@ -129,13 +129,19 @@ const UserDashboard = () => {
                         <Td>Staff</Td>
                         <Td>Department 1</Td>
                         <Td>
-                           <ul className='row text-center'>
-                              <Icon
-                                 color='#D7B12A'
-                                 fontSize='20px'
-                                 content='fa-solid fa-pen-to-square'
-                                 paddingRight='15px'
-                              />
+                           <Center w='30%'>
+                              <div
+                                 onClick={() => {
+                                    history.push('/user-dashboard/update-user');
+                                 }}
+                              >
+                                 <Icon
+                                    color='#D7B12A'
+                                    fontSize='20px'
+                                    content='fa-solid fa-pen-to-square'
+                                    paddingRight='15px'
+                                 />
+                              </div>
                               <div onClick={onOpen}>
                                  <Icon
                                     color='#FF0000CC'
@@ -143,8 +149,8 @@ const UserDashboard = () => {
                                     content='fa-regular fa-trash-can'
                                  />
                               </div>
-                              {renderModal()}
-                           </ul>
+                           </Center>
+                           {renderModal()}
                         </Td>
                      </Tr>
                   </Tbody>
