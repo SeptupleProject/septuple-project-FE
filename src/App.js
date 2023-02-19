@@ -37,10 +37,12 @@ function App() {
                component={UserDashboard}
             />
             <AdminTemplate
-               path='/user-update'
+               exact
+               path='/user-dashboard/update-user'
                component={UpdateUser}
             />
             <AdminTemplate
+               exact
                path='/academic-dashboard'
                component={AcademicDashboard}
             />

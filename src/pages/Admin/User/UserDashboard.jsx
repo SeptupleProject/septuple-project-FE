@@ -130,12 +130,18 @@ const UserDashboard = () => {
                         <Td>Department 1</Td>
                         <Td>
                            <Center w='30%'>
-                              <Icon
-                                 color='#D7B12A'
-                                 fontSize='20px'
-                                 content='fa-solid fa-pen-to-square'
-                                 paddingRight='15px'
-                              />
+                              <div
+                                 onClick={() => {
+                                    history.push('/user-dashboard/update-user');
+                                 }}
+                              >
+                                 <Icon
+                                    color='#D7B12A'
+                                    fontSize='20px'
+                                    content='fa-solid fa-pen-to-square'
+                                    paddingRight='15px'
+                                 />
+                              </div>
                               <div onClick={onOpen}>
                                  <Icon
                                     color='#FF0000CC'
