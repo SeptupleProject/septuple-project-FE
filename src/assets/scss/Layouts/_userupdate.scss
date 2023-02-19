@@ -6,7 +6,7 @@
     gap: 30px;
     margin-top: 40px;
     width: 90%;
-    height: 400px;
+    height: 460px;
 }
 
 .heading {
@@ -15,6 +15,17 @@
     color: $-blue-1;
     text-align: center;
     margin-top: 30px;
+}
+
+.resetPass {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .formBody {

@@ -8,18 +8,60 @@ import {
     InputLeftElement,
     Select, 
     Button,
-    ButtonGroup } from "@chakra-ui/react";
+    ButtonGroup,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+    useDisclosure } from "@chakra-ui/react";
 import Icon from '../../../components/Icon/Icon';
 import '../../../assets/scss/main.scss';
 
 
 const UpdateUser = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <>
             <Center>
                 <Card className="cardForm">
 
                         <Text fontSize='4xl' className="heading" colorScheme='blue'>Update user's information</Text>
+                        <span className="resetPass">
+                            <Button onClick={onOpen} variant='outline' colorScheme='blue' size='md' rightIcon={<Icon content='fa-solid fa-key' />} >
+                                Reset Password
+                            </Button>  
+                        </span>
+
+                        <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Reset Password</ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody className="inputGroup">
+                                    <InputGroup>
+                                        <InputLeftElement children={<Icon content='fa-solid fa-lock' />} />
+                                        <Input placeholder="New Password" size='lg' />
+                                    </InputGroup>
+
+                                    <InputGroup>
+                                        <InputLeftElement children={<Icon content='fa-solid fa-lock' />} />
+                                        <Input placeholder="Confirm Password" size='lg' />
+                                    </InputGroup>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                    <Button colorScheme='blue' variant='ghost' onClick={onClose}>
+                                    Cancel
+                                    </Button>
+                                    <Button variant='solid' colorScheme='red'>Reset</Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+
                         <div className="formBody">
                             <InputGroup className="updateInput" width={'86%'}>
                                 <InputLeftElement children={<Icon content='fa-regular fa-envelope' fontSize='15px' />} />
