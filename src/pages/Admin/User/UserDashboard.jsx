@@ -129,7 +129,7 @@ const UserDashboard = () => {
                         <Td>Staff</Td>
                         <Td>Department 1</Td>
                         <Td>
-                           <ul className='row text-center'>
+                           <Center w='30%'>
                               <Icon
                                  color='#D7B12A'
                                  fontSize='20px'
@@ -143,8 +143,8 @@ const UserDashboard = () => {
                                     content='fa-regular fa-trash-can'
                                  />
                               </div>
-                              {renderModal()}
-                           </ul>
+                           </Center>
+                           {renderModal()}
                         </Td>
                      </Tr>
                   </Tbody>
