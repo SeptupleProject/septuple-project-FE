@@ -8,28 +8,5 @@
 
 @import './Helpers/variable';
 @import './Layouts/home';
-
-.table-user {
-    box-sizing: border-box;
-    padding: 12px;
-    margin: 30px 20px;
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 12px;
-}
-.create-button {
-    margin: 20px;
-}
-
-.search-area {
-    margin: 20px;
-}
-
-.create-user-area {
-    box-sizing: border-box;
-    padding: 20px;
-    margin: 80px;
-    background: #FFFFFF;
-    border: 1px solid #E2E8F0;
-    border-radius: 12px;
-}
+@import './Layouts/userdashboard';
+@import './Layouts/userupdate';

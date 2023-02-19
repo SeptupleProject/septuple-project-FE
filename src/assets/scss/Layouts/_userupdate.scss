@@ -1,0 +1,43 @@
+@import '../Helpers/_variable.scss';
+
+.cardForm {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 40px;
+    width: 90%;
+    height: 460px;
+}
+
+.heading {
+    font-family: $-poppin;
+    font-weight: bolder;
+    color: $-blue-1;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.resetPass {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.formBody {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.actionBtn {
+    align-self: center;
+    margin-top: 20px;
+}
+
