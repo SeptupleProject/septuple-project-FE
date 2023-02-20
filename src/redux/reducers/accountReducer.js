@@ -30,16 +30,20 @@ const accountReducer = createSlice({
    name: 'accountReducer',
    initialState,
    reducers: {
-      dangNhap: (state, action) => {
+      dangNhapReducer: (state, action) => {
          state.accounts.map((item) => {
             if (item.username === action.payload.username) {
                state.signedInAccount = item;
             }
          });
       },
+      dangXuatReducer: (state) => {
+         state.signedInAccount = {};
+         console.log(current(state.signedInAccount));
+      },
    },
 });
 
-export const { dangNhap } = accountReducer.actions;
+export const { dangNhapReducer, dangXuatReducer } = accountReducer.actions;
 
 export default accountReducer.reducer;

@@ -36,9 +36,9 @@ const Header = () => {
                <li className='nav-item active'>
                   <NavLink
                      className='nav-link'
-                     to='/staff-dash-board'
+                     to='/login'
                   >
-                     Staff
+                     Log In
                   </NavLink>
                </li>
             </ul>

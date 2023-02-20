@@ -4,11 +4,11 @@ import Icon from '../components/Icon/Icon';
 import logoVertical from '../assets/img/logo-vertical.png';
 import { history } from '../App';
 import { useSelector } from 'react-redux';
+import { dangXuatReducer } from '../redux/reducers/accountReducer';
 export const AdminTemplate = (props) => {
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
-
    console.log(signedInAccount);
    return (
       <Route
@@ -72,6 +72,7 @@ export const AdminTemplate = (props) => {
                               <p className='title-2'>Hello, username</p>
                               <div
                                  onClick={() => {
+                                    dangXuatReducer();
                                     history.push('/login');
                                  }}
                               >
