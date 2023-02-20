@@ -7,7 +7,6 @@ import DashBoard from './pages/Staff/DashBoard';
 import { FormTemplate } from './templates/FormTemplate';
 import LogIn from './pages/LogIn/LogIn';
 import AdminTemplate from './templates/AdminTemplate';
-import AdminDashboard from './pages/Admin/User/UserDashboard';
 import CreateUser from './pages/Admin/User/CreateUser';
 import UserDashboard from './pages/Admin/User/UserDashboard';
 import UpdateUser from './pages/Admin/User/UpdateUser';

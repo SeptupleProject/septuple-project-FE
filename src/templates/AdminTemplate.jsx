@@ -3,7 +3,13 @@ import { NavLink, Route } from 'react-router-dom';
 import Icon from '../components/Icon/Icon';
 import logoVertical from '../assets/img/logo-vertical.png';
 import { history } from '../App';
+import { useSelector } from 'react-redux';
 export const AdminTemplate = (props) => {
+   const signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+
+   console.log(signedInAccount);
    return (
       <Route
          exact
@@ -26,29 +32,35 @@ export const AdminTemplate = (props) => {
                                     id='myList'
                                     role='tablist'
                                  >
-                                    <NavLink
-                                       className='list-group-item list-group-item-action p-0 mx-auto mt-4'
-                                       data-toggle='list'
-                                       role='tab'
-                                       to='/academic-dashboard'
-                                    >
-                                       <div className='d-flex px-3 pb-2'>
-                                          <Icon content='fa-regular fa-clock' />
-                                          <p className='ml-2'>Academic Year</p>
-                                       </div>
-                                    </NavLink>
-                                    <div className='my-2'></div>
-                                    <NavLink
-                                       className='list-group-item list-group-item-action p-0 mx-auto'
-                                       data-toggle='list'
-                                       role='tab'
-                                       to='/user-dashboard'
-                                    >
-                                       <div className='d-flex px-3 pb-2'>
-                                          <Icon content='fa-regular fa-user' />
-                                          <p className='ml-2'>User</p>
-                                       </div>
-                                    </NavLink>
+                                    {signedInAccount.role === 'admin' ? (
+                                       <>
+                                          <NavLink
+                                             className='list-group-item list-group-item-action p-0 mx-auto mt-4'
+                                             data-toggle='list'
+                                             role='tab'
+                                             to='/academic-dashboard'
+                                          >
+                                             <div className='d-flex px-3 pb-2'>
+                                                <Icon content='fa-regular fa-clock' />
+                                                <p className='ml-2'>
+                                                   Academic Year
+                                                </p>
+                                             </div>
+                                          </NavLink>
+                                          <div className='my-2'></div>
+                                          <NavLink
+                                             className='list-group-item list-group-item-action p-0 mx-auto'
+                                             data-toggle='list'
+                                             role='tab'
+                                             to='/user-dashboard'
+                                          >
+                                             <div className='d-flex px-3 pb-2'>
+                                                <Icon content='fa-regular fa-user' />
+                                                <p className='ml-2'>User</p>
+                                             </div>
+                                          </NavLink>{' '}
+                                       </>
+                                    ) : null}
                                  </div>
                               </div>
                            </div>
