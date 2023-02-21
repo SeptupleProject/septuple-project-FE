@@ -25,10 +25,7 @@ function App() {
                path='/login'
                component={LogIn}
             />
-            <HomeTemplate
-               path='/home'
-               component={NewsFeed}
-            />
+
             {/* staff routes */}
 
             <HomeTemplate
@@ -80,9 +77,9 @@ function App() {
                path='/academic-dashboard'
                component={AcademicDashboard}
             />
-            <HomeTemplate
+            <FormTemplate
                path='/'
-               component={NewsFeed}
+               component={LogIn}
             />
          </Switch>
       </Router>

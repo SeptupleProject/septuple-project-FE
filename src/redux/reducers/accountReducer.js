@@ -39,7 +39,6 @@ const accountReducer = createSlice({
       },
       dangXuatReducer: (state, action) => {
          state.signedInAccount = action.payload;
-         console.log(state.signedInAccount);
       },
    },
 });

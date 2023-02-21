@@ -19,8 +19,38 @@
 .title-3 {
    font-family: $-poppin;
    font-weight: 700;
-   color: #2B6CB0;
+   color: $-blue-2;
    font-size: 1.7rem;
    line-height: $-lh-1;
    margin-top: 20px;
+}
+
+.comment {
+   background: $-white-1;
+   border-radius: $-br-3;
+   box-shadow: $-bs-2;
+   padding: 2%;
+   .comment-name {
+      font-family: $-poppin;
+      font-weight: 700;
+      color: $-blue-1;
+      font-size: 1.7rem;
+      line-height: $-lh-1;
+   }
+
+   .comment-content {
+      font-family: $-poppin;
+      font-weight: 400;
+      font-style: 16px;
+      line-height: $-lh-1;
+   }
+
+   .see-more {
+      color: $-blue-1;
+      cursor: pointer;
+      font-weight: 600;
+      &:hover {
+         color: #6099d5;
+      }
+   }
 }
