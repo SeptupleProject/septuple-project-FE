@@ -18,11 +18,17 @@ export const dangNhapAction = (account) => {
                history.replace('/user-dashboard');
             }, '1500');
          } else if (account.role == 'qaManager') {
-            alert('Đăng nhập với vai trò QA Manager');
+            setTimeout(() => {
+               history.replace('/department-dashboard');
+            }, '1500');
          } else if (account.role == 'qaCoordinator') {
-            alert('Đăng nhập với vai trò QA Coor');
+            setTimeout(() => {
+               history.replace('/qacoordinator-dashboard');
+            }, '1500');
          } else if (account.role == 'staff') {
-            alert('Đăng nhập với vai trò Staff');
+            setTimeout(() => {
+               history.replace('/newsfeed');
+            }, '1500');
          }
          await dispatch(dangNhapReducer(account));
       } catch (error) {}

@@ -20,14 +20,27 @@ const LogIn = () => {
          password: Yup.string().required('Password cannot be empty'),
       }),
       onSubmit: (values) => {
+         let isValid = false;
          accounts.map((item) => {
             if (
-               item.username == values.username &&
-               item.password == values.password
+               item.username === values.username &&
+               item.password === values.password
             ) {
+               isValid = true;
                dispatch(dangNhapAction(item));
             }
          });
+         if (!isValid) {
+            toast.error('Đăng nhập thất bại', {
+               position: 'top-center',
+               autoClose: 1000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               progress: undefined,
+               theme: 'colored',
+            });
+         }
       },
    });
 

@@ -37,9 +37,9 @@ const accountReducer = createSlice({
             }
          });
       },
-      dangXuatReducer: (state) => {
-         state.signedInAccount = {};
-         console.log(current(state.signedInAccount));
+      dangXuatReducer: (state, action) => {
+         state.signedInAccount = action.payload;
+         console.log(state.signedInAccount);
       },
    },
 });

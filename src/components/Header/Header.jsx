@@ -7,7 +7,7 @@ const Header = () => {
             className='navbar-brand'
             to='/'
          >
-            Navbar
+            News Feed
          </NavLink>
          <button
             className='navbar-toggler'
