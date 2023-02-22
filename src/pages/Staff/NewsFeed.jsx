@@ -1,9 +1,9 @@
 import React from 'react';
-import IdeaPreview from '../../components/IdeaPreview/IdeaPreview';
+import IdeaPost from '../../components/IdeaPost/IdeaPost';
 
 const NewsFeed = () => {
    return <div>
-      <IdeaPreview />
+      <IdeaPost />
    </div>;
 };
 

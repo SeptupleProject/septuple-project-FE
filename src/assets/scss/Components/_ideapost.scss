@@ -13,14 +13,20 @@
     height: 80px;
 }
 
+.iconAvater {
+    margin-top: -6;
+}
+
 .staffName {
     font-family: $-poppin;
+    color: $-blue-1;
+    font-weight: bold;
 }
 
 .categoryTag {
-    align-self: flex-start;
+
     margin: 0;
-    margin-top: 1.6%;
+    margin-top: 1%;
 }
 
 
@@ -28,20 +34,30 @@
     align-content: end;
     justify-content: space-around;
     font-family: $-poppin;
-    margin-top: 1%;
+    text-align: right;
+    
 }
 
-.skeleton {
-    padding-left: 3%;
-    padding-right: 2%;
-    text-align: center;
-    height: 120px;
+.hiddenArea {
+    border: none;
+    border-color: white;
 }
 
-.revealBtn {
-    position: relative;
-    bottom: 60px;
+.hiddenPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
+
+.ideaPara {
+    text-align: justify;
+}
+
+.image {
+    max-width: max-content;
+}
+
+
 
 
 
