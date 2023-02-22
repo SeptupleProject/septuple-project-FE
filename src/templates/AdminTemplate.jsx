@@ -3,14 +3,14 @@ import { NavLink, Route } from 'react-router-dom';
 import Icon from '../components/Icon/Icon';
 import logoVertical from '../assets/img/logo-vertical.png';
 import { history } from '../App';
+import { useDisclosure } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
-import { dangXuatReducer } from '../redux/reducers/accountReducer';
-import { useDispatch } from 'react-redux';
 export const AdminTemplate = (props) => {
-   const dispatch = useDispatch();
-   const signedInAccount = useSelector(
+   const { isOpen, onOpen, onClose } = useDisclosure();
+   let signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
+   console.log(signedInAccount);
    const renderHeaderByRole = (role) => {
       if (role === 'admin') {
          return (
@@ -140,7 +140,9 @@ export const AdminTemplate = (props) => {
                                           'Do you want to exit ?'
                                        ) == true
                                     ) {
-                                       dispatch(dangXuatReducer({}));
+                                       localStorage.removeItem(
+                                          'signedInAccount'
+                                       );
                                        history.replace('/login');
                                     }
                                  }}

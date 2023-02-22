@@ -77,9 +77,9 @@ function App() {
                path='/academic-dashboard'
                component={AcademicDashboard}
             />
-            <FormTemplate
+            <HomeTemplate
                path='/'
-               component={LogIn}
+               component={NewsFeed}
             />
          </Switch>
       </Router>

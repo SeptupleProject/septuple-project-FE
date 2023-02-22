@@ -1,6 +1,6 @@
-import { dangNhapReducer } from '../reducers/accountReducer';
 import { toast, ToastContainer } from 'react-toastify';
 import { history } from '../../App';
+import { dangNhapReducer } from '../reducers/accountReducer';
 export const dangNhapAction = (account) => {
    return async (dispatch) => {
       try {
@@ -13,24 +13,11 @@ export const dangNhapAction = (account) => {
             progress: undefined,
             theme: 'colored',
          });
-         if (account.role == 'admin') {
-            setTimeout(() => {
-               history.replace('/user-dashboard');
-            }, '1500');
-         } else if (account.role == 'qaManager') {
-            setTimeout(() => {
-               history.replace('/department-dashboard');
-            }, '1500');
-         } else if (account.role == 'qaCoordinator') {
-            setTimeout(() => {
-               history.replace('/qacoordinator-dashboard');
-            }, '1500');
-         } else if (account.role == 'staff') {
-            setTimeout(() => {
-               history.replace('/newsfeed');
-            }, '1500');
-         }
-         await dispatch(dangNhapReducer(account));
+         dispatch(dangNhapReducer(account));
+         localStorage.setItem('signedInAccount', JSON.stringify(account));
+         setTimeout(() => {
+            history.replace('/newsfeed');
+         }, '1500');
       } catch (error) {}
    };
 };

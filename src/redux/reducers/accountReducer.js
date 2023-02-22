@@ -1,5 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { current } from '@reduxjs/toolkit';
+import { history } from '../../App';
+
+let userSignedIn = '';
+if (localStorage.getItem('signedInAccount')) {
+   userSignedIn = JSON.parse(localStorage.getItem('signedInAccount'));
+}
+
 const initialState = {
    accounts: [
       {
@@ -23,7 +30,7 @@ const initialState = {
          role: 'staff',
       },
    ],
-   signedInAccount: {},
+   signedInAccount: userSignedIn,
 };
 
 const accountReducer = createSlice({
@@ -31,14 +38,12 @@ const accountReducer = createSlice({
    initialState,
    reducers: {
       dangNhapReducer: (state, action) => {
-         state.accounts.map((item) => {
-            if (item.username === action.payload.username) {
-               state.signedInAccount = item;
-            }
-         });
+         state.signedInAccount = action.payload;
       },
       dangXuatReducer: (state, action) => {
-         state.signedInAccount = action.payload;
+         localStorage.removeItem('signedInAccount');
+         history.push('/login');
+         state.signedInAccount = '';
       },
    },
 });
