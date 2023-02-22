@@ -1,0 +1,63 @@
+@import '../Helpers/_variable.scss';
+
+.post {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.idea {
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    height: 80px;
+}
+
+.iconAvater {
+    margin-top: -6;
+}
+
+.staffName {
+    font-family: $-poppin;
+    color: $-blue-1;
+    font-weight: bold;
+}
+
+.categoryTag {
+
+    margin: 0;
+    margin-top: 1%;
+}
+
+
+.ideaTitle {
+    align-content: end;
+    justify-content: space-around;
+    font-family: $-poppin;
+    text-align: right;
+    
+}
+
+.hiddenArea {
+    border: none;
+    border-color: white;
+}
+
+.hiddenPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ideaPara {
+    text-align: justify;
+}
+
+.image {
+    max-width: max-content;
+}
+
+
+
+
+
