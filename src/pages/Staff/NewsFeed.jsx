@@ -1,4 +1,5 @@
 import React from 'react';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import StaffComment from '../../components/StaffComment/StaffComment';
 
 const NewsFeed = () => {
@@ -6,6 +7,7 @@ const NewsFeed = () => {
 
    return (
       <div className='staff-newsfeed pt-5'>
+
          <div style={{ width: '80%', margin: '0 auto' }}>
             <div className=''>
                <StaffComment

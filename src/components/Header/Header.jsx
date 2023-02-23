@@ -2,7 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from '../../assets/img/logo-horizontal.png';
 import Icon from '../Icon/Icon';
-import { history } from '../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import {
    Modal,
@@ -23,6 +22,7 @@ const Header = () => {
    let signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
+   
    const renderHeaderByRole = (role) => {
       if (role === 'admin') {
          return (

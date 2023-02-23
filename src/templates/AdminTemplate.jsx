@@ -2,16 +2,67 @@ import React from 'react';
 import { NavLink, Route } from 'react-router-dom';
 import Icon from '../components/Icon/Icon';
 import logoVertical from '../assets/img/logo-vertical.png';
-import { history } from '../App';
 import { useDisclosure } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+   Modal,
+   ModalOverlay,
+   ModalContent,
+   ModalHeader,
+   ModalFooter,
+   ModalBody,
+   ModalCloseButton,
+   Button,
+} from '@chakra-ui/react';
+import { dangXuatReducer } from '../redux/reducers/accountReducer';
 export const AdminTemplate = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
+   const finalRef = React.useRef(null);
+   const dispatch = useDispatch();
    let signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
-   console.log(signedInAccount);
-   const renderHeaderByRole = (role) => {
+
+   const renderModal = () => {
+      return (
+         <Modal
+            closeOnOverlayClick={true}
+            finalFocusRef={finalRef}
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered
+         >
+            <ModalOverlay />
+
+            <ModalContent>
+               <ModalHeader className='title-2 display-3 '>Log Out</ModalHeader>
+               <ModalCloseButton />
+               <ModalBody>Do you want to log out ?</ModalBody>
+
+               <ModalFooter>
+                  <Button
+                     colorScheme='blue'
+                     mr={3}
+                     onClick={onClose}
+                     variant='ghost'
+                  >
+                     Cancel
+                  </Button>
+                  <Button
+                     onClick={() => {
+                        dispatch(dangXuatReducer());
+                     }}
+                     colorScheme='red'
+                  >
+                     Log Out
+                  </Button>
+               </ModalFooter>
+            </ModalContent>
+         </Modal>
+      );
+   };
+
+   const renderNavBarByRole = (role) => {
       if (role === 'admin') {
          return (
             <>
@@ -99,6 +150,7 @@ export const AdminTemplate = (props) => {
          );
       }
    };
+
    return (
       <Route
          exact
@@ -121,7 +173,7 @@ export const AdminTemplate = (props) => {
                                     id='myList'
                                     role='tablist'
                                  >
-                                    {renderHeaderByRole(signedInAccount.role)}
+                                    {renderNavBarByRole(signedInAccount.role)}
                                  </div>
                               </div>
                            </div>
@@ -133,26 +185,14 @@ export const AdminTemplate = (props) => {
                               <p className='title-2'>
                                  Hello, {signedInAccount.username}
                               </p>
-                              <div
-                                 onClick={() => {
-                                    if (
-                                       window.confirm(
-                                          'Do you want to exit ?'
-                                       ) == true
-                                    ) {
-                                       localStorage.removeItem(
-                                          'signedInAccount'
-                                       );
-                                       history.replace('/login');
-                                    }
-                                 }}
-                              >
+                              <div onClick={onOpen}>
                                  <Icon
                                     content='fa-solid fa-arrow-right-from-bracket'
                                     color='#FF0000'
                                  />
                               </div>
                            </div>
+                           {renderModal()}
                         </nav>
                         <props.component {...propsRoute} />
                      </div>
