@@ -23,12 +23,12 @@ import {
    ModalBody,
    ModalCloseButton,
 } from '@chakra-ui/react';
-import { history } from '../../../App';
 import { useSelector } from 'react-redux';
+import { history } from '../../../App';
 const UserDashboard = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
-   const signedInAccount = useSelector(
+   let signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
    const renderModal = () => {

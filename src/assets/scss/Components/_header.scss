@@ -29,6 +29,7 @@
       border-radius: 8px;
    }
    nav {
+      border-bottom: solid 2px $-grey-2;
       background: $-white-1;
       border-radius: $-br-2;
       .header {
@@ -36,4 +37,9 @@
       }
       display: block !important;
    }
+}
+
+.staff-header {
+   font-family: $-poppin;
+   font-weight: 600;
 }

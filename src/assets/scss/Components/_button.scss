@@ -10,3 +10,44 @@
       background-color: $-blue-1;
    }
 }
+
+.button-upload-img {
+   padding: 10px 25px;
+   border: 2px solid $-green-1;
+   border-radius: 8px;
+   color: $-green-1;
+   transition: all 0.3s;
+   cursor: pointer;
+   &:hover {
+      background: $-green-2;
+   }
+   p {
+      font-weight: 600;
+   }
+}
+
+.button-post {
+   overflow: hidden;
+
+   .fa-paper-plane {
+      animation: 0.7s slide-right;
+   }
+}
+
+@keyframes slide-right {
+   0% {
+      transform: translate(0, 0);
+   }
+   20% {
+      transform: translate(340%, -400%);
+   }
+   50% {
+      transform: translate(0, 800%);
+   }
+   75% {
+      transform: translate(-340%, 400%);
+   }
+   100% {
+      transform: translate(0, 0);
+   }
+}
