@@ -7,14 +7,29 @@ import { Button } from '@chakra-ui/react';
 const PostIdea = () => {
    const [lock, setLock] = useState(false);
    const [post, setPost] = useState(false);
+   const [uploadImg, setUploadImg] = useState(null);
    const handleOnChange = () => {
       setLock(!lock);
    };
    const handleOnClick = () => {
       setPost(true);
       setTimeout(() => {
+         setUploadImg(null);
          setPost(false);
       }, 700);
+   };
+   const handleUploadImage = (e) => {
+      let file = e.target.files[0];
+      if (
+         file.type === 'image/jpeg' ||
+         file.type === 'image/jpg' ||
+         file.type === 'image/png'
+      ) {
+         let reader = new FileReader();
+         reader.readAsDataURL(file);
+         reader.onload = (event) => setUploadImg(event.target.result);
+         // formik.setFieldValue('hinhAnh', file);
+      }
    };
    return (
       <div className='row post-idea mx-0'>
@@ -73,23 +88,32 @@ const PostIdea = () => {
                   </div>
                </label>
                <input
+                  onChange={handleUploadImage}
+                  accept='image/png,image/jpg,image/jpeg'
                   className='disapear'
                   id='loadImgInput'
                   type='file'
                />
-               <Alert
-                  style={{ borderRadius: '8px' }}
-                  status='success'
-                  variant='top-accent'
-                  className='d-block text-left mt-3'
-               >
-                  <div>
-                     <b>Photo</b>
-                  </div>
-                  <div>
-                     <span>photo.png</span>
-                  </div>
-               </Alert>
+               {uploadImg == null ? (
+                  <Alert
+                     style={{ borderRadius: '8px' }}
+                     status='success'
+                     variant='top-accent'
+                     className='d-block text-left mt-3'
+                  >
+                     <div>
+                        <b>Photo</b>
+                     </div>
+                     <div>
+                        <span>photo.png</span>
+                     </div>
+                  </Alert>
+               ) : (
+                  <img
+                     className='img-fluid'
+                     src={uploadImg}
+                  />
+               )}
             </div>
             <div className='my-3'>
                <b>Post Anonymously ?</b>
