@@ -2,44 +2,44 @@
 .spinner-container {
    width: 100vw;
    height: 100vh;
-}
-.cssload-loader {
-   position: relative;
-   left: 50%;
-   top: 40%;
-   width: 80px;
-   height: 80px;
-   border-radius: 50%;
-   perspective: 780px;
-}
+   .cssload-loader {
+      position: relative;
+      left: 50%;
+      top: 40%;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      perspective: 780px;
+   }
 
-.cssload-inner {
-   position: absolute;
-   width: 100%;
-   height: 100%;
-   box-sizing: border-box;
-   border-radius: 50%;
-}
+   .cssload-inner {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      border-radius: 50%;
+   }
 
-.cssload-inner.cssload-one {
-   left: 0%;
-   top: 0%;
-   animation: cssload-rotate-one 1.15s linear infinite;
-   border-bottom: 5px solid $-blue-1;
-}
+   .cssload-inner.cssload-one {
+      left: 0%;
+      top: 0%;
+      animation: cssload-rotate-one 1.15s linear infinite;
+      border-bottom: 5px solid $-blue-1;
+   }
 
-.cssload-inner.cssload-two {
-   right: 0%;
-   top: 0%;
-   animation: cssload-rotate-two 1.15s linear infinite;
-   border-right: 5px solid $-blue-1;
-}
+   .cssload-inner.cssload-two {
+      right: 0%;
+      top: 0%;
+      animation: cssload-rotate-two 1.15s linear infinite;
+      border-right: 5px solid $-blue-1;
+   }
 
-.cssload-inner.cssload-three {
-   right: 0%;
-   bottom: 0%;
-   animation: cssload-rotate-three 1.15s linear infinite;
-   border-top: 5px solid $-blue-1;
+   .cssload-inner.cssload-three {
+      right: 0%;
+      bottom: 0%;
+      animation: cssload-rotate-three 1.15s linear infinite;
+      border-top: 5px solid $-blue-1;
+   }
 }
 
 @keyframes cssload-rotate-one {
@@ -67,4 +67,11 @@
    100% {
       transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
    }
+}
+
+.disapear {
+   opacity: 0;
+   position: absolute;
+   z-index: -1;
+   display: none;
 }

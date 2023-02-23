@@ -37,7 +37,7 @@ const StaffComment = (props) => {
          paragraph = convertToArray(props.comment).join(' ');
          return paragraph;
       } else {
-         for (let i = 0; i < 70; i++) {
+         for (let i = 0; i < 50; i++) {
             paragraph.push(convertToArray(props.comment)[i]);
          }
          return paragraph.join(' ') + '. . .';
@@ -53,7 +53,25 @@ const StaffComment = (props) => {
             />
          </div>
          <div className='col-11 px-0'>
-            <h2 className='comment-name mt-3'>{props.name}</h2>
+            <div className='d-flex justify-content-between mt-3'>
+               <h2 className='comment-name'>{props.name}</h2>
+               <div className='d-flex'>
+                  <div>
+                     <Icon
+                        content='fa-solid fa-pen'
+                        color='#2B6CB0'
+                        fontSize='18px'
+                     />
+                  </div>
+                  <div className='ml-3'>
+                     <Icon
+                        content='fa-regular fa-trash-can'
+                        color='#FF0000'
+                        fontSize='18px'
+                     />
+                  </div>
+               </div>
+            </div>
 
             <p className='text-justify text-wrap comment-content mt-2'>
                {renderContent()}{' '}
