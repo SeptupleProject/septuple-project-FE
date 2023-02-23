@@ -17,11 +17,58 @@ import {
    IconButton
 } from '@chakra-ui/react';
 import React from 'react';
+import { useState } from 'react';
 import '../../assets/scss/main.scss';
 import gwuni from '../../assets/img/gwuni.png'
 import Icon from '../Icon/Icon';
 
+
+
 const IdeaPost = () => {
+   const [likeCount, setLikeCount] = useState(0);
+   const [dislikeCount, setDislikeCount] = useState(0);
+   const [activeBtn, setActiveBtn] = useState("none");
+
+   const handleLikeClick = () => {
+      if (activeBtn === "none") {
+        setLikeCount(likeCount + 1);
+        setActiveBtn("like");
+        return;
+      }
+   
+      if (activeBtn === 'like'){
+        setLikeCount(likeCount - 1);
+        setActiveBtn("none");
+        return;
+      }
+   
+      if (activeBtn === "dislike") {
+        setLikeCount(likeCount + 1);
+        setDislikeCount(dislikeCount - 1);
+        setActiveBtn("like");
+      }
+    };
+
+    const handleDisikeClick = () => {
+      if (activeBtn === "none") {
+        setDislikeCount(dislikeCount + 1);
+        setActiveBtn("dislike");
+        return;
+      }
+     
+      if (activeBtn === 'dislike'){
+        setDislikeCount(dislikeCount - 1);
+        setActiveBtn("none");
+        return;
+      }
+   
+      if (activeBtn === "like") {
+        setDislikeCount(dislikeCount + 1);
+        setLikeCount(likeCount - 1);
+        setActiveBtn("dislike");
+      }
+    };
+
    return (
       <Accordion allowToggle>
          <Card
@@ -62,10 +109,9 @@ const IdeaPost = () => {
 
                {({ isExpanded }) => (
                   <>
-                     <AccordionButton className='hiddenArea' >
-
+                     <AccordionButton className=' border-0' >
                         {isExpanded ? (
-                           <>
+                           <HStack>
                               <Text
                                  fontSize='3xl'
                                  className='ideaTitle'
@@ -79,10 +125,11 @@ const IdeaPost = () => {
                                  colorScheme='blue'
                               >
                                  Collapse
-                              </Button></>
+                              </Button>
+                           </HStack>
 
                         ) : (
-                           <>
+                           <HStack>
                               <Text
                                  fontSize='3xl'
                                  className='ideaTitle'
@@ -96,7 +143,7 @@ const IdeaPost = () => {
                               >
                                  Reveal
                               </Button>
-                           </>
+                           </HStack>
 
                         )}
                      </AccordionButton>
@@ -113,9 +160,29 @@ const IdeaPost = () => {
                         />
 
                         <ButtonGroup variant='ghost' size='lg'>
-                           <Button _focus={{ color: '#2b6cb0' }} leftIcon={<Icon content='fa-regular fa-thumbs-up' />} >12</Button>
-                           <Button _focus={{ color: '#e53e3e' }} leftIcon={<Icon content='fa-regular fa-thumbs-down' />}>5</Button>
-                           <Button isDisabled leftIcon={<Icon content='fa-regular fa-comment-dots' />}>22</Button>
+                           <Button 
+                              colorScheme='blue'
+                              leftIcon={<Icon content='fa-regular fa-thumbs-up' />} 
+                              onClick={handleLikeClick}
+                              className={`${activeBtn === "like" ? "like-active" : ""}`}
+                           >
+                              {likeCount}
+                           </Button>
+                           <Button 
+                              colorScheme='red'
+                              leftIcon={<Icon content='fa-regular fa-thumbs-down' />}
+                              onClick={handleDisikeClick}
+                              className={`${activeBtn === "dislike" ? "dislike-active" : ""}`}
+                           >
+                              {dislikeCount}
+                           </Button>
+                           <Button 
+                              isDisabled
+                              leftIcon={<Icon content='fa-regular fa-comment-dots' />}
+                              colorScheme='black'
+                           >  
+                              0
+                           </Button>
                         </ButtonGroup>
                         <Divider />
                         <HStack>
@@ -135,7 +202,8 @@ const IdeaPost = () => {
                                              content='fa-regular fa-paper-plane' 
                                              fontSize='15px' />}
                                     variant='ghost'
-                                    colorScheme='blue' />
+                                    colorScheme='blue'
+                                    borderRadius={'20px'} />
                               </InputRightElement>
                            </InputGroup>
    
