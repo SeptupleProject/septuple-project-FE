@@ -20,13 +20,13 @@ import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 
 export const history = createBrowserHistory();
 function App() {
-   const [loading, setLoading] = useState(false);
+   const [loading, setLoading] = useState(true);
 
-   // useEffect(() => {
-   //    setTimeout(() => {
-   //       setLoading(false);
-   //    }, 1500);
-   // }, []);
+   useEffect(() => {
+      setTimeout(() => {
+         setLoading(false);
+      }, 1500);
+   }, []);
 
    return (
       <>
