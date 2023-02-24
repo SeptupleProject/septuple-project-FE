@@ -55,3 +55,28 @@
       }
    }
 }
+
+
+.text-category-1 {
+   font-family: $-poppin;
+   font-style: italic;
+   font-weight: 600;
+   font-size: 15px;
+   line-height: 16px;
+   color: $-blue-1;
+}
+.text-category-2 {
+   position: absolute;
+   right: 0px;
+   font-family: $-poppin;
+   font-style: italic;
+   font-weight: 500;
+   font-size: 12px;
+   line-height: 16px;
+   display: flex;
+   align-items: center;
+   text-align: center;
+   color: $-black-1;
+   margin-top: 5px;
+}
+
