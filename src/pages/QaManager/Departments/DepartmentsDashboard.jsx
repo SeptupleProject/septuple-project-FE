@@ -1,9 +1,73 @@
-import React from 'react'
-
+import React from 'react';
+import { Grid, GridItem } from '@chakra-ui/react';
+import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import Icon from '../../../components/Icon/Icon';
+import { Button } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
+import Department from '../../../components/Department/Department';
 const DepartmentsDashboard = () => {
-  return (
-    <div>DepartmentsDashboard</div>
-  )
-}
+   return (
+      <div>
+         <div className='mt-3'>
+            <Grid
+               templateColumns='repeat(4, 1fr)'
+               gap={4}
+            >
+               <GridItem
+                  className='ml-5 mt-4'
+                  colSpan={2}
+                  h='10'
+                  bg='#EDF2F7'
+               >
+                  <InputGroup
+                     size='md'
+                     w='550'
+                  >
+                     <Input
+                        type='text'
+                        placeholder='Search for departments'
+                     />
+                     <InputRightElement width='4.5rem'>
+                        <Icon
+                           fontSize='20px'
+                           content='fa-solid fa-magnifying-glass'
+                        />
+                     </InputRightElement>
+                  </InputGroup>
+               </GridItem>
+               <GridItem
+                  className='ml-5 mt-4 mr-5'
+                  colStart={5}
+                  colEnd={5}
+                  h='10'
+               >
+                  <Button
+                     colorScheme='blue'
+                     variant='outline'
+                  >
+                     <Icon
+                        fontSize='20px'
+                        content='fa-solid fa-user-plus'
+                        paddingRight='10px'
+                     />
+                     Create a new department
+                  </Button>
+               </GridItem>
+            </Grid>
+         </div>
 
-export default DepartmentsDashboard
+         <div className='container-fluid mt-5'>
+            <div className='row'>
+               <div className='col-12 col-md-6'>
+                  <Department text='Department 1' />
+               </div>
+               <div className='col-12 col-md-6 '>
+                  <Department text='Department 1' />
+               </div>
+            </div>
+         </div>
+      </div>
+   );
+};
+
+export default DepartmentsDashboard;
