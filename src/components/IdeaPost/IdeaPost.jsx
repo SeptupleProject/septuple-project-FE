@@ -78,7 +78,7 @@ const IdeaPost = () => {
 
             <CardBody className='post'>
                {/* <div className='idea'> */}
-               <HStack spacing='13px' align='center' paddingBottom={'0'}>
+               <HStack spacing='13px' align='center'>
                   <Icon
                      content='fa-regular fa-circle-user'
                      fontSize='62px'
@@ -104,12 +104,12 @@ const IdeaPost = () => {
 
 
             </CardBody>
-            <AccordionItem className='border-0'>
+            <AccordionItem>
 
 
                {({ isExpanded }) => (
                   <>
-                     <AccordionButton>
+                     <AccordionButton className=' border-0' >
                         {isExpanded ? (
                            <HStack>
                               <Text
@@ -220,6 +220,4 @@ const IdeaPost = () => {
    );
 };
 
-
 export default IdeaPost;
-
