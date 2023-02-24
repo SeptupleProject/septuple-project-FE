@@ -1,10 +1,13 @@
 import React from 'react';
+import { VStack } from '@chakra-ui/react';
 import IdeaPost from '../../components/IdeaPost/IdeaPost';
+import YourIdeaPost from '../../components/IdeaPost/YourIdeaPost';
 
 const NewsFeed = () => {
-   return <div>
+   return <VStack spacing={6} align='stretch'>
       <IdeaPost />
-   </div>;
+      <YourIdeaPost />
+   </VStack>;
 };
 
 export default NewsFeed;

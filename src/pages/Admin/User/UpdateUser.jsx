@@ -16,7 +16,7 @@ import {
    ModalFooter,
    ModalBody,
    ModalCloseButton,
-   useDisclosure,
+   useDisclosure
 } from '@chakra-ui/react';
 import Icon from '../../../components/Icon/Icon';
 import '../../../assets/scss/main.scss';
