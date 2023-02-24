@@ -17,25 +17,9 @@
     margin-top: -6;
 }
 
-.staffName {
-    font-family: $-poppin;
-    color: $-blue-1;
-    font-weight: bold;
-}
-
 .categoryTag {
-
     margin: 0;
     margin-top: 1%;
-}
-
-
-.ideaTitle {
-    align-content: end;
-    justify-content: space-around;
-    font-family: $-poppin;
-    text-align: right;
-    font-weight: bold;
 }
 
 .deleteBtn {
@@ -49,30 +33,18 @@
     gap: 20px;
 }
 
-.editablePara {
-    text-align: justify;
-    font-family: $-poppin;
-}
-
 .disapear {
     visibility: hidden;
 }
 
 .uploadBtn {
-    border: 1px solid $-blue-2;
-    padding: 2 2;
+    border: 2px solid $-blue-2;
     border-radius: 8px;
     width: 125%;
 }
 
 .uploadStack {
     padding: 8%;
-}
-
-.uploadBtnText {
-    color: $-blue-2;
-    font-family: $-poppin;
-    width: max-content;
 }
 
 .uploadBtn:hover {

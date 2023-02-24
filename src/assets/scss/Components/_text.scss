@@ -71,3 +71,27 @@
    font-size: 12px;
    color: $-black-1;
 }
+
+.staffName {
+   font-family: $-poppin;
+   color: $-blue-1;
+   font-weight: bold;
+}
+
+.ideaTitle {
+   align-content: end;
+   justify-content: space-around;
+   font-family: $-poppin;
+   text-align: right;
+   font-weight: bold;
+}
+
+.editablePara {
+   text-align: justify;
+   font-family: $-poppin;
+}
+
+.uploadBtnText {
+   color: $-blue-2;
+   font-family: $-poppin;
+}
