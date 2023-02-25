@@ -16,7 +16,7 @@ const PostIdea = () => {
       setTimeout(() => {
          setUploadImg(null);
          setPost(false);
-      }, 700);
+      }, 1500);
    };
    const handleUploadImage = (e) => {
       let file = e.target.files[0];

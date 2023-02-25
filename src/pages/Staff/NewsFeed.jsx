@@ -11,7 +11,8 @@ const NewsFeed = () => {
       <>
          <div className='staff-newsfeed pt-5'>
             <div style={{ width: '80%', margin: '0 auto' }}>
-               <IdeaPost />
+               {/* <IdeaPost /> */}
+
                <div className='mb-5'></div>
                <YourIdeaPost />
                <div className='mb-5'></div>

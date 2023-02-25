@@ -30,18 +30,23 @@ import { useState } from 'react';
 import '../../assets/scss/main.scss';
 import gwuni from '../../assets/img/gwuni.png';
 import Icon from '../Icon/Icon';
+import {
+   Modal,
+   ModalOverlay,
+   ModalContent,
+   ModalHeader,
+   ModalFooter,
+   ModalBody,
+   ModalCloseButton,
+} from '@chakra-ui/react';
 
 const YourIdeaPost = () => {
    const [likeCount, setLikeCount] = useState(0);
    const [dislikeCount, setDislikeCount] = useState(0);
    const [activeBtn, setActiveBtn] = useState('none');
-
    const [lock, setLock] = useState(false);
-
    const { isOpen, onToggle } = useDisclosure();
-
    const [uploadImg, setUploadImg] = useState(gwuni);
-
    const handleOnChange = () => {
       setLock(!lock);
    };
@@ -99,6 +104,7 @@ const YourIdeaPost = () => {
       }
    };
 
+   const openModal = () => {};
    return (
       <Accordion allowToggle>
          <Card variant='elevated'>
@@ -130,7 +136,15 @@ const YourIdeaPost = () => {
                </HStack>
             </CardBody>
 
-            <AccordionItem className='border-0'>
+            <AccordionItem
+               style={{
+                  borderTop: '2px solid rgba(43, 107, 177,0.6)',
+                  borderTopRightRadius: '8px',
+                  borderTopLeftRadius: '8px',
+                  borderBottom: 'none',
+               }}
+               className='p-3'
+            >
                {({ isExpanded }) => (
                   <>
                      <HStack>
@@ -151,17 +165,15 @@ const YourIdeaPost = () => {
                                     className='p-0'
                                     _hover={{ bgColor: 'none' }}
                                  >
-                                    <HStack>
-                                       <IconButton
-                                          className='mx-5'
-                                          colorScheme='blue'
-                                          aria-label='Search database'
-                                          variant='outline'
-                                          icon={
-                                             <Icon content='fa-solid fa-eye-slash' />
-                                          }
-                                       />
-                                    </HStack>
+                                    <IconButton
+                                       className='mx-5'
+                                       colorScheme='blue'
+                                       aria-label='Search database'
+                                       variant='outline'
+                                       icon={
+                                          <Icon content='fa-solid fa-eye-slash' />
+                                       }
+                                    />
                                  </AccordionButton>
                               </div>
                               <Button
@@ -227,11 +239,11 @@ const YourIdeaPost = () => {
                               className='img-fluid image'
                            />
 
-                           <div className='col-2 px-0 mx-0 text-center'>
-                              <div className='container w-75 '>
+                           <div className='col-2 px-0 ml-4 text-center'>
+                              <div className='container px-0'>
                                  <label
                                     htmlFor='uploadImageToEdid'
-                                    className='d-flex uploadBtn'
+                                    className='d-flex justify-content-center uploadBtn'
                                  >
                                     <HStack className='uploadStack'>
                                        <Icon
@@ -272,21 +284,15 @@ const YourIdeaPost = () => {
                               </div>
                               <VStack>
                                  <Button
+                                    className='mt-4'
                                     variant='outline'
-                                    size='sm'
-                                    colorScheme='green'
+                                    size='md'
+                                    colorScheme='facebook'
                                     onClick={() => {
                                        setUploadImg();
                                     }}
                                  >
-                                    Accept changes
-                                 </Button>
-                                 <Button
-                                    colorScheme='red'
-                                    variant='outline'
-                                    size='sm'
-                                 >
-                                    Cancel changes
+                                    Upload
                                  </Button>
                               </VStack>
                            </div>
