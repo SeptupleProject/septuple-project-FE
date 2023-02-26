@@ -28,7 +28,6 @@ import {
 import React from 'react';
 import { useState } from 'react';
 import '../../assets/scss/main.scss';
-import gwuni from '../../assets/img/gwuni.png';
 import Icon from '../Icon/Icon';
 import {
    Modal,
@@ -39,18 +38,23 @@ import {
    ModalBody,
    ModalCloseButton,
 } from '@chakra-ui/react';
-
-const YourIdeaPost = () => {
-   const [likeCount, setLikeCount] = useState(0);
-   const [dislikeCount, setDislikeCount] = useState(0);
-   const [activeBtn, setActiveBtn] = useState('none');
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import StaffComment from '../StaffComment/StaffComment';
+const YourIdeaPost = (props) => {
    const [lock, setLock] = useState(false);
-   const { isOpen, onToggle } = useDisclosure();
-   const [uploadImg, setUploadImg] = useState(gwuni);
+   const [showComment, setShowComment] = useState(false);
+   const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();
+   const {
+      isOpen: uploadIsOpen,
+      onOpen: uploadOnOpen,
+      onClose: uploadOnClose,
+   } = useDisclosure();
+   const [uploadImg, setUploadImg] = useState(props.img);
+
    const handleOnChange = () => {
       setLock(!lock);
    };
-
    const handleUploadImage = (e) => {
       let file = e.target.files[0];
       if (
@@ -63,48 +67,54 @@ const YourIdeaPost = () => {
          reader.onload = (event) => setUploadImg(event.target.result);
       }
    };
-
-   const handleLikeClick = () => {
-      if (activeBtn === 'none') {
-         setLikeCount(likeCount + 1);
-         setActiveBtn('like');
-         return;
-      }
-
-      if (activeBtn === 'like') {
-         setLikeCount(likeCount - 1);
-         setActiveBtn('none');
-         return;
-      }
-
-      if (activeBtn === 'dislike') {
-         setLikeCount(likeCount + 1);
-         setDislikeCount(dislikeCount - 1);
-         setActiveBtn('like');
-      }
+   const openModal = () => {
+      return (
+         <Modal
+            isOpen={uploadIsOpen}
+            onClose={uploadOnClose}
+            isCentered
+         >
+            <ModalOverlay />
+            <ModalContent>
+               <ModalHeader>Do you want to update your post ?</ModalHeader>
+               <ModalCloseButton />
+               <ModalFooter>
+                  <Button
+                     variant='ghost'
+                     colorScheme='red'
+                     mr={3}
+                     onClick={uploadOnClose}
+                  >
+                     Close
+                  </Button>
+                  <Button
+                     colorScheme='facebook'
+                     onClick={() => {
+                        setUploadImg();
+                     }}
+                     variant='outline'
+                  >
+                     Update
+                  </Button>
+               </ModalFooter>
+            </ModalContent>
+         </Modal>
+      );
    };
-
-   const handleDisikeClick = () => {
-      if (activeBtn === 'none') {
-         setDislikeCount(dislikeCount + 1);
-         setActiveBtn('dislike');
-         return;
-      }
-
-      if (activeBtn === 'dislike') {
-         setDislikeCount(dislikeCount - 1);
-         setActiveBtn('none');
-         return;
-      }
-
-      if (activeBtn === 'like') {
-         setDislikeCount(dislikeCount + 1);
-         setLikeCount(likeCount - 1);
-         setActiveBtn('dislike');
-      }
+   const renderListComment = () => {
+      return props.comment.map((item) => {
+         console.log(item);
+         return (
+            <div className='my-4'>
+               <StaffComment
+                  key={item.id}
+                  name={item.name}
+                  comment={item.content}
+               />
+            </div>
+         );
+      });
    };
-
-   const openModal = () => {};
    return (
       <Accordion allowToggle>
          <Card variant='elevated'>
@@ -131,7 +141,7 @@ const YourIdeaPost = () => {
                      size='md'
                      className='categoryTag'
                   >
-                     CATEGORY 1
+                     {props.category}
                   </Tag>
                </HStack>
             </CardBody>
@@ -150,9 +160,9 @@ const YourIdeaPost = () => {
                      <HStack>
                         <Editable
                            fontSize='2xl'
-                           className='ideaTitle'
-                           placeholder='Idea Title'
-                           marginLeft={'1%'}
+                           className='ideaTitle w-50 text-wrap'
+                           placeholder={props.ideaTitle}
+                           style={{ marginLeft: '1%' }}
                         >
                            <EditablePreview />
                            <EditableInput />
@@ -160,56 +170,68 @@ const YourIdeaPost = () => {
 
                         {isExpanded ? (
                            <>
-                              <div>
-                                 <AccordionButton
-                                    className='p-0'
-                                    _hover={{ bgColor: 'none' }}
-                                 >
-                                    <IconButton
-                                       className='mx-5'
-                                       colorScheme='blue'
-                                       aria-label='Search database'
+                              <div className='d-flex align-baseline'>
+                                 <div className='mx-5'>
+                                    <AccordionButton
+                                       className='p-0'
+                                       _hover={{ bgColor: 'none' }}
+                                    >
+                                       <IconButton
+                                          colorScheme='blue'
+                                          aria-label='Search database'
+                                          variant='outline'
+                                          icon={
+                                             <Icon content='fa-solid fa-eye-slash' />
+                                          }
+                                       />
+                                    </AccordionButton>
+                                 </div>
+                                 <div className='d-flex'>
+                                    <Button
                                        variant='outline'
-                                       icon={
-                                          <Icon content='fa-solid fa-eye-slash' />
-                                       }
-                                    />
-                                 </AccordionButton>
-                              </div>
-                              <Button
-                                 variant='outline'
-                                 size='md'
-                                 colorScheme='red'
-                                 onClick={onToggle}
-                              >
-                                 Delete Post
-                              </Button>
-
-                              <SlideFade
-                                 in={isOpen}
-                                 marginLeft={'3%'}
-                              >
-                                 <HStack>
-                                    <Text
                                        size='md'
-                                       className='deleteBtn'
+                                       colorScheme='red'
+                                       onClick={deleteOnToggle}
                                     >
-                                       Are you sure?
-                                    </Text>
-                                    <ButtonGroup
-                                       variant='ghost'
-                                       size='sm'
+                                       Delete Idea
+                                    </Button>
+                                    <SlideFade
+                                       style={{ marginLeft: '3%' }}
+                                       className={deleteIsOpen ? 'd-flex' : ''}
+                                       in={deleteIsOpen}
                                     >
-                                       <Button colorScheme='red'>Yes</Button>
-                                       <Button colorScheme='twitter'>No</Button>
-                                    </ButtonGroup>
-                                 </HStack>
-                              </SlideFade>
+                                       <HStack>
+                                          <Text
+                                             size='md'
+                                             className='deleteBtn ml-3'
+                                             as='b'
+                                          >
+                                             Are you sure?
+                                          </Text>
+                                          <ButtonGroup
+                                             variant='ghost'
+                                             size='sm'
+                                          >
+                                             <Button colorScheme='red'>
+                                                Yes
+                                             </Button>
+                                             <Button
+                                                onClick={deleteOnToggle}
+                                                colorScheme='twitter'
+                                             >
+                                                No
+                                             </Button>
+                                          </ButtonGroup>
+                                       </HStack>
+                                    </SlideFade>
+                                 </div>
+                              </div>
                            </>
                         ) : (
                            <AccordionButton
                               width={'10%'}
                               _hover={{ bgColor: 'none' }}
+                              className='text-wrap'
                            >
                               <HStack>
                                  <IconButton
@@ -226,10 +248,13 @@ const YourIdeaPost = () => {
                      <AccordionPanel className='hiddenPanel'>
                         <Editable
                            className='editablePara'
-                           placeholder='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Potenti nullam ac tortor vitae purus faucibus. Sagittis id consectetur purus ut faucibus. Dolor purus non enim praesent. Amet nisl suscipit adipiscing bibendum est ultricies integer. Cras tincidunt lobortis feugiat vivamus at augue eget. Praesent semper feugiat nibh sed pulvinar proin gravida. Tincidunt ornare massa eget egestas. Tellus at urna condimentum mattis. Condimentum vitae sapien pellentesque habitant morbi. Arcu dictum varius duis at consectetur lorem donec massa. Ante metus dictum at tempor commodo ullamcorper a lacus vestibulum. Porta lorem mollis aliquam ut. Nisl vel pretium lectus quam.'
+                           placeholder={props.content}
                         >
                            <EditablePreview />
-                           <EditableTextarea maxHeight={'max-content'} />
+                           <EditableTextarea
+                              style={{ height: '20vh' }}
+                              maxHeight={'max-content'}
+                           />
                         </Editable>
 
                         <HStack>
@@ -243,15 +268,16 @@ const YourIdeaPost = () => {
                               <div className='container px-0'>
                                  <label
                                     htmlFor='uploadImageToEdid'
-                                    className='d-flex justify-content-center uploadBtn'
+                                    className='d-flex justify-content-center uploadBtn p-0'
                                  >
                                     <HStack className='uploadStack'>
                                        <Icon
-                                          content='fa-regular fa-image'
+                                          content='fa-solid fa-upload'
                                           color='#3182ce'
+                                          fontSize='18px'
                                        />
-                                       <p className='ml-1 uploadBtnText'>
-                                          Change photo
+                                       <p className='ml-2 uploadBtnText'>
+                                          New photo
                                        </p>
                                     </HStack>
                                  </label>
@@ -264,7 +290,7 @@ const YourIdeaPost = () => {
                                  />
                               </div>
                               <div className='my-3'>
-                                 <b>Post Anonymously ?</b>
+                                 <b>As an anonymous ?</b>
                               </div>
                               <div className='d-flex justify-content-center align-middle'>
                                  <Switch
@@ -288,12 +314,11 @@ const YourIdeaPost = () => {
                                     variant='outline'
                                     size='md'
                                     colorScheme='facebook'
-                                    onClick={() => {
-                                       setUploadImg();
-                                    }}
+                                    onClick={uploadOnOpen}
                                  >
-                                    Upload
+                                    Edit
                                  </Button>
+                                 {openModal()}
                               </VStack>
                            </div>
                         </HStack>
@@ -303,37 +328,34 @@ const YourIdeaPost = () => {
                            size='lg'
                         >
                            <Button
+                              isDisabled
                               colorScheme='blue'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-up' />
                               }
-                              onClick={handleLikeClick}
-                              className={`${
-                                 activeBtn === 'like' ? 'like-active' : ''
-                              }`}
                            >
-                              {likeCount}
+                              {props.like}
                            </Button>
                            <Button
+                              isDisabled
                               colorScheme='red'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-down' />
                               }
-                              onClick={handleDisikeClick}
-                              className={`${
-                                 activeBtn === 'dislike' ? 'dislike-active' : ''
-                              }`}
                            >
-                              {dislikeCount}
+                              {props.dislike}
                            </Button>
                            <Button
-                              isDisabled
+                              onClick={() => {
+                                 setShowComment(!showComment);
+                              }}
                               leftIcon={
                                  <Icon content='fa-regular fa-comment-dots' />
                               }
-                              colorScheme='black'
+                              variant='ghost'
+                              colorScheme='gray'
                            >
-                              0
+                              {props.comment.length}
                            </Button>
                         </ButtonGroup>
                         <Divider />
@@ -368,6 +390,9 @@ const YourIdeaPost = () => {
                   </>
                )}
             </AccordionItem>
+            <div className='container'>
+               {showComment ? renderListComment() : ''}
+            </div>
          </Card>
       </Accordion>
    );

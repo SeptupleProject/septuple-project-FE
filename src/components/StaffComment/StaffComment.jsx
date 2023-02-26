@@ -6,7 +6,6 @@ const StaffComment = (props) => {
       text: 'See more',
       open: true,
    });
-
    let convertToArray = (value) => {
       let convertToString = null;
       if (typeof value == 'string') {
@@ -37,10 +36,17 @@ const StaffComment = (props) => {
          paragraph = convertToArray(props.comment).join(' ');
          return paragraph;
       } else {
-         for (let i = 0; i < 50; i++) {
-            paragraph.push(convertToArray(props.comment)[i]);
+         if (convertToArray(props.comment).length < 49) {
+            for (let i = 0; i < 49; i++) {
+               paragraph.push(convertToArray(props.comment)[i]);
+            }
+            return paragraph.join(' ');
+         } else {
+            for (let i = 0; i < 50; i++) {
+               paragraph.push(convertToArray(props.comment)[i]);
+            }
+            return paragraph.join(' ') + '. . .';
          }
-         return paragraph.join(' ') + '. . .';
       }
    };
    return (
@@ -77,7 +83,7 @@ const StaffComment = (props) => {
                {renderContent()}{' '}
                <a
                   onClick={expandContent}
-                  className='text-decoration-none see-more'
+                  className={'text-decoration-none see-more'}
                >
                   {seeMore.text}
                </a>

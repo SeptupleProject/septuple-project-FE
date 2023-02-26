@@ -23,8 +23,11 @@
 }
 
 .deleteBtn {
+   display: flex;
+   justify-content: center;
    font-family: $-poppin;
    color: $-blue-3;
+   align-items: baseline;
 }
 
 .hiddenPanel {
@@ -63,10 +66,9 @@
 }
 
 .image {
-   max-width: max-content;
+   max-width: 40vw;
    object-fit: cover;
-   width: 100%;
-   height: 400px;
+   margin-right: 5%;
 }
 
 .hiddenBtn {
