@@ -38,7 +38,6 @@ import {
    ModalBody,
    ModalCloseButton,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import StaffComment from '../StaffComment/StaffComment';
 const YourIdeaPost = (props) => {
@@ -55,6 +54,7 @@ const YourIdeaPost = (props) => {
    const handleOnChange = () => {
       setLock(!lock);
    };
+
    const handleUploadImage = (e) => {
       let file = e.target.files[0];
       if (
@@ -103,11 +103,12 @@ const YourIdeaPost = (props) => {
    };
    const renderListComment = () => {
       return props.comment.map((item) => {
-         console.log(item);
          return (
-            <div className='my-4'>
+            <div
+               key={item.id}
+               className='my-4'
+            >
                <StaffComment
-                  key={item.id}
                   name={item.name}
                   comment={item.content}
                />
@@ -173,20 +174,27 @@ const YourIdeaPost = (props) => {
                               <div className='d-flex align-baseline'>
                                  <div className='mx-5'>
                                     <AccordionButton
+                                       onClick={() => {
+                                          setShowComment(false);
+                                       }}
                                        className='p-0'
-                                       _hover={{ bgColor: 'none' }}
                                     >
-                                       <IconButton
-                                          colorScheme='blue'
-                                          aria-label='Search database'
-                                          variant='outline'
-                                          icon={
-                                             <Icon content='fa-solid fa-eye-slash' />
-                                          }
-                                       />
+                                       <div
+                                          style={{
+                                             border: '2px solid #2b6bb1',
+                                             borderRadius: '10px',
+                                             padding: '6px 10px',
+                                          }}
+                                       >
+                                          <Icon
+                                             content='fa-solid fa-eye-slash'
+                                             color='#2b6bb1'
+                                             fontSize='18px'
+                                          />
+                                       </div>
                                     </AccordionButton>
                                  </div>
-                                 <div className='d-flex'>
+                                 <div className='d-flex w-100'>
                                     <Button
                                        variant='outline'
                                        size='md'
@@ -196,7 +204,6 @@ const YourIdeaPost = (props) => {
                                        Delete Idea
                                     </Button>
                                     <SlideFade
-                                       style={{ marginLeft: '3%' }}
                                        className={deleteIsOpen ? 'd-flex' : ''}
                                        in={deleteIsOpen}
                                     >
@@ -212,12 +219,16 @@ const YourIdeaPost = (props) => {
                                              variant='ghost'
                                              size='sm'
                                           >
-                                             <Button colorScheme='red'>
+                                             <Button
+                                                size='md'
+                                                colorScheme='red'
+                                             >
                                                 Yes
                                              </Button>
                                              <Button
                                                 onClick={deleteOnToggle}
                                                 colorScheme='twitter'
+                                                size='md'
                                              >
                                                 No
                                              </Button>
@@ -229,17 +240,23 @@ const YourIdeaPost = (props) => {
                            </>
                         ) : (
                            <AccordionButton
-                              width={'10%'}
-                              _hover={{ bgColor: 'none' }}
-                              className='text-wrap'
+                              className='text-wrap w-auto p-0 mx-5'
+                              variant='ghost'
                            >
                               <HStack>
-                                 <IconButton
-                                    colorScheme='blue'
-                                    aria-label='Search database'
-                                    variant='outline'
-                                    icon={<Icon content='fa-solid fa-eye' />}
-                                 />
+                                 <div
+                                    style={{
+                                       border: '2px solid #2b6bb1',
+                                       borderRadius: '10px',
+                                       padding: '6px 10px',
+                                    }}
+                                 >
+                                    <Icon
+                                       content='fa-solid fa-eye'
+                                       color='#2b6bb1'
+                                       fontSize='18px'
+                                    />
+                                 </div>
                               </HStack>
                            </AccordionButton>
                         )}
@@ -247,7 +264,7 @@ const YourIdeaPost = (props) => {
 
                      <AccordionPanel className='hiddenPanel'>
                         <Editable
-                           className='editablePara'
+                           className='editablePara my-4'
                            placeholder={props.content}
                         >
                            <EditablePreview />
@@ -260,7 +277,7 @@ const YourIdeaPost = (props) => {
                         <HStack>
                            <img
                               src={uploadImg}
-                              alt='University of Greenwich'
+                              alt='...'
                               className='img-fluid image'
                            />
 
@@ -318,8 +335,8 @@ const YourIdeaPost = (props) => {
                                  >
                                     Edit
                                  </Button>
-                                 {openModal()}
                               </VStack>
+                              {openModal()}
                            </div>
                         </HStack>
 
@@ -352,7 +369,6 @@ const YourIdeaPost = (props) => {
                               leftIcon={
                                  <Icon content='fa-regular fa-comment-dots' />
                               }
-                              variant='ghost'
                               colorScheme='gray'
                            >
                               {props.comment.length}
@@ -390,7 +406,8 @@ const YourIdeaPost = (props) => {
                   </>
                )}
             </AccordionItem>
-            <div className='container'>
+
+            <div style={{ width: '85%', margin: '0 auto' }}>
                {showComment ? renderListComment() : ''}
             </div>
          </Card>

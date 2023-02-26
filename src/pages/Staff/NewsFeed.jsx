@@ -29,6 +29,7 @@ const NewsFeed = () => {
          <div className='staff-newsfeed pt-5'>
             <div style={{ width: '80%', margin: '0 auto' }}>
                {/* <PostIdea /> */}
+
                <div className='my-5'>{renderlistOfIdeas()}</div>
             </div>
          </div>
