@@ -379,6 +379,7 @@ const YourIdeaPost = (props) => {
                                  >
                                     Edit
                                  </Button>
+                                 {openModal()}
                               </VStack>
                               {openModal()}
                            </div>
