@@ -59,6 +59,7 @@ const YourIdeaPost = (props) => {
    const handleOnChange = () => {
       setLock(!lock);
    };
+
    const handleUploadImage = (e) => {
       let file = e.target.files[0];
       if (
@@ -379,7 +380,6 @@ const YourIdeaPost = (props) => {
                                  >
                                     Edit
                                  </Button>
-                                 {openModal()}
                               </VStack>
                               {openModal()}
                            </div>
