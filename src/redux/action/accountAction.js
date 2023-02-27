@@ -4,7 +4,7 @@ import { dangNhapReducer } from '../reducers/accountReducer';
 export const dangNhapAction = (account) => {
    return async (dispatch) => {
       try {
-         toast.success('Đăng nhập thành công', {
+         toast.success('Log in successfully', {
             position: 'top-center',
             autoClose: 1000,
             hideProgressBar: false,

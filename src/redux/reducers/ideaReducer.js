@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+import { current } from '@reduxjs/toolkit';
 const initialState = {
    listOfIdeas: [
       {
-         id: '1',
+         id: '0',
          name: 'Kha Doan',
          category: 'Teaching Program',
          title: 'Encourage communication and collaboration',
@@ -32,16 +32,43 @@ const initialState = {
                Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
             },
          ],
+         isAnonymous: 'true',
+         academicYear: '2022',
+         createdBy: 'doanvinhkha@gmail.com',
+         createdAt: '',
+         views: '260',
       },
    ],
+   comment: [],
 };
 
 const ideaReducer = createSlice({
    name: 'ideaReducer',
    initialState,
-   reducers: {},
+   reducers: {
+      createNewIdeaReducer: (state, action) => {
+         let { type, payload } = action;
+         let count = state.listOfIdeas.length;
+
+         let idea = {
+            id: count++,
+            title: payload.title,
+            content: payload.content,
+            category: 'Teaching Program',
+            img: null,
+            like: 0,
+            dislike: 0,
+            comment: state.comment,
+            anonymous: payload.isAnonymous,
+            views: 0,
+         };
+
+         state.listOfIdeas.push(idea);
+         console.log(current(state.listOfIdeas));
+      },
+   },
 });
 
-export const {} = ideaReducer.actions;
+export const { createNewIdeaReducer } = ideaReducer.actions;
 
 export default ideaReducer.reducer;

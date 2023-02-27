@@ -40,8 +40,11 @@ import {
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import StaffComment from '../StaffComment/StaffComment';
+import alternativeImg from '../../assets/img/gwuni.png';
+import { toast } from 'react-toastify';
 const YourIdeaPost = (props) => {
-   const [lock, setLock] = useState(false);
+   console.log(props);
+   const [lock, setLock] = useState(props.anonymous);
    const [showComment, setShowComment] = useState(false);
    const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();
    const {
@@ -102,49 +105,81 @@ const YourIdeaPost = (props) => {
       );
    };
    const renderListComment = () => {
-      return props.comment.map((item) => {
-         return (
-            <div
-               key={item.id}
-               className='my-4'
-            >
-               <StaffComment
-                  name={item.name}
-                  comment={item.content}
-               />
-            </div>
-         );
-      });
+      if (props.comment !== undefined) {
+         return props.comment.map((item) => {
+            return (
+               <div
+                  key={item.id}
+                  className='my-4'
+               >
+                  <StaffComment
+                     name={item.name}
+                     comment={item.content}
+                  />
+               </div>
+            );
+         });
+      } else {
+         toast.error('No comment to show !!!', {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+         });
+      }
    };
    return (
       <Accordion allowToggle>
-         <Card variant='elevated'>
+         <Card
+            className='px-4 py-2'
+            variant='elevated'
+         >
             <CardBody className='post'>
-               <HStack
-                  spacing='13px'
-                  align='center'
-                  paddingBottom={'0'}
-               >
-                  <Icon
-                     content='fa-regular fa-circle-user'
-                     fontSize='45px'
-                     color='#2b6cb0'
-                     className='iconAvatar'
-                  ></Icon>
-                  <Text
-                     fontSize='3xl'
-                     className='staffName'
+               <div className='d-flex justify-content-between align-middle'>
+                  <HStack
+                     spacing='13px'
+                     align='center'
+                     paddingBottom={'0'}
                   >
-                     You
-                  </Text>
-                  <Tag
-                     colorScheme='blue'
-                     size='md'
-                     className='categoryTag'
-                  >
-                     {props.category}
-                  </Tag>
-               </HStack>
+                     <Icon
+                        content='fa-regular fa-circle-user'
+                        fontSize='45px'
+                        color='#2b6cb0'
+                        className='iconAvatar'
+                     ></Icon>
+                     <Text
+                        fontSize='3xl'
+                        className='staffName'
+                     >
+                        You
+                     </Text>
+                     <Tag
+                        colorScheme='blue'
+                        size='md'
+                        className='categoryTag'
+                     >
+                        {props.category}
+                     </Tag>
+                  </HStack>
+                  <HStack className='justify-content-center'>
+                     <Icon
+                        content='fa-regular fa-eye'
+                        fontSize='20px'
+                        color='#2b6bb1'
+                     />
+                     <Text
+                        color='#2b6bb1'
+                        fontSize='md'
+                        as='b'
+                     >
+                        {props.views}
+                     </Text>
+                  </HStack>
+               </div>
             </CardBody>
 
             <AccordionItem
@@ -182,12 +217,12 @@ const YourIdeaPost = (props) => {
                                        <div
                                           style={{
                                              border: '2px solid #2b6bb1',
-                                             borderRadius: '10px',
-                                             padding: '6px 10px',
+                                             borderRadius: '6px',
+                                             padding: '2px 8px',
                                           }}
                                        >
                                           <Icon
-                                             content='fa-solid fa-eye-slash'
+                                             content='fa-solid fa-chevron-up'
                                              color='#2b6bb1'
                                              fontSize='18px'
                                           />
@@ -247,12 +282,12 @@ const YourIdeaPost = (props) => {
                                  <div
                                     style={{
                                        border: '2px solid #2b6bb1',
-                                       borderRadius: '10px',
-                                       padding: '6px 10px',
+                                       borderRadius: '6px',
+                                       padding: '2px 8px',
                                     }}
                                  >
                                     <Icon
-                                       content='fa-solid fa-eye'
+                                       content='fa-solid fa-chevron-down'
                                        color='#2b6bb1'
                                        fontSize='18px'
                                     />
@@ -276,7 +311,9 @@ const YourIdeaPost = (props) => {
 
                         <HStack>
                            <img
-                              src={uploadImg}
+                              src={
+                                 uploadImg === null ? alternativeImg : props.img
+                              }
                               alt='...'
                               className='img-fluid image'
                            />
@@ -311,6 +348,7 @@ const YourIdeaPost = (props) => {
                               </div>
                               <div className='d-flex justify-content-center align-middle'>
                                  <Switch
+                                    defaultChecked={props.anonymous}
                                     size='sm'
                                     className='p-0 mt-1 mr-3'
                                     onChange={handleOnChange}
@@ -371,7 +409,9 @@ const YourIdeaPost = (props) => {
                               }
                               colorScheme='gray'
                            >
-                              {props.comment.length}
+                              {props.comment === undefined
+                                 ? '0'
+                                 : props.comment.length}
                            </Button>
                         </ButtonGroup>
                         <Divider />
