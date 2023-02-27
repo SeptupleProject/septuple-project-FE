@@ -66,7 +66,6 @@ const PostIdea = () => {
       formik.setFieldValue(name, checked);
       setLock(!lock);
    };
-
    const handleOnClick = () => {
       if (titleInput.current.value == '' || contentInput.current.value == '') {
          toast.warn('Come on, fill in something!', {
