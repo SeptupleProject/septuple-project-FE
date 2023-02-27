@@ -1,11 +1,17 @@
-import { FormControl, Textarea } from '@chakra-ui/react';
 import React from 'react';
 import Icon from '../Icon/Icon';
-import { Input, Alert, Switch } from '@chakra-ui/react';
+import {
+   Input,
+   Alert,
+   Switch,
+   FormControl,
+   Textarea,
+   Button,
+   Select,
+} from '@chakra-ui/react';
 import { useState } from 'react';
-import { Button } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createNewIdeaAction } from '../../redux/action/ideaAction';
 import { FormErrorMessage } from '@chakra-ui/react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,15 +23,23 @@ const PostIdea = () => {
    const [uploadImg, setUploadImg] = useState(null);
    const titleInput = useRef(null);
    const contentInput = useRef(null);
+   const categoryInput = useRef(null);
    const dispatch = useDispatch();
+   const signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+   const listOfCategory = useSelector(
+      (state) => state.categoriesReducer.categoriesList
+   );
    const formik = useFormik({
       initialValues: {
          title: '',
          content: '',
          views: 0,
-         image: '',
-         isAnonymous: 'false',
-         createdBy: '',
+         image: null,
+         isAnonymous: false,
+         createdBy: signedInAccount.username,
+         category: '',
       },
       validationSchema: Yup.object({
          title: Yup.string()
@@ -42,6 +56,7 @@ const PostIdea = () => {
          dispatch(createNewIdeaAction(values));
          titleInput.current.value = '';
          contentInput.current.value = '';
+         categoryInput.current.value = '';
       },
    });
    const handleOnSwitch = (e) => {
@@ -49,8 +64,19 @@ const PostIdea = () => {
       formik.setFieldValue(name, checked);
       setLock(!lock);
    };
-
    const handleOnClick = () => {
+      if (titleInput.current.value == '' || contentInput.current.value == '') {
+         toast.warn('Come on, fill in something!', {
+            position: 'top-center',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+         });
+      }
       formik.handleSubmit();
    };
    const handleUploadImage = (e) => {
@@ -62,13 +88,16 @@ const PostIdea = () => {
       ) {
          let reader = new FileReader();
          reader.readAsDataURL(file);
-         reader.onload = (event) => setUploadImg(event.target.result);
-         formik.setFieldValue('image', file);
+         reader.onload = (event) => {
+            setUploadImg(event.target.result);
+            formik.setFieldValue('image', event.target.result);
+         };
+         // formik.setFieldValue('image', file);
       }
    };
    return (
       <FormControl
-         isInvalid={formik.errors.title}
+         isInvalid={(formik.errors.title, formik.errors.content)}
          className='row post-idea mx-0'
       >
          <div className='col-10 d-flex px-0 mx-0'>
@@ -121,10 +150,34 @@ const PostIdea = () => {
                      {formik.errors.content}
                   </FormErrorMessage>
                ) : null}
+
+               <div className='w-100 mt-4 font-poppin'>
+                  <Select
+                     color='#2B6CB0'
+                     variant='filled'
+                     size='md'
+                     placeholder='Choose category'
+                     onChange={formik.handleChange}
+                     name='category'
+                     ref={categoryInput}
+                  >
+                     {listOfCategory.map((item) => {
+                        return (
+                           <option
+                              key={item.id}
+                              value={item.name}
+                           >
+                              {item.name}
+                           </option>
+                        );
+                     })}
+                  </Select>
+               </div>
+
                <div className='w-100 d-flex justify-content-end'>
                   <Button
                      style={{ width: 'fit-content' }}
-                     className={post ? 'mt-3 button-post' : 'mt-3'}
+                     className={post ? 'mt-4 button-post' : 'mt-3'}
                      colorScheme='facebook'
                      variant='outline'
                      onClick={handleOnClick}

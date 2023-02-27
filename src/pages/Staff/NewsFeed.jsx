@@ -19,7 +19,7 @@ const NewsFeed = () => {
                   ideaTitle={item.title}
                   content={item.content}
                   category={item.category}
-                  img={item.img}
+                  img={item.image}
                   like={item.like}
                   dislike={item.dislike}
                   comment={item.comments}

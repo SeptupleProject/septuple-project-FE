@@ -43,7 +43,6 @@ import StaffComment from '../StaffComment/StaffComment';
 import alternativeImg from '../../assets/img/gwuni.png';
 import { toast } from 'react-toastify';
 const YourIdeaPost = (props) => {
-   console.log(props);
    const [lock, setLock] = useState(props.anonymous);
    const [showComment, setShowComment] = useState(false);
    const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();

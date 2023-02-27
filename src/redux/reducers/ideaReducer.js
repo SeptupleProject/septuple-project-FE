@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { current } from '@reduxjs/toolkit';
+
 const initialState = {
    listOfIdeas: [
       {
@@ -9,7 +10,7 @@ const initialState = {
          title: 'Encourage communication and collaboration',
          content:
             'Encourage faculty and staff to communicate regularly, share ideas, and collaborate on projects. Create spaces that facilitate communication, such as break rooms or online discussion forums.',
-         img: 'https://d3kqdc25i4tl0t.cloudfront.net/articles/content/_379589_workspace.hero.jpg',
+         image: 'https://d3kqdc25i4tl0t.cloudfront.net/articles/content/_379589_workspace.hero.jpg',
          like: '2',
          dislike: '0',
          comments: [
@@ -48,23 +49,23 @@ const ideaReducer = createSlice({
    reducers: {
       createNewIdeaReducer: (state, action) => {
          let { type, payload } = action;
+         console.log(payload);
          let count = state.listOfIdeas.length;
 
          let idea = {
             id: count++,
             title: payload.title,
             content: payload.content,
-            category: 'Teaching Program',
-            img: null,
+            category: payload.category,
+            image: payload.image,
             like: 0,
             dislike: 0,
             comment: state.comment,
-            anonymous: payload.isAnonymous,
+            isAnonymous: payload.isAnonymous,
             views: 0,
          };
-
          state.listOfIdeas.push(idea);
-         console.log(current(state.listOfIdeas));
+         localStorage.setItem('listOfIdeas', JSON.stringify(state.listOfIdeas));
       },
    },
 });
