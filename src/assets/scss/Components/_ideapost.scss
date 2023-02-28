@@ -23,8 +23,11 @@
 }
 
 .deleteBtn {
+   display: flex;
+   justify-content: center;
    font-family: $-poppin;
    color: $-blue-3;
+   align-items: baseline;
 }
 
 .hiddenPanel {
@@ -40,7 +43,6 @@
 .uploadBtn {
    border: 2px solid $-blue-2;
    border-radius: 8px;
-   width: 125%;
 }
 
 .uploadStack {
@@ -64,10 +66,9 @@
 }
 
 .image {
-   max-width: max-content;
+   max-width: 40vw;
    object-fit: cover;
-   width: 100%;
-   height: 400px;
+   margin-right: 5%;
 }
 
 .hiddenBtn {
@@ -80,7 +81,7 @@
 }
 
 .post-idea {
-   padding: 3% 2%;
+   padding: 2% 2%;
    border-radius: $-br-3;
    background-color: $-white-1;
 }

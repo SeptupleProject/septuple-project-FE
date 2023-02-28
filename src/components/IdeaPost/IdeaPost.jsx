@@ -104,12 +104,13 @@ const IdeaPost = () => {
                   borderTopLeftRadius: '8px',
                   borderBottom: 'none',
                }}
+               className='p-3'
             >
                {({ isExpanded }) => (
                   <>
                      <AccordionButton
                         style={{ width: 'fit-content' }}
-                        className='m-2'
+                        className=' disable-hover'
                      >
                         {isExpanded ? (
                            <HStack>
@@ -162,7 +163,7 @@ const IdeaPost = () => {
                      </AccordionButton>
 
                      <AccordionPanel className='hiddenPanel'>
-                        <div className='ideaPara'>
+                        <div className='ideaPara text-justify'>
                            Lorem ipsum dolor sit amet, consectetur adipiscing
                            elit, sed do eiusmod tempor incididunt ut labore et
                            dolore magna aliqua. Consectetur adipiscing elit duis

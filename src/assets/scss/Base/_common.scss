@@ -75,3 +75,13 @@
    z-index: -1;
    display: none;
 }
+
+.disable-hover {
+   &:hover {
+      background: white !important;
+   }
+}
+
+.font-poppin {
+   font-family: $-poppin;
+}
