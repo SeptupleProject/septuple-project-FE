@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 const NewsFeed = () => {
    const listOfIdeas = useSelector((state) => state.ideaReducer.listOfIdeas);
-
    const renderlistOfIdeas = () => {
       return listOfIdeas.map((item) => {
          return (
@@ -16,6 +15,7 @@ const NewsFeed = () => {
                className='my-5'
             >
                <YourIdeaPost
+                  id={item.id}
                   ideaTitle={item.title}
                   content={item.content}
                   category={item.category}

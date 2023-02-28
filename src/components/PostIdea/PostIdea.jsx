@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../Icon/Icon';
 import {
+   Text,
    Input,
    Alert,
    Switch,
@@ -43,9 +44,10 @@ const PostIdea = () => {
       },
       validationSchema: Yup.object({
          title: Yup.string()
-            .required('Title cannot be empty')
+            .required('Write something, dude !')
             .max(50, 'Title cannot be longer than 50 letters'),
-         content: Yup.string().required('Idea cannot be empty'),
+         content: Yup.string().required('Share you idea !'),
+         category: Yup.string().required('What is your idea about ?'),
       }),
       onSubmit: (values) => {
          setPost(true);
@@ -71,7 +73,7 @@ const PostIdea = () => {
             autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
-            pauseOnHover: true,
+            pauseOnHover: false,
             draggable: true,
             progress: undefined,
             theme: 'dark',
@@ -125,12 +127,12 @@ const PostIdea = () => {
                   onBlur={formik.handleBlur}
                />
                {formik.errors.title ? (
-                  <FormErrorMessage
-                     fontSize='md'
-                     className='mt-2'
+                  <Text
+                     fontSize='lg'
+                     className='mt-2 text-danger'
                   >
                      {formik.errors.title}
-                  </FormErrorMessage>
+                  </Text>
                ) : null}
                <Textarea
                   ref={contentInput}
@@ -143,12 +145,12 @@ const PostIdea = () => {
                   onBlur={formik.handleBlur}
                ></Textarea>
                {formik.errors.content ? (
-                  <FormErrorMessage
-                     fontSize='md'
-                     className='mt-2'
+                  <Text
+                     fontSize='lg'
+                     className='mt-2 text-danger'
                   >
                      {formik.errors.content}
-                  </FormErrorMessage>
+                  </Text>
                ) : null}
 
                <div className='w-100 mt-4 font-poppin'>
@@ -160,6 +162,7 @@ const PostIdea = () => {
                      onChange={formik.handleChange}
                      name='category'
                      ref={categoryInput}
+                     isRequired
                   >
                      {listOfCategory.map((item) => {
                         return (
@@ -172,6 +175,14 @@ const PostIdea = () => {
                         );
                      })}
                   </Select>
+                  {formik.errors.category ? (
+                     <Text
+                        fontSize='md'
+                        className='mt-2 text-danger'
+                     >
+                        {formik.errors.category}
+                     </Text>
+                  ) : null}
                </div>
 
                <div className='w-100 d-flex justify-content-end'>

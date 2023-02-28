@@ -38,11 +38,14 @@ import {
    ModalBody,
    ModalCloseButton,
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import StaffComment from '../StaffComment/StaffComment';
 import alternativeImg from '../../assets/img/gwuni.png';
 import { toast } from 'react-toastify';
+import { deleteIdeaAction } from '../../redux/action/ideaAction';
+
 const YourIdeaPost = (props) => {
+   const dispatch = useDispatch();
    const [lock, setLock] = useState(props.anonymous);
    const [showComment, setShowComment] = useState(false);
    const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();
@@ -56,7 +59,6 @@ const YourIdeaPost = (props) => {
    const handleOnChange = () => {
       setLock(!lock);
    };
-
    const handleUploadImage = (e) => {
       let file = e.target.files[0];
       if (
@@ -254,6 +256,11 @@ const YourIdeaPost = (props) => {
                                              size='sm'
                                           >
                                              <Button
+                                                onClick={() => {
+                                                   dispatch(
+                                                      deleteIdeaAction(props.id)
+                                                   );
+                                                }}
                                                 size='md'
                                                 colorScheme='red'
                                              >

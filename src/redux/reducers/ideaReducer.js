@@ -51,7 +51,6 @@ const ideaReducer = createSlice({
          let { type, payload } = action;
          console.log(payload);
          let count = state.listOfIdeas.length;
-
          let idea = {
             id: count++,
             title: payload.title,
@@ -67,9 +66,15 @@ const ideaReducer = createSlice({
          state.listOfIdeas.push(idea);
          localStorage.setItem('listOfIdeas', JSON.stringify(state.listOfIdeas));
       },
+      deleteIdeaReducer: (state, action) => {
+         console.log(current(state.listOfIdeas));
+         state.listOfIdeas = state.listOfIdeas.filter((item) => {
+            return item.id !== action.payload;
+         });
+      },
    },
 });
 
-export const { createNewIdeaReducer } = ideaReducer.actions;
+export const { createNewIdeaReducer, deleteIdeaReducer } = ideaReducer.actions;
 
 export default ideaReducer.reducer;
