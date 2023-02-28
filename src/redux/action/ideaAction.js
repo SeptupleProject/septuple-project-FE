@@ -1,6 +1,7 @@
 import { toast, ToastContainer } from 'react-toastify';
 import { history } from '../../App';
 import {
+   addCommentReducer,
    createNewIdeaReducer,
    deleteIdeaReducer,
 } from '../reducers/ideaReducer';
@@ -40,6 +41,16 @@ export const deleteIdeaAction = (id) => {
          setTimeout(() => {
             dispatch(deleteIdeaReducer(id));
          }, 700);
+      } catch (error) {
+         console.log(error);
+      }
+   };
+};
+
+export const addCommentAction = (comment) => {
+   return async (dispatch) => {
+      try {
+         dispatch(addCommentReducer(comment));
       } catch (error) {
          console.log(error);
       }

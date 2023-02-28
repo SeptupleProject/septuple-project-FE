@@ -72,9 +72,21 @@ const ideaReducer = createSlice({
             return item.id !== action.payload;
          });
       },
+      addCommentReducer: (state, action) => {
+         // let { type, payload } = action;
+         // console.log(payload);
+         // state.listOfIdeas.map((item) => {
+         //    if (item.id === payload.id) {
+         //       console.log(item);
+         //       item.comments.unshift(payload);
+         //       console.log(current(item.comments));
+         //    }
+         // });
+      },
    },
 });
 
-export const { createNewIdeaReducer, deleteIdeaReducer } = ideaReducer.actions;
+export const { createNewIdeaReducer, deleteIdeaReducer, addCommentReducer } =
+   ideaReducer.actions;
 
 export default ideaReducer.reducer;

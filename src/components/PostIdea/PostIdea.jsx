@@ -14,7 +14,6 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { createNewIdeaAction } from '../../redux/action/ideaAction';
-import { FormErrorMessage } from '@chakra-ui/react';
 import { toast, ToastContainer } from 'react-toastify';
 import { useRef } from 'react';
 import * as Yup from 'yup';

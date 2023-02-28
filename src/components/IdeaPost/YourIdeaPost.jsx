@@ -43,7 +43,9 @@ import StaffComment from '../StaffComment/StaffComment';
 import alternativeImg from '../../assets/img/gwuni.png';
 import { toast } from 'react-toastify';
 import { deleteIdeaAction } from '../../redux/action/ideaAction';
-
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { addCommentAction } from '../../redux/action/ideaAction';
 const YourIdeaPost = (props) => {
    const dispatch = useDispatch();
    const [lock, setLock] = useState(props.anonymous);
@@ -55,7 +57,23 @@ const YourIdeaPost = (props) => {
       onClose: uploadOnClose,
    } = useDisclosure();
    const [uploadImg, setUploadImg] = useState(props.img);
-
+   const signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+   const formik = useFormik({
+      initialValues: {
+         content: '',
+         // id: props.comment.length + 1,
+         name: signedInAccount.username,
+      },
+      validationSchema: Yup.object({
+         content: Yup.string().required('Write something, dude !'),
+         // .min(20, 'Title cannot be shorter than 20 letters'),
+      }),
+      onSubmit: (values) => {
+         dispatch(addCommentAction(values));
+      },
+   });
    const handleOnChange = () => {
       setLock(!lock);
    };
@@ -71,6 +89,7 @@ const YourIdeaPost = (props) => {
          reader.onload = (event) => setUploadImg(event.target.result);
       }
    };
+
    const openModal = () => {
       return (
          <Modal
@@ -432,9 +451,13 @@ const YourIdeaPost = (props) => {
                                  placeholder='What do you think?'
                                  variant='outline'
                                  borderRadius={'20px'}
+                                 onChange={formik.handleChange}
+                                 onBlur={formik.handleBlur}
+                                 name='content'
                               />
                               <InputRightElement>
                                  <IconButton
+                                    onClick={formik.handleSubmit}
                                     icon={
                                        <Icon
                                           content='fa-regular fa-paper-plane'
