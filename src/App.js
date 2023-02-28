@@ -11,6 +11,8 @@ import CreateUser from './pages/Admin/User/CreateUser';
 import UserDashboard from './pages/Admin/User/UserDashboard';
 import UpdateUser from './pages/Admin/User/UpdateUser';
 import AcademicDashboard from './pages/Admin/AcademicYear/AcademicDashboard';
+import CreateAcademic from './pages/Admin/AcademicYear/CreateAcademic';
+import UpdateAcademic from './pages/Admin/AcademicYear/UpdateAcademic';
 import NewsFeed from './pages/Staff/NewsFeed';
 import QACoorDashboard from './pages/QaCoordinator/QACoorDashboard';
 import StaffManagement from './pages/QaCoordinator/StaffManagement';
@@ -89,6 +91,16 @@ function App() {
                      exact
                      path='/academic-dashboard'
                      component={AcademicDashboard}
+                  />
+                  <AdminTemplate
+                     exact
+                     path='/academic-dashboard/create-academic'
+                     component={CreateAcademic}
+                  />
+                  <AdminTemplate
+                     exact
+                     path='/academic-dashboard/update-academic'
+                     component={UpdateAcademic}
                   />
                   <HomeTemplate
                      path='/'
