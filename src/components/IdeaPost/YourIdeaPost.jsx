@@ -59,7 +59,6 @@ const YourIdeaPost = (props) => {
    const handleOnChange = () => {
       setLock(!lock);
    };
-
    const handleUploadImage = (e) => {
       let file = e.target.files[0];
       if (
