@@ -1,7 +1,6 @@
 import React from 'react';
 import PostIdea from '../../components/PostIdea/PostIdea';
-import StaffComment from '../../components/StaffComment/StaffComment';
-import IdeaPost from '../../components/IdeaPost/IdeaPost';
+import OtherIdeaPost from '../../components/IdeaPost/OtherIdeaPost';
 import YourIdeaPost from '../../components/IdeaPost/YourIdeaPost';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -10,7 +9,7 @@ const NewsFeed = () => {
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
-   console.log(signedInAccount);
+
    const renderIdeas = () => {
       return listOfIdeas.map((item) => {
          if (signedInAccount.username === item.email) {
@@ -28,7 +27,7 @@ const NewsFeed = () => {
                   key={item.id}
                   className='my-5'
                >
-                  <IdeaPost item={item} />
+                  <OtherIdeaPost item={item} />
                </div>
             );
          }
@@ -37,22 +36,10 @@ const NewsFeed = () => {
 
    return (
       <>
-         <div className='staff-newsfeed pt-5'>
-            <div style={{ width: '80%', margin: '0 auto' }}>
-               {signedInAccount.role === 'staff' ? (
-                  <>
-                     <PostIdea />
-                  </>
-               ) : (
-                  <></>
-               )}
-
-               <div className='mt-5'>
-                  {renderIdeas()}
-                  {/* {signedInAccount.username === 'staff'
-                     ? renderOwnerIdeas()
-                     : renderOthersIdeas()} */}
-               </div>
+         <div className=' staff-newsfeed pt-5'>
+            <div style={{ width: '65%', margin: '0 auto' }}>
+               {signedInAccount.role === 'staff' ? <PostIdea /> : ''}
+               <div className='mt-5'>{renderIdeas()}</div>
             </div>
             <ToastContainer />
          </div>

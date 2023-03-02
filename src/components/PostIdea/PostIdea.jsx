@@ -79,6 +79,7 @@ const PostIdea = () => {
          });
       }
       formik.handleSubmit();
+      
    };
    const handleUploadImage = (e) => {
       let file = e.target.files[0];

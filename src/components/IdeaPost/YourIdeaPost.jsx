@@ -26,7 +26,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import '../../assets/scss/main.scss';
 import Icon from '../Icon/Icon';
 import {
@@ -75,16 +75,16 @@ const YourIdeaPost = (props) => {
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
+   const comment = useRef();
    const formik = useFormik({
       initialValues: {
          content: '',
-         name: signedInAccount.username,
+         email: signedInAccount.username,
          ideaId: id,
+         isAnonymous: lock,
       },
       validationSchema: Yup.object({
-         content: Yup.string()
-            .required('Write something, dude !')
-            .min(20, 'Comment cannot be shorter than 20 letters'),
+         content: Yup.string().required('Write something, dude !'),
       }),
       onSubmit: (values) => {
          dispatch(addCommentAction(values));
@@ -120,6 +120,7 @@ const YourIdeaPost = (props) => {
          });
       } else {
          formik.handleSubmit();
+         comment.current.value = '';
       }
    };
    const openModal = () => {
@@ -164,10 +165,7 @@ const YourIdeaPost = (props) => {
                   key={item.id}
                   className='my-4'
                >
-                  <StaffComment
-                     name={item.name}
-                     comment={item.content}
-                  />
+                  <StaffComment item={item} />
                </div>
             );
          });
@@ -471,7 +469,7 @@ const YourIdeaPost = (props) => {
                         <HStack>
                            <Icon
                               content='fa-regular fa-circle-user'
-                              fontSize='34px'
+                              fontSize='35px'
                               color='#2b6cb0'
                            ></Icon>
                            <InputGroup>
@@ -482,6 +480,7 @@ const YourIdeaPost = (props) => {
                                  onChange={formik.handleChange}
                                  onBlur={formik.handleBlur}
                                  name='content'
+                                 ref={comment}
                               />
 
                               <InputRightElement>

@@ -26,7 +26,7 @@ import {
    VStack,
 } from '@chakra-ui/react';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import '../../assets/scss/main.scss';
 import Icon from '../Icon/Icon';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +38,7 @@ import { useFormik } from 'formik';
 import { addCommentAction } from '../../redux/action/ideaAction';
 import { ToastContainer } from 'react-toastify';
 
-const IdeaPost = (props) => {
+const OtherIdeaPost = (props) => {
    let {
       id,
       email,
@@ -52,22 +52,23 @@ const IdeaPost = (props) => {
       isAnonymous,
       views,
    } = props.item;
+   const [lock, setLock] = useState(false);
    const dispatch = useDispatch();
    const [showComment, setShowComment] = useState(false);
    const [uploadImg, setUploadImg] = useState(image);
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
+   const comment = useRef();
    const formik = useFormik({
       initialValues: {
          content: '',
          email: signedInAccount.username,
          ideaId: id,
+         isCmtAnonymous: false,
       },
       validationSchema: Yup.object({
-         content: Yup.string()
-            .required('Write something, dude !')
-            .min(20, 'Comment cannot be shorter than 20 letters'),
+         content: Yup.string().required('Write something, dude !'),
       }),
       onSubmit: (values) => {
          dispatch(addCommentAction(values));
@@ -90,6 +91,12 @@ const IdeaPost = (props) => {
          formik.handleSubmit();
       }
    };
+   const handleOnSwitch = (e) => {
+      let { name, checked } = e.target;
+      formik.setFieldValue(name, checked);
+      setLock(!lock);
+   };
+
    const renderListComment = () => {
       if (comments !== undefined) {
          return comments.map((item) => {
@@ -98,10 +105,7 @@ const IdeaPost = (props) => {
                   key={item.id}
                   className='my-4'
                >
-                  <StaffComment
-                     name={item.email}
-                     comment={item.content}
-                  />
+                  <StaffComment item={item} />
                </div>
             );
          });
@@ -141,7 +145,7 @@ const IdeaPost = (props) => {
                         fontSize='2xl'
                         className='staffName'
                      >
-                        {isAnonymous ? 'Anonymous' : email}
+                        {!isAnonymous ? 'Anonymous' : email}
                      </Text>
                      <Tag
                         colorScheme='blue'
@@ -266,7 +270,6 @@ const IdeaPost = (props) => {
                            size='lg'
                         >
                            <Button
-                              isDisabled
                               colorScheme='blue'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-up' />
@@ -275,7 +278,6 @@ const IdeaPost = (props) => {
                               {like}
                            </Button>
                            <Button
-                              isDisabled
                               colorScheme='red'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-down' />
@@ -304,6 +306,7 @@ const IdeaPost = (props) => {
                            ></Icon>
                            <InputGroup>
                               <Input
+                                 ref={comment}
                                  placeholder='What do you think?'
                                  variant='outline'
                                  borderRadius={'20px'}
@@ -327,6 +330,27 @@ const IdeaPost = (props) => {
                                  />
                               </InputRightElement>
                            </InputGroup>
+
+                           <div className='d-flex justify-content-center align-middle'>
+                              <Switch
+                                 name='isCmtAnonymous'
+                                 data-toggle='tooltip'
+                                 data-placement='bottom'
+                                 title='Comment as an anonymous'
+                                 size='sm'
+                                 className='p-0 mt-2 ml-2 mr-3 '
+                                 onChange={handleOnSwitch}
+                              />
+
+                              <Icon
+                                 content={
+                                    lock
+                                       ? 'fa-solid fa-user-secret'
+                                       : 'fa-solid fa-user'
+                                 }
+                                 fontSize='20px'
+                              />
+                           </div>
                         </HStack>
                      </AccordionPanel>
                   </>
@@ -342,4 +366,4 @@ const IdeaPost = (props) => {
    );
 };
 
-export default IdeaPost;
+export default OtherIdeaPost;

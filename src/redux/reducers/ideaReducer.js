@@ -19,18 +19,22 @@ const initialState = {
                email: 'khadoan@gmail.com',
                content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
             Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: false,
             },
+
             {
                id: '2',
                email: 'baodinh@gmail.com',
                content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
             Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: false,
             },
             {
                id: '3',
                email: 'namnguyen@gmail.com',
                content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
                Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: false,
             },
          ],
          isAnonymous: 'true',
@@ -53,18 +57,58 @@ const initialState = {
                email: 'khadoan@gmail.com',
                content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
             Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: true,
             },
             {
                id: '2',
                email: 'namnguyen@gmail.com',
                content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
             Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: false,
             },
             {
                id: '3',
                email: 'thanhho@gmail.com',
                content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
                Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: true,
+            },
+         ],
+         isAnonymous: 'false',
+         academicYear: '2022',
+         views: '260',
+      },
+      {
+         id: '2',
+         email: 'baodinh@gmail.com',
+         category: 'Working Environment',
+         title: 'Provide professional development opportunities',
+         content:
+            'Offer workshops, seminars, and training sessions to help faculty and staff improve their skills and knowledge. This will not only enhance their job performance but also increase their job satisfaction.',
+         image: 'https://coworkingmag.com/wp-content/uploads/sites/76/2018/12/wework-university-maryland-image-e1544932394567.jpg',
+         like: '2',
+         dislike: '0',
+         comments: [
+            {
+               id: '1',
+               email: 'khadoan@gmail.com',
+               content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
+            Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: false,
+            },
+            {
+               id: '2',
+               email: 'namnguyen@gmail.com',
+               content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
+            Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: false,
+            },
+            {
+               id: '3',
+               email: 'thanhho@gmail.com',
+               content: `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laudantium beatae fuga voluptatum ad? Sequi repellat voluptate autem iure rem odit laborum, vitae aut eaque cupiditate nemo aliquid placeat temporibus quas!
+               Dignissimos ratione impedit eius omnis obcaecati voluptatum. Accusamus tenetur eligendi ipsum totam debitis, soluta perferendis possimus architecto incidunt ullam repellendus corporis mollitia explicabo dolorum ad minus iure necessitatibus expedita illum. Sed quas in quae, maiores ipsa nulla perspiciatis. Laboriosam quam a eos? Aut animi accusamus eaque, officiis necessitatibus laborum. Consequatur optio repudiandae laborum sunt temporibus? Iste minima hic vero eaque!`,
+               isCmtAnonymous: true,
             },
          ],
          isAnonymous: 'false',
@@ -103,13 +147,13 @@ const ideaReducer = createSlice({
       },
       addCommentReducer: (state, action) => {
          let { type, payload } = action;
-         console.log(payload);
          state.listOfIdeas.map((item) => {
             if (item.id === payload.ideaId) {
                let newComment = {
                   id: item.comments.length + 1,
                   email: payload.email,
                   content: payload.content,
+                  isCmtAnonymous: payload.isCmtAnonymous,
                };
                item.comments.unshift(newComment);
             }
