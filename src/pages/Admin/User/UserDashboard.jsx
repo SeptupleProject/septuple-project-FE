@@ -46,7 +46,7 @@ const UserDashboard = (props) => {
           <ModalHeader>Delete user</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Are you sure ? You can't undo this action after reward
+            Are you sure? You can't undo this action after reward
           </ModalBody>
 
           <ModalFooter>
