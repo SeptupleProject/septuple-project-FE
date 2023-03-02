@@ -46,9 +46,24 @@ import { deleteIdeaAction } from '../../redux/action/ideaAction';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { addCommentAction } from '../../redux/action/ideaAction';
+import { ToastContainer } from 'react-toastify';
+
 const YourIdeaPost = (props) => {
+   let {
+      id,
+      email,
+      category,
+      title,
+      content,
+      image,
+      like,
+      dislike,
+      comments,
+      isAnonymous,
+      views,
+   } = props.item;
    const dispatch = useDispatch();
-   const [lock, setLock] = useState(props.anonymous);
+   const [lock, setLock] = useState(isAnonymous);
    const [showComment, setShowComment] = useState(false);
    const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();
    const {
@@ -56,19 +71,20 @@ const YourIdeaPost = (props) => {
       onOpen: uploadOnOpen,
       onClose: uploadOnClose,
    } = useDisclosure();
-   const [uploadImg, setUploadImg] = useState(props.img);
+   const [uploadImg, setUploadImg] = useState(image);
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
    const formik = useFormik({
       initialValues: {
          content: '',
-         // id: props.comment.length + 1,
          name: signedInAccount.username,
+         ideaId: id,
       },
       validationSchema: Yup.object({
-         content: Yup.string().required('Write something, dude !'),
-         // .min(20, 'Title cannot be shorter than 20 letters'),
+         content: Yup.string()
+            .required('Write something, dude !')
+            .min(20, 'Comment cannot be shorter than 20 letters'),
       }),
       onSubmit: (values) => {
          dispatch(addCommentAction(values));
@@ -89,7 +105,23 @@ const YourIdeaPost = (props) => {
          reader.onload = (event) => setUploadImg(event.target.result);
       }
    };
-
+   const handleSubmitComment = (e) => {
+      e.preventDefault();
+      if (formik.errors.content) {
+         toast.warn(`${formik.errors.content}`, {
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+         });
+      } else {
+         formik.handleSubmit();
+      }
+   };
    const openModal = () => {
       return (
          <Modal
@@ -125,8 +157,8 @@ const YourIdeaPost = (props) => {
       );
    };
    const renderListComment = () => {
-      if (props.comment !== undefined) {
-         return props.comment.map((item) => {
+      if (comments !== undefined) {
+         return comments.map((item) => {
             return (
                <div
                   key={item.id}
@@ -172,7 +204,7 @@ const YourIdeaPost = (props) => {
                         className='iconAvatar'
                      ></Icon>
                      <Text
-                        fontSize='3xl'
+                        fontSize='2xl'
                         className='staffName'
                      >
                         You
@@ -182,7 +214,7 @@ const YourIdeaPost = (props) => {
                         size='md'
                         className='categoryTag'
                      >
-                        {props.category}
+                        {category}
                      </Tag>
                   </HStack>
                   <HStack className='justify-content-center'>
@@ -196,7 +228,7 @@ const YourIdeaPost = (props) => {
                         fontSize='md'
                         as='b'
                      >
-                        {props.views}
+                        {views}
                      </Text>
                   </HStack>
                </div>
@@ -217,7 +249,7 @@ const YourIdeaPost = (props) => {
                         <Editable
                            fontSize='2xl'
                            className='ideaTitle w-50 text-wrap'
-                           placeholder={props.ideaTitle}
+                           placeholder={title}
                            style={{ marginLeft: '1%' }}
                         >
                            <EditablePreview />
@@ -277,7 +309,7 @@ const YourIdeaPost = (props) => {
                                              <Button
                                                 onClick={() => {
                                                    dispatch(
-                                                      deleteIdeaAction(props.id)
+                                                      deleteIdeaAction(id)
                                                    );
                                                 }}
                                                 size='md'
@@ -325,7 +357,7 @@ const YourIdeaPost = (props) => {
                      <AccordionPanel className='hiddenPanel'>
                         <Editable
                            className='editablePara my-4'
-                           placeholder={props.content}
+                           placeholder={content}
                         >
                            <EditablePreview />
                            <EditableTextarea
@@ -336,9 +368,7 @@ const YourIdeaPost = (props) => {
 
                         <HStack>
                            <img
-                              src={
-                                 uploadImg === null ? alternativeImg : props.img
-                              }
+                              src={uploadImg === null ? alternativeImg : image}
                               alt='...'
                               className='img-fluid image'
                            />
@@ -373,7 +403,7 @@ const YourIdeaPost = (props) => {
                               </div>
                               <div className='d-flex justify-content-center align-middle'>
                                  <Switch
-                                    defaultChecked={props.anonymous}
+                                    defaultChecked={isAnonymous}
                                     size='sm'
                                     className='p-0 mt-1 mr-3'
                                     onChange={handleOnChange}
@@ -414,7 +444,7 @@ const YourIdeaPost = (props) => {
                                  <Icon content='fa-regular fa-thumbs-up' />
                               }
                            >
-                              {props.like}
+                              {like}
                            </Button>
                            <Button
                               isDisabled
@@ -423,7 +453,7 @@ const YourIdeaPost = (props) => {
                                  <Icon content='fa-regular fa-thumbs-down' />
                               }
                            >
-                              {props.dislike}
+                              {dislike}
                            </Button>
                            <Button
                               onClick={() => {
@@ -434,9 +464,7 @@ const YourIdeaPost = (props) => {
                               }
                               colorScheme='gray'
                            >
-                              {props.comment === undefined
-                                 ? '0'
-                                 : props.comment.length}
+                              {comments === undefined ? '0' : comments.length}
                            </Button>
                         </ButtonGroup>
                         <Divider />
@@ -455,9 +483,10 @@ const YourIdeaPost = (props) => {
                                  onBlur={formik.handleBlur}
                                  name='content'
                               />
+
                               <InputRightElement>
                                  <IconButton
-                                    onClick={formik.handleSubmit}
+                                    onClick={handleSubmitComment}
                                     icon={
                                        <Icon
                                           content='fa-regular fa-paper-plane'
@@ -480,6 +509,7 @@ const YourIdeaPost = (props) => {
                {showComment ? renderListComment() : ''}
             </div>
          </Card>
+         <ToastContainer />
       </Accordion>
    );
 };

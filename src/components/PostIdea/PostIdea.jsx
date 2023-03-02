@@ -127,8 +127,8 @@ const PostIdea = () => {
                />
                {formik.errors.title ? (
                   <Text
-                     fontSize='lg'
-                     className='mt-2 text-danger'
+                     fontSize='md'
+                     className='mt-1 text-danger'
                   >
                      {formik.errors.title}
                   </Text>
@@ -137,7 +137,7 @@ const PostIdea = () => {
                   ref={contentInput}
                   name='content'
                   height={150}
-                  className='mt-4'
+                  className='mt-3'
                   placeholder='What is your great idea today ?'
                   type='text'
                   onChange={formik.handleChange}
@@ -145,20 +145,20 @@ const PostIdea = () => {
                ></Textarea>
                {formik.errors.content ? (
                   <Text
-                     fontSize='lg'
-                     className='mt-2 text-danger'
+                     fontSize='md'
+                     className='mt-1 text-danger'
                   >
                      {formik.errors.content}
                   </Text>
                ) : null}
 
-               <div className='w-100 mt-4 font-poppin'>
+               <div className='w-100 mt-3 font-poppin'>
                   <Select
                      color='#2B6CB0'
                      variant='filled'
                      size='md'
                      placeholder='Choose category'
-                     onChange={formik.handleChange}
+                     onChange={formik.handleChange} 
                      name='category'
                      ref={categoryInput}
                      isRequired
@@ -176,8 +176,8 @@ const PostIdea = () => {
                   </Select>
                   {formik.errors.category ? (
                      <Text
-                        fontSize='md'
-                        className='mt-2 text-danger'
+                        fontSize='sm'
+                        className='mt-1 text-danger'
                      >
                         {formik.errors.category}
                      </Text>

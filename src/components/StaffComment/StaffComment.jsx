@@ -36,13 +36,14 @@ const StaffComment = (props) => {
          paragraph = convertToArray(props.comment).join(' ');
          return paragraph;
       } else {
-         if (convertToArray(props.comment).length < 49) {
-            for (let i = 0; i < 49; i++) {
+         if (convertToArray(props.comment).length < 20) {
+            for (let i = 0; i < 20; i++) {
                paragraph.push(convertToArray(props.comment)[i]);
             }
+            setSeeMore({ text: '', open: false });
             return paragraph.join(' ');
          } else {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 30; i++) {
                paragraph.push(convertToArray(props.comment)[i]);
             }
             return paragraph.join(' ') + '. . .';

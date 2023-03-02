@@ -5,96 +5,167 @@ import {
    Card,
    CardBody,
    Divider,
-   Accordion,
-   AccordionItem,
-   AccordionPanel,
-   AccordionButton,
    ButtonGroup,
    HStack,
    Input,
    InputGroup,
    InputRightElement,
    IconButton,
+   useDisclosure,
+   SlideFade,
+   Accordion,
+   AccordionButton,
+   AccordionItem,
+   AccordionPanel,
+   Editable,
+   EditablePreview,
+   EditableTextarea,
+   EditableInput,
+   Alert,
+   Switch,
+   VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 import { useState } from 'react';
 import '../../assets/scss/main.scss';
-import gwuni from '../../assets/img/gwuni.png';
 import Icon from '../Icon/Icon';
+import { useDispatch, useSelector } from 'react-redux';
+import StaffComment from '../StaffComment/StaffComment';
+import alternativeImg from '../../assets/img/gwuni.png';
+import { toast } from 'react-toastify';
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { addCommentAction } from '../../redux/action/ideaAction';
+import { ToastContainer } from 'react-toastify';
 
-const IdeaPost = () => {
-   const [likeCount, setLikeCount] = useState(0);
-   const [dislikeCount, setDislikeCount] = useState(0);
-   const [activeBtn, setActiveBtn] = useState('none');
-
-   const handleLikeClick = () => {
-      if (activeBtn === 'none') {
-         setLikeCount(likeCount + 1);
-         setActiveBtn('like');
-         return;
-      }
-
-      if (activeBtn === 'like') {
-         setLikeCount(likeCount - 1);
-         setActiveBtn('none');
-         return;
-      }
-
-      if (activeBtn === 'dislike') {
-         setLikeCount(likeCount + 1);
-         setDislikeCount(dislikeCount - 1);
-         setActiveBtn('like');
+const IdeaPost = (props) => {
+   let {
+      id,
+      email,
+      category,
+      title,
+      content,
+      image,
+      like,
+      dislike,
+      comments,
+      isAnonymous,
+      views,
+   } = props.item;
+   const dispatch = useDispatch();
+   const [showComment, setShowComment] = useState(false);
+   const [uploadImg, setUploadImg] = useState(image);
+   const signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+   const formik = useFormik({
+      initialValues: {
+         content: '',
+         email: signedInAccount.username,
+         ideaId: id,
+      },
+      validationSchema: Yup.object({
+         content: Yup.string()
+            .required('Write something, dude !')
+            .min(20, 'Comment cannot be shorter than 20 letters'),
+      }),
+      onSubmit: (values) => {
+         dispatch(addCommentAction(values));
+      },
+   });
+   const handleSubmitComment = (e) => {
+      e.preventDefault();
+      if (formik.errors.content) {
+         toast.warn(`${formik.errors.content}`, {
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+         });
+      } else {
+         formik.handleSubmit();
       }
    };
-
-   const handleDisikeClick = () => {
-      if (activeBtn === 'none') {
-         setDislikeCount(dislikeCount + 1);
-         setActiveBtn('dislike');
-         return;
-      }
-
-      if (activeBtn === 'dislike') {
-         setDislikeCount(dislikeCount - 1);
-         setActiveBtn('none');
-         return;
-      }
-
-      if (activeBtn === 'like') {
-         setDislikeCount(dislikeCount + 1);
-         setLikeCount(likeCount - 1);
-         setActiveBtn('dislike');
+   const renderListComment = () => {
+      if (comments !== undefined) {
+         return comments.map((item) => {
+            return (
+               <div
+                  key={item.id}
+                  className='my-4'
+               >
+                  <StaffComment
+                     name={item.email}
+                     comment={item.content}
+                  />
+               </div>
+            );
+         });
+      } else {
+         toast.error('No comment to show !!!', {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+         });
       }
    };
-
    return (
       <Accordion allowToggle>
-         <Card variant='elevated'>
+         <Card
+            className='px-4 py-2'
+            variant='elevated'
+         >
             <CardBody className='post'>
-               <HStack
-                  spacing='13px'
-                  align='center'
-               >
-                  <Icon
-                     content='fa-regular fa-circle-user'
-                     fontSize='45px'
-                     color='#2b6cb0'
-                     className='iconAvatar'
-                  ></Icon>
-                  <Text
-                     fontSize='3xl'
-                     className='staffName'
+               <div className='d-flex justify-content-between align-middle'>
+                  <HStack
+                     spacing='13px'
+                     align='center'
+                     paddingBottom={'0'}
                   >
-                     Segun Adebayo
-                  </Text>
-                  <Tag
-                     colorScheme='blue'
-                     size='md'
-                     className='categoryTag'
-                  >
-                     CATEGORY 1
-                  </Tag>
-               </HStack>
+                     <Icon
+                        content='fa-regular fa-circle-user'
+                        fontSize='45px'
+                        color='#2b6cb0'
+                        className='iconAvatar'
+                     ></Icon>
+                     <Text
+                        fontSize='2xl'
+                        className='staffName'
+                     >
+                        {isAnonymous ? 'Anonymous' : email}
+                     </Text>
+                     <Tag
+                        colorScheme='blue'
+                        size='md'
+                        className='categoryTag'
+                     >
+                        {category}
+                     </Tag>
+                  </HStack>
+                  <HStack className='justify-content-center'>
+                     <Icon
+                        content='fa-regular fa-eye'
+                        fontSize='20px'
+                        color='#2b6bb1'
+                     />
+                     <Text
+                        color='#2b6bb1'
+                        fontSize='md'
+                        as='b'
+                     >
+                        {views}
+                     </Text>
+                  </HStack>
+               </div>
             </CardBody>
 
             <AccordionItem
@@ -108,128 +179,120 @@ const IdeaPost = () => {
             >
                {({ isExpanded }) => (
                   <>
-                     <AccordionButton
-                        style={{ width: 'fit-content' }}
-                        className=' disable-hover'
-                     >
-                        {isExpanded ? (
-                           <HStack>
-                              <Text
-                                 fontSize='2xl'
-                                 className='ideaTitle'
-                              >
-                                 Idea Title
-                              </Text>
-                              <Divider
-                                 orientation='row'
-                                 p={4}
-                              />
+                     <HStack>
+                        <Editable
+                           fontSize='2xl'
+                           className='ideaTitle w-50 text-wrap'
+                           placeholder={title}
+                           style={{ marginLeft: '1%' }}
+                        >
+                           <EditablePreview />
+                           <EditableInput />
+                        </Editable>
 
-                              <div className=''>
-                                 <IconButton
-                                    className='m-0 p-0'
-                                    colorScheme='blue'
-                                    aria-label='Search database'
-                                    variant='outline'
-                                    icon={
-                                       <Icon content='fa-solid fa-eye-slash' />
-                                    }
-                                 />
+                        {isExpanded ? (
+                           <>
+                              <div className='d-flex align-baseline'>
+                                 <div className='mx-5'>
+                                    <AccordionButton
+                                       onClick={() => {
+                                          setShowComment(false);
+                                       }}
+                                       className='p-0'
+                                    >
+                                       <div
+                                          style={{
+                                             border: '2px solid #2b6bb1',
+                                             borderRadius: '6px',
+                                             padding: '2px 8px',
+                                          }}
+                                       >
+                                          <Icon
+                                             content='fa-solid fa-chevron-up'
+                                             color='#2b6bb1'
+                                             fontSize='18px'
+                                          />
+                                       </div>
+                                    </AccordionButton>
+                                 </div>
                               </div>
-                           </HStack>
+                           </>
                         ) : (
-                           <HStack>
-                              <Text
-                                 fontSize='2xl'
-                                 className='ideaTitle'
-                              >
-                                 Idea Title
-                              </Text>
-                              <Divider
-                                 orientation='row'
-                                 p={4}
-                              />
-                              <div>
-                                 <IconButton
-                                    className='m-0 p-0'
-                                    colorScheme='blue'
-                                    aria-label='Search database'
-                                    variant='outline'
-                                    icon={<Icon content='fa-solid fa-eye' />}
-                                 />
-                              </div>
-                           </HStack>
+                           <AccordionButton
+                              className='text-wrap w-auto p-0 mx-5'
+                              variant='ghost'
+                           >
+                              <HStack>
+                                 <div
+                                    style={{
+                                       border: '2px solid #2b6bb1',
+                                       borderRadius: '6px',
+                                       padding: '2px 8px',
+                                    }}
+                                 >
+                                    <Icon
+                                       content='fa-solid fa-chevron-down'
+                                       color='#2b6bb1'
+                                       fontSize='18px'
+                                    />
+                                 </div>
+                              </HStack>
+                           </AccordionButton>
                         )}
-                     </AccordionButton>
+                     </HStack>
 
                      <AccordionPanel className='hiddenPanel'>
-                        <div className='ideaPara text-justify'>
-                           Lorem ipsum dolor sit amet, consectetur adipiscing
-                           elit, sed do eiusmod tempor incididunt ut labore et
-                           dolore magna aliqua. Consectetur adipiscing elit duis
-                           tristique sollicitudin nibh. Pharetra pharetra massa
-                           massa ultricies mi. Cras fermentum odio eu feugiat
-                           pretium nibh ipsum consequat nisl. Libero justo
-                           laoreet sit amet cursus sit. In ornare quam viverra
-                           orci sagittis. Ac felis donec et odio pellentesque
-                           diam volutpat commodo sed. Gravida neque convallis a
-                           cras semper. Massa sapien faucibus et molestie ac
-                           feugiat. Duis at tellus at urna. Neque viverra justo
-                           nec ultrices dui sapien eget mi proin. Cras fermentum
-                           odio eu feugiat pretium nibh. Et odio pellentesque
-                           diam volutpat commodo sed egestas egestas fringilla.
-                           Habitant morbi tristique senectus et netus et
-                           malesuada fames ac. In fermentum posuere urna nec
-                           tincidunt. Adipiscing at in tellus integer feugiat
-                           scelerisque. Platea dictumst vestibulum rhoncus est
-                           pellentesque elit ullamcorper dignissim. Diam quis
-                           enim lobortis scelerisque fermentum. Ac tortor vitae
-                           purus faucibus ornare suspendisse sed. Arcu non odio
-                           euismod lacinia at quis risus sed.
-                        </div>
+                        <Editable
+                           className='editablePara my-4'
+                           placeholder={content}
+                        >
+                           <EditablePreview />
+                           <EditableTextarea
+                              style={{ height: '20vh' }}
+                              maxHeight={'max-content'}
+                           />
+                        </Editable>
 
-                        <img
-                           src={gwuni}
-                           alt='University of Greenwich'
-                           className='image'
-                        />
+                        <HStack>
+                           <img
+                              src={uploadImg === null ? alternativeImg : image}
+                              alt='...'
+                              className='img-fluid image'
+                           />
+                        </HStack>
 
                         <ButtonGroup
                            variant='ghost'
                            size='lg'
                         >
                            <Button
+                              isDisabled
                               colorScheme='blue'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-up' />
                               }
-                              onClick={handleLikeClick}
-                              className={`${
-                                 activeBtn === 'like' ? 'like-active' : ''
-                              }`}
                            >
-                              {likeCount}
+                              {like}
                            </Button>
                            <Button
+                              isDisabled
                               colorScheme='red'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-down' />
                               }
-                              onClick={handleDisikeClick}
-                              className={`${
-                                 activeBtn === 'dislike' ? 'dislike-active' : ''
-                              }`}
                            >
-                              {dislikeCount}
+                              {dislike}
                            </Button>
                            <Button
-                              isDisabled
+                              onClick={() => {
+                                 setShowComment(!showComment);
+                              }}
                               leftIcon={
                                  <Icon content='fa-regular fa-comment-dots' />
                               }
-                              colorScheme='black'
+                              colorScheme='gray'
                            >
-                              0
+                              {comments === undefined ? '0' : comments.length}
                            </Button>
                         </ButtonGroup>
                         <Divider />
@@ -244,9 +307,14 @@ const IdeaPost = () => {
                                  placeholder='What do you think?'
                                  variant='outline'
                                  borderRadius={'20px'}
+                                 onChange={formik.handleChange}
+                                 onBlur={formik.handleBlur}
+                                 name='content'
                               />
+
                               <InputRightElement>
                                  <IconButton
+                                    onClick={handleSubmitComment}
                                     icon={
                                        <Icon
                                           content='fa-regular fa-paper-plane'
@@ -264,7 +332,12 @@ const IdeaPost = () => {
                   </>
                )}
             </AccordionItem>
+
+            <div style={{ width: '85%', margin: '0 auto' }}>
+               {showComment ? renderListComment() : ''}
+            </div>
          </Card>
+         <ToastContainer />
       </Accordion>
    );
 };

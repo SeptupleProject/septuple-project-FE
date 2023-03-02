@@ -7,35 +7,52 @@ import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 const NewsFeed = () => {
    const listOfIdeas = useSelector((state) => state.ideaReducer.listOfIdeas);
-   const renderlistOfIdeas = () => {
+   const signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+   console.log(signedInAccount);
+   const renderIdeas = () => {
       return listOfIdeas.map((item) => {
-         return (
-            <div
-               key={item.id}
-               className='my-5'
-            >
-               <YourIdeaPost
-                  id={item.id}
-                  ideaTitle={item.title}
-                  content={item.content}
-                  category={item.category}
-                  img={item.image}
-                  like={item.like}
-                  dislike={item.dislike}
-                  comment={item.comments}
-                  anonymous={item.isAnonymous}
-                  views={item.views}
-               />
-            </div>
-         );
+         if (signedInAccount.username === item.email) {
+            return (
+               <div
+                  key={item.id}
+                  className='my-5'
+               >
+                  <YourIdeaPost item={item} />
+               </div>
+            );
+         } else {
+            return (
+               <div
+                  key={item.id}
+                  className='my-5'
+               >
+                  <IdeaPost item={item} />
+               </div>
+            );
+         }
       });
    };
+
    return (
       <>
          <div className='staff-newsfeed pt-5'>
             <div style={{ width: '80%', margin: '0 auto' }}>
-               <PostIdea />
-               <div className='mt-5'>{renderlistOfIdeas()}</div>
+               {signedInAccount.role === 'staff' ? (
+                  <>
+                     <PostIdea />
+                  </>
+               ) : (
+                  <></>
+               )}
+
+               <div className='mt-5'>
+                  {renderIdeas()}
+                  {/* {signedInAccount.username === 'staff'
+                     ? renderOwnerIdeas()
+                     : renderOthersIdeas()} */}
+               </div>
             </div>
             <ToastContainer />
          </div>
