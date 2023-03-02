@@ -10,16 +10,10 @@ const CreateUser = () => {
   return (
     <>
       <center className="create-user-area">
-        <Grid
-          h="360px"
-          w="1000px"
-          templateRows="repeat(4, 1fr)"
-          templateColumns="repeat(4, 1fr)"
-          gap={4}
-        >
+        <Grid className="m-4" gap={6}>
           <GridItem colStart={2} colEnd={4}>
             {" "}
-            <Text fontSize="4xl" className="heading" colorScheme="blue">
+            <Text fontSize="4xl" className="heading mt-0" colorScheme="blue">
               Create a new user
             </Text>
           </GridItem>
