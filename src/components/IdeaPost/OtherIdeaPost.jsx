@@ -29,26 +29,16 @@ import React from 'react';
 import { useState, useRef } from 'react';
 import '../../assets/scss/main.scss';
 import Icon from '../Icon/Icon';
-import {
-   Modal,
-   ModalOverlay,
-   ModalContent,
-   ModalHeader,
-   ModalFooter,
-   ModalBody,
-   ModalCloseButton,
-} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import StaffComment from '../StaffComment/StaffComment';
 import alternativeImg from '../../assets/img/gwuni.png';
 import { toast } from 'react-toastify';
-import { deleteIdeaAction } from '../../redux/action/ideaAction';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { addCommentAction } from '../../redux/action/ideaAction';
 import { ToastContainer } from 'react-toastify';
 
-const YourIdeaPost = (props) => {
+const OtherIdeaPost = (props) => {
    let {
       id,
       email,
@@ -62,15 +52,9 @@ const YourIdeaPost = (props) => {
       isAnonymous,
       views,
    } = props.item;
+   const [lock, setLock] = useState(false);
    const dispatch = useDispatch();
-   const [lock, setLock] = useState(isAnonymous);
    const [showComment, setShowComment] = useState(false);
-   const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();
-   const {
-      isOpen: uploadIsOpen,
-      onOpen: uploadOnOpen,
-      onClose: uploadOnClose,
-   } = useDisclosure();
    const [uploadImg, setUploadImg] = useState(image);
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
@@ -81,7 +65,7 @@ const YourIdeaPost = (props) => {
          content: '',
          email: signedInAccount.username,
          ideaId: id,
-         isAnonymous: lock,
+         isCmtAnonymous: false,
       },
       validationSchema: Yup.object({
          content: Yup.string().required('Write something, dude !'),
@@ -90,21 +74,6 @@ const YourIdeaPost = (props) => {
          dispatch(addCommentAction(values));
       },
    });
-   const handleOnChange = () => {
-      setLock(!lock);
-   };
-   const handleUploadImage = (e) => {
-      let file = e.target.files[0];
-      if (
-         file.type === 'image/jpeg' ||
-         file.type === 'image/jpg' ||
-         file.type === 'image/png'
-      ) {
-         let reader = new FileReader();
-         reader.readAsDataURL(file);
-         reader.onload = (event) => setUploadImg(event.target.result);
-      }
-   };
    const handleSubmitComment = (e) => {
       e.preventDefault();
       if (formik.errors.content) {
@@ -120,43 +89,14 @@ const YourIdeaPost = (props) => {
          });
       } else {
          formik.handleSubmit();
-         comment.current.value = '';
       }
    };
-   const openModal = () => {
-      return (
-         <Modal
-            isOpen={uploadIsOpen}
-            onClose={uploadOnClose}
-            isCentered
-         >
-            <ModalOverlay />
-            <ModalContent>
-               <ModalHeader>Do you want to update your post ?</ModalHeader>
-               <ModalCloseButton />
-               <ModalFooter>
-                  <Button
-                     variant='ghost'
-                     colorScheme='red'
-                     mr={3}
-                     onClick={uploadOnClose}
-                  >
-                     Close
-                  </Button>
-                  <Button
-                     colorScheme='facebook'
-                     onClick={() => {
-                        setUploadImg();
-                     }}
-                     variant='outline'
-                  >
-                     Update
-                  </Button>
-               </ModalFooter>
-            </ModalContent>
-         </Modal>
-      );
+   const handleOnSwitch = (e) => {
+      let { name, checked } = e.target;
+      formik.setFieldValue(name, checked);
+      setLock(!lock);
    };
+
    const renderListComment = () => {
       if (comments !== undefined) {
          return comments.map((item) => {
@@ -205,7 +145,7 @@ const YourIdeaPost = (props) => {
                         fontSize='2xl'
                         className='staffName'
                      >
-                        You
+                        {!isAnonymous ? 'Anonymous' : email}
                      </Text>
                      <Tag
                         colorScheme='blue'
@@ -279,53 +219,6 @@ const YourIdeaPost = (props) => {
                                        </div>
                                     </AccordionButton>
                                  </div>
-                                 <div className='d-flex w-100'>
-                                    <Button
-                                       variant='outline'
-                                       size='md'
-                                       colorScheme='red'
-                                       onClick={deleteOnToggle}
-                                    >
-                                       Delete Idea
-                                    </Button>
-                                    <SlideFade
-                                       className={deleteIsOpen ? 'd-flex' : ''}
-                                       in={deleteIsOpen}
-                                    >
-                                       <HStack>
-                                          <Text
-                                             size='md'
-                                             className='deleteBtn ml-3'
-                                             as='b'
-                                          >
-                                             Are you sure?
-                                          </Text>
-                                          <ButtonGroup
-                                             variant='ghost'
-                                             size='sm'
-                                          >
-                                             <Button
-                                                onClick={() => {
-                                                   dispatch(
-                                                      deleteIdeaAction(id)
-                                                   );
-                                                }}
-                                                size='md'
-                                                colorScheme='red'
-                                             >
-                                                Yes
-                                             </Button>
-                                             <Button
-                                                onClick={deleteOnToggle}
-                                                colorScheme='twitter'
-                                                size='md'
-                                             >
-                                                No
-                                             </Button>
-                                          </ButtonGroup>
-                                       </HStack>
-                                    </SlideFade>
-                                 </div>
                               </div>
                            </>
                         ) : (
@@ -370,65 +263,6 @@ const YourIdeaPost = (props) => {
                               alt='...'
                               className='img-fluid image'
                            />
-
-                           <div className='col-2 px-0 ml-4 text-center'>
-                              <div className='container px-0'>
-                                 <label
-                                    htmlFor='uploadImageToEdid'
-                                    className='d-flex justify-content-center uploadBtn p-0'
-                                 >
-                                    <HStack className='uploadStack'>
-                                       <Icon
-                                          content='fa-solid fa-upload'
-                                          color='#3182ce'
-                                          fontSize='18px'
-                                       />
-                                       <p className='ml-2 uploadBtnText'>
-                                          New photo
-                                       </p>
-                                    </HStack>
-                                 </label>
-                                 <input
-                                    onChange={handleUploadImage}
-                                    accept='image/png,image/jpg,image/jpeg'
-                                    className='disapear'
-                                    id='uploadImageToEdid'
-                                    type='file'
-                                 />
-                              </div>
-                              <div className='my-3'>
-                                 <b>As an anonymous ?</b>
-                              </div>
-                              <div className='d-flex justify-content-center align-middle'>
-                                 <Switch
-                                    defaultChecked={isAnonymous}
-                                    size='sm'
-                                    className='p-0 mt-1 mr-3'
-                                    onChange={handleOnChange}
-                                 />
-
-                                 <Icon
-                                    content={
-                                       lock
-                                          ? 'fa-solid fa-lock'
-                                          : 'fa-solid fa-lock-open'
-                                    }
-                                    fontSize='15px'
-                                 />
-                              </div>
-                              <VStack>
-                                 <Button
-                                    className='mt-4'
-                                    variant='outline'
-                                    size='md'
-                                    colorScheme='facebook'
-                                    onClick={uploadOnOpen}
-                                 >
-                                    Edit
-                                 </Button>
-                              </VStack>
-                              {openModal()}
-                           </div>
                         </HStack>
 
                         <ButtonGroup
@@ -436,7 +270,6 @@ const YourIdeaPost = (props) => {
                            size='lg'
                         >
                            <Button
-                              isDisabled
                               colorScheme='blue'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-up' />
@@ -445,7 +278,6 @@ const YourIdeaPost = (props) => {
                               {like}
                            </Button>
                            <Button
-                              isDisabled
                               colorScheme='red'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-down' />
@@ -469,18 +301,18 @@ const YourIdeaPost = (props) => {
                         <HStack>
                            <Icon
                               content='fa-regular fa-circle-user'
-                              fontSize='35px'
+                              fontSize='34px'
                               color='#2b6cb0'
                            ></Icon>
                            <InputGroup>
                               <Input
+                                 ref={comment}
                                  placeholder='What do you think?'
                                  variant='outline'
                                  borderRadius={'20px'}
                                  onChange={formik.handleChange}
                                  onBlur={formik.handleBlur}
                                  name='content'
-                                 ref={comment}
                               />
 
                               <InputRightElement>
@@ -498,6 +330,27 @@ const YourIdeaPost = (props) => {
                                  />
                               </InputRightElement>
                            </InputGroup>
+
+                           <div className='d-flex justify-content-center align-middle'>
+                              <Switch
+                                 name='isCmtAnonymous'
+                                 data-toggle='tooltip'
+                                 data-placement='bottom'
+                                 title='Comment as an anonymous'
+                                 size='sm'
+                                 className='p-0 mt-2 ml-2 mr-3 '
+                                 onChange={handleOnSwitch}
+                              />
+
+                              <Icon
+                                 content={
+                                    lock
+                                       ? 'fa-solid fa-user-secret'
+                                       : 'fa-solid fa-user'
+                                 }
+                                 fontSize='20px'
+                              />
+                           </div>
                         </HStack>
                      </AccordionPanel>
                   </>
@@ -513,4 +366,4 @@ const YourIdeaPost = (props) => {
    );
 };
 
-export default YourIdeaPost;
+export default OtherIdeaPost;

@@ -10,22 +10,32 @@ if (localStorage.getItem('signedInAccount')) {
 const initialState = {
    accounts: [
       {
-         username: 'admin',
+         id: 1,
+         username: 'khadoan@gmail.com',
          password: 'admin',
          role: 'admin',
       },
       {
-         username: 'qamanager',
+         id: 2,
+         username: 'baodinh@gmail.com',
          password: 'qamanager',
          role: 'qaManager',
       },
       {
-         username: 'qacoordinator',
+         id: 3,
+         username: 'namnguyen@gmail.com',
          password: 'qacoordinator',
          role: 'qaCoordinator',
       },
       {
-         username: 'staff',
+         id: 4,
+         username: 'khanhho@gmail.com',
+         password: 'staff',
+         role: 'staff',
+      },
+      {
+         id: 5,
+         username: 'thanhho@gmail.com',
          password: 'staff',
          role: 'staff',
       },

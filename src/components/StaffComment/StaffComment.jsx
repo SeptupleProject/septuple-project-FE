@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from '../Icon/Icon';
 import { useState } from 'react';
 const StaffComment = (props) => {
+   const { email, content, isCmtAnonymous } = props.item;
    const [seeMore, setSeeMore] = useState({
       text: 'See more',
       open: true,
@@ -33,19 +34,20 @@ const StaffComment = (props) => {
    let renderContent = () => {
       let paragraph = [];
       if (!seeMore.open) {
-         paragraph = convertToArray(props.comment).join(' ');
+         paragraph = convertToArray(content).join(' ');
          return paragraph;
       } else {
-         if (convertToArray(props.comment).length < 49) {
-            for (let i = 0; i < 49; i++) {
-               paragraph.push(convertToArray(props.comment)[i]);
+         if (convertToArray(content).length < 20) {
+            for (let i = 0; i < 20; i++) {
+               paragraph.push(convertToArray(content)[i]);
             }
+            setSeeMore({ text: '', open: false });
             return paragraph.join(' ');
          } else {
-            for (let i = 0; i < 50; i++) {
-               paragraph.push(convertToArray(props.comment)[i]);
+            for (let i = 0; i < 30; i++) {
+               paragraph.push(convertToArray(content)[i]);
             }
-            return paragraph.join(' ') + '. . .';
+            return paragraph.join(' ') + '. . . ';
          }
       }
    };
@@ -55,12 +57,14 @@ const StaffComment = (props) => {
             <Icon
                color='#2B6CB0'
                content='fa-regular fa-circle-user'
-               fontSize='45px'
+               fontSize='40px'
             />
          </div>
          <div className='col-11 px-0'>
             <div className='d-flex justify-content-between mt-3'>
-               <h2 className='comment-name'>{props.name}</h2>
+               <h2 className='comment-name'>
+                  {isCmtAnonymous ? 'Anonymous' : email}
+               </h2>
                <div className='d-flex'>
                   <div>
                      <Icon
@@ -80,12 +84,12 @@ const StaffComment = (props) => {
             </div>
 
             <p className='text-justify text-wrap comment-content mt-2'>
-               {renderContent()}{' '}
+               {renderContent()}
                <a
                   onClick={expandContent}
                   className={'text-decoration-none see-more'}
                >
-                  {seeMore.text}
+                  {''} {seeMore.text}
                </a>
             </p>
          </div>
