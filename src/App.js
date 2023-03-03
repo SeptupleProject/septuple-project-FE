@@ -19,6 +19,7 @@ import StaffManagement from './pages/QaCoordinator/StaffManagement';
 import DepartmentsDashboard from './pages/QaManager/Departments/DepartmentsDashboard';
 import CategoriesDashboard from './pages/QaManager/Categories/CategoriesDashboard';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import CreateDepartment from './pages/QaManager/Departments/CreateDepartment';
 
 export const history = createBrowserHistory();
 function App() {
@@ -66,6 +67,13 @@ function App() {
                      path='/department-dashboard'
                      component={DepartmentsDashboard}
                   />
+
+                  <AdminTemplate
+                     exact
+                     path='/department-dashboard/create-department'
+                     component={CreateDepartment}
+                  />
+
                   <AdminTemplate
                      exact
                      path='/categories-dashboard'

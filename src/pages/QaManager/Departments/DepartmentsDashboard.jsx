@@ -34,7 +34,7 @@ const DepartmentsDashboard = () => {
             >
               <Icon
                 fontSize="20px"
-                content="fa-solid fa-user-plus"
+                content="fa-regular fa-building"
                 paddingRight="10px"
               />
               Create a new department
@@ -46,10 +46,10 @@ const DepartmentsDashboard = () => {
       <div className="container-fluid mt-5">
         <div className="row">
           <div className="col-12 col-md-6">
-            <Department text="Department 1" />
+            <Department text="Department 1" number="62" user="segun.adebayo" />
           </div>
           <div className="col-12 col-md-6 ">
-            <Department text="Department 1" />
+            <Department text="Department 2" number="89" user="segun.adebayo" />
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ const UpdateUser = () => {
             </Button>
           </span>
 
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Reset Password</ModalHeader>
