@@ -29,11 +29,11 @@ const Department = (props) => {
         <div className="d-flex">
           <Icon fontSize="15px" color="#2B6CB0" content="fa-regular fa-user" />
           <Text as="b" className="text-department-1 mt-1 ml-2">
-            50 Members
+            {props.number} Members
           </Text>
         </div>
         <Text as="cite" className="text-department-2 text-right m-0">
-          Managed by: Username
+          Managed by: {props.user}
         </Text>
       </div>
     </div>

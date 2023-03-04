@@ -65,7 +65,7 @@ const CategoriesDashboard = () => {
               <InputLeftElement
                 children={<Icon content="fa-solid fa-pen-fancy" />}
               />
-              <Input placeholder="Category Name" />
+              <Input placeholder="Category Name" isRequired />
             </InputGroup>
           </ModalBody>
 
