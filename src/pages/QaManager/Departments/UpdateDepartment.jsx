@@ -3,12 +3,14 @@ import Select from "react-select";
 import {
   Button,
   Center,
+  HStack,
   Card,
   Text,
   InputGroup,
   InputLeftElement,
   Input,
   ButtonGroup,
+  VStack,
   Grid,
   GridItem,
 } from "@chakra-ui/react";
@@ -45,14 +47,14 @@ const staff = [
   { value: "orla", label: "orlagartland" },
 ];
 
-const CreateDepartment = () => {
+const UpdateDepartment = () => {
   return (
     <Center>
       <Card className="cardForm" height={"400px"}>
         <Grid className="m-4" gap={10}>
           <GridItem colStart={2} colEnd={4}>
             <Text fontSize="4xl" className="heading" colorScheme="blue">
-              Add a new department
+              Update department
             </Text>
           </GridItem>
           <GridItem colSpan={2}>
@@ -74,7 +76,7 @@ const CreateDepartment = () => {
             <Select
               closeMenuOnSelect={false}
               options={coordinators}
-              placeholder="Choose QA Coordinator"
+              placeholder="QA Coordinator"
             />
           </GridItem>
           <GridItem colSpan={4}>
@@ -83,7 +85,7 @@ const CreateDepartment = () => {
               components={animatedComponents}
               isMulti
               options={staff}
-              placeholder="Choose including staff"
+              placeholder="Including staff"
             />
           </GridItem>
           <GridItem colSpan={4}>
@@ -99,7 +101,7 @@ const CreateDepartment = () => {
                   Cancel
                 </Button>
                 <Button variant="solid" colorScheme="blue">
-                  Create
+                  Update
                 </Button>
               </ButtonGroup>
             </Center>
@@ -110,4 +112,4 @@ const CreateDepartment = () => {
   );
 };
 
-export default CreateDepartment;
+export default UpdateDepartment;

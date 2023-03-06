@@ -20,6 +20,7 @@ import DepartmentsDashboard from './pages/QaManager/Departments/DepartmentsDashb
 import CategoriesDashboard from './pages/QaManager/Categories/CategoriesDashboard';
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import CreateDepartment from './pages/QaManager/Departments/CreateDepartment';
+import UpdateDepartment from './pages/QaManager/Departments/UpdateDepartment';
 
 export const history = createBrowserHistory();
 function App() {
@@ -72,6 +73,12 @@ function App() {
                      exact
                      path='/department-dashboard/create-department'
                      component={CreateDepartment}
+                  />
+
+                  <AdminTemplate
+                     exact
+                     path='/department-dashboard/update-department'
+                     component={UpdateDepartment}
                   />
 
                   <AdminTemplate
