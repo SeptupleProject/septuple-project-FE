@@ -3,16 +3,16 @@ import Select from "react-select";
 import {
   Button,
   Center,
-  HStack,
   Card,
   Text,
   InputGroup,
   InputLeftElement,
   Input,
   ButtonGroup,
-  VStack,
   Grid,
   GridItem,
+  FormControl,
+  FormLabel,
 } from "@chakra-ui/react";
 import Icon from "../../../components/Icon/Icon";
 import { history } from "../../../App";
@@ -50,7 +50,7 @@ const staff = [
 const UpdateDepartment = () => {
   return (
     <Center>
-      <Card className="cardForm" height={"400px"}>
+      <Card className="cardForm" height={"450px"}>
         <Grid className="m-4" gap={10}>
           <GridItem colStart={2} colEnd={4}>
             <Text fontSize="4xl" className="heading" colorScheme="blue">
@@ -58,35 +58,43 @@ const UpdateDepartment = () => {
             </Text>
           </GridItem>
           <GridItem colSpan={2}>
-            <InputGroup>
-              <InputLeftElement
-                children={
-                  <Icon content="fa-regular fa-building" fontSize="20px" />
-                }
-              />
-              <Input
-                size="md"
-                placeholder="Department Name"
-                variant="outline"
-                isRequired
-              />
-            </InputGroup>
+            <FormControl isRequired>
+              <FormLabel>Department Name</FormLabel>
+              <InputGroup>
+                <InputLeftElement
+                  children={
+                    <Icon content="fa-regular fa-building" fontSize="20px" />
+                  }
+                />
+                <Input
+                  size="md"
+                  placeholder="Department Name"
+                  variant="outline"
+                />
+              </InputGroup>
+            </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <Select
-              closeMenuOnSelect={false}
-              options={coordinators}
-              placeholder="QA Coordinator"
-            />
+            <FormControl>
+              <FormLabel>QA Coordinator</FormLabel>
+              <Select
+                closeMenuOnSelect={false}
+                options={coordinators}
+                placeholder="QA Coordinator"
+              />
+            </FormControl>
           </GridItem>
           <GridItem colSpan={4}>
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={staff}
-              placeholder="Including staff"
-            />
+            <FormControl>
+              <FormLabel>Including Staff</FormLabel>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={staff}
+                placeholder="Including Staff"
+              />
+            </FormControl>
           </GridItem>
           <GridItem colSpan={4}>
             <Center>

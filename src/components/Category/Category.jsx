@@ -18,6 +18,7 @@ import {
   InputGroup,
   InputLeftElement,
   IconButton,
+  FormControl,
 } from "@chakra-ui/react";
 import Icon from "../Icon/Icon";
 import "../../assets/scss/main.scss";
@@ -54,12 +55,14 @@ const Category = (props) => {
                 <ModalHeader>Update {props.text}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
-                  <InputGroup>
-                    <InputLeftElement
-                      children={<Icon content="fa-solid fa-pen-fancy" />}
-                    />
-                    <Input placeholder={props.text} />
-                  </InputGroup>
+                  <FormControl>
+                    <InputGroup>
+                      <InputLeftElement
+                        children={<Icon content="fa-solid fa-pen-fancy" />}
+                      />
+                      <Input placeholder={props.text} />
+                    </InputGroup>
+                  </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
@@ -77,12 +80,14 @@ const Category = (props) => {
                 </ModalFooter>
               </ModalContent>
             </Modal>
+
             <IconButton
               colorScheme="red"
               variant="ghost"
               icon={<Icon content="fa-regular fa-trash-can" />}
               onClick={deleteOnOpen}
             />
+
             <Modal isOpen={deleteIsOpen} onClose={deleteOnClose} isCentered>
               <ModalOverlay />
               <ModalContent>
