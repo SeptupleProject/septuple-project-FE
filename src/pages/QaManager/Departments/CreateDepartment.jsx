@@ -11,7 +11,12 @@ import {
   ButtonGroup,
   Grid,
   GridItem,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import Icon from "../../../components/Icon/Icon";
 import { history } from "../../../App";
 import makeAnimated from "react-select/animated";
@@ -46,9 +51,15 @@ const staff = [
 ];
 
 const CreateDepartment = () => {
+  const [name, setName] = useState("");
+
+  const handleNameChange = (e) => setName(e.target.value);
+
+  const isFalse = name === "";
+
   return (
     <Center>
-      <Card className="cardForm" height={"400px"}>
+      <Card className="cardForm" height={"480px"}>
         <Grid className="m-4" gap={10}>
           <GridItem colStart={2} colEnd={4}>
             <Text fontSize="4xl" className="heading" colorScheme="blue">
@@ -56,35 +67,52 @@ const CreateDepartment = () => {
             </Text>
           </GridItem>
           <GridItem colSpan={2}>
-            <InputGroup>
-              <InputLeftElement
-                children={
-                  <Icon content="fa-regular fa-building" fontSize="20px" />
-                }
-              />
-              <Input
-                size="md"
-                placeholder="Department Name"
-                variant="outline"
-                isRequired
-              />
-            </InputGroup>
+            <FormControl isRequired isInvalid={isFalse}>
+              <FormLabel>Department Name</FormLabel>
+              <InputGroup>
+                <InputLeftElement
+                  children={
+                    <Icon content="fa-regular fa-building" fontSize="20px" />
+                  }
+                />
+                <Input
+                  size="md"
+                  placeholder="Department Name"
+                  variant="outline"
+                  value={name}
+                  onChange={handleNameChange}
+                />
+              </InputGroup>
+              {!isFalse ? (
+                <FormHelperText>
+                  Put A Name For The New Department
+                </FormHelperText>
+              ) : (
+                <FormErrorMessage>Name is required</FormErrorMessage>
+              )}
+            </FormControl>
           </GridItem>
           <GridItem colSpan={2}>
-            <Select
-              closeMenuOnSelect={false}
-              options={coordinators}
-              placeholder="Choose QA Coordinator"
-            />
+            <FormControl>
+              <FormLabel>QA Coordinator</FormLabel>
+              <Select
+                closeMenuOnSelect={false}
+                options={coordinators}
+                placeholder="Choose QA Coordinator"
+              />
+            </FormControl>
           </GridItem>
           <GridItem colSpan={4}>
-            <Select
-              closeMenuOnSelect={false}
-              components={animatedComponents}
-              isMulti
-              options={staff}
-              placeholder="Choose including staff"
-            />
+            <FormControl>
+              <FormLabel>Including Staff</FormLabel>
+              <Select
+                closeMenuOnSelect={false}
+                components={animatedComponents}
+                isMulti
+                options={staff}
+                placeholder="Choose including staff"
+              />
+            </FormControl>
           </GridItem>
           <GridItem colSpan={4}>
             <Center>

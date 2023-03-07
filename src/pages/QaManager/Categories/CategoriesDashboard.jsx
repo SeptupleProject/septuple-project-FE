@@ -16,6 +16,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  FormControl,
 } from "@chakra-ui/react";
 import Icon from "../../../components/Icon/Icon";
 
@@ -61,12 +62,14 @@ const CategoriesDashboard = () => {
           <ModalHeader>Create a new category</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <InputGroup>
-              <InputLeftElement
-                children={<Icon content="fa-solid fa-pen-fancy" />}
-              />
-              <Input placeholder="Category Name" isRequired />
-            </InputGroup>
+            <FormControl isRequired>
+              <InputGroup>
+                <InputLeftElement
+                  children={<Icon content="fa-solid fa-pen-fancy" />}
+                />
+                <Input placeholder="Category Name" />
+              </InputGroup>
+            </FormControl>
           </ModalBody>
 
           <ModalFooter>

@@ -17,13 +17,26 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  VStack,
+  FormLabel,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import Icon from "../../../components/Icon/Icon";
 import { history } from "../../../App";
 import "../../../assets/scss/main.scss";
 
 const UpdateUser = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { newPass, setNewPass } = useState("oldPass");
+  const { confirmPass, setConfirmPass } = useState("newPass");
+
+  const handleNewPassChange = (e) => setNewPass(e.target.value);
+  const handleConfirmPassChange = (e) => setConfirmPass(e.target.value);
+
+  const isUnmatched = newPass !== confirmPass;
 
   return (
     <>
@@ -50,21 +63,53 @@ const UpdateUser = () => {
               <ModalHeader>Reset Password</ModalHeader>
               <ModalCloseButton />
               <ModalBody className="inputGroup">
-                <InputGroup>
-                  <InputLeftElement
-                    className="mt-1"
-                    children={<Icon content="fa-solid fa-lock" />}
-                  />
-                  <Input placeholder="New Password" size="lg" />
-                </InputGroup>
+                <FormControl isRequired isInvalid={isUnmatched}>
+                  <FormLabel>New Password</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      className="mt-1"
+                      children={<Icon content="fa-solid fa-lock" />}
+                    />
+                    <Input
+                      placeholder="New Password"
+                      value={newPass}
+                      onChange={handleNewPassChange}
+                      size="lg"
+                    />
+                  </InputGroup>
+                  {isUnmatched ? (
+                    <FormErrorMessage>
+                      The Two Passwords Don't Match
+                    </FormErrorMessage>
+                  ) : (
+                    <FormHelperText>Type Your Desired Password</FormHelperText>
+                  )}
+                </FormControl>
 
-                <InputGroup>
-                  <InputLeftElement
-                    className="mt-1"
-                    children={<Icon content="fa-solid fa-lock" />}
-                  />
-                  <Input placeholder="Confirm Password" size="lg" />
-                </InputGroup>
+                <FormControl isInvalid={isUnmatched}>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      className="mt-1"
+                      children={<Icon content="fa-solid fa-lock" />}
+                    />
+                    <Input
+                      placeholder="Confirm Password"
+                      value={confirmPass}
+                      onChange={handleConfirmPassChange}
+                      size="lg"
+                    />
+                  </InputGroup>
+                  {isUnmatched ? (
+                    <FormErrorMessage>
+                      The Two Passwords Don't Match
+                    </FormErrorMessage>
+                  ) : (
+                    <FormHelperText>
+                      Confirm Password Must Match With New Password
+                    </FormHelperText>
+                  )}
+                </FormControl>
               </ModalBody>
 
               <ModalFooter>
@@ -78,33 +123,44 @@ const UpdateUser = () => {
             </ModalContent>
           </Modal>
 
-          <div className="formBody">
-            <InputGroup className="updateInput" width={"86%"}>
-              <InputLeftElement
-                children={
-                  <div className="mt-2">
-                    <Icon content="fa-regular fa-envelope" fontSize="20px" />
-                  </div>
-                }
-              />
-              <Input
-                size="lg"
-                placeholder="segun.adebayo@domain.com"
-                isDisabled
-                variant="filled"
-              />
-            </InputGroup>
+          <Center className="ml-5">
+            <VStack width={"100%"} spacing={6} className="ml-5">
+              <FormControl className="ml-3">
+                <FormLabel>Email</FormLabel>
+                <InputGroup className="updateInput" width={"86%"}>
+                  <InputLeftElement
+                    children={
+                      <div className="mt-2">
+                        <Icon
+                          content="fa-regular fa-envelope"
+                          fontSize="20px"
+                        />
+                      </div>
+                    }
+                  />
+                  <Input
+                    size="lg"
+                    placeholder="segun.adebayo@domain.com"
+                    isDisabled
+                    variant="filled"
+                  />
+                </InputGroup>
+              </FormControl>
 
-            <Select
-              size="lg"
-              placeholder="Staff"
-              className="updateInput"
-              width={"86%"}
-            >
-              <option value="coordinator">QA Coordinator</option>
-              <option value="manager">QA Manager</option>
-            </Select>
-          </div>
+              <FormControl className="ml-3">
+                <FormLabel>Position</FormLabel>
+                <Select
+                  size="lg"
+                  placeholder="Staff"
+                  className="updateInput"
+                  width={"86%"}
+                >
+                  <option value="coordinator">QA Coordinator</option>
+                  <option value="manager">QA Manager</option>
+                </Select>
+              </FormControl>
+            </VStack>
+          </Center>
 
           <ButtonGroup className="actionBtn">
             <Button
