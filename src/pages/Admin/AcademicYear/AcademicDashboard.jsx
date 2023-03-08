@@ -27,7 +27,7 @@ const AcademicDashboard = () => {
           >
             <Button
               onClick={() => {
-                history.push("/academic-dashboard/create-academic");
+                history.replace("/academic-dashboard/create-academic");
               }}
               colorScheme="blue"
               variant="outline"

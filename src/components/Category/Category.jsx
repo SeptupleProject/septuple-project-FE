@@ -21,7 +21,6 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import Icon from "../Icon/Icon";
-import "../../assets/scss/main.scss";
 
 const Category = (props) => {
   const {

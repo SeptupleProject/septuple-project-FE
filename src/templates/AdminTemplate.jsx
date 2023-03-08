@@ -14,7 +14,7 @@ import {
    ModalCloseButton,
    Button,
 } from '@chakra-ui/react';
-import { dangXuatReducer } from '../redux/reducers/accountReducer';
+import { logoutAction } from '../redux/action/accountAction';
 export const AdminTemplate = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
@@ -50,7 +50,8 @@ export const AdminTemplate = (props) => {
                   </Button>
                   <Button
                      onClick={() => {
-                        dispatch(dangXuatReducer());
+                        dispatch(logoutAction());
+                        onClose();
                      }}
                      colorScheme='red'
                   >
@@ -63,7 +64,7 @@ export const AdminTemplate = (props) => {
    };
 
    const renderNavBarByRole = (role) => {
-      if (role === 'admin') {
+      if (role === 'Admin') {
          return (
             <>
                <NavLink
@@ -182,8 +183,11 @@ export const AdminTemplate = (props) => {
                      <div className='col-10 px-0'>
                         <nav className='navbar navbar-light py-4'>
                            <div className='header d-flex justify-content-between mx-auto'>
-                              <p className='title-2'>
-                                 Hello, {signedInAccount.username}
+                              <p className='title-2 d-flex'>
+                                 Hello, &nbsp;
+                                 <span style={{ color: '#3182ce' }}>
+                                    {signedInAccount.email}
+                                 </span>
                               </p>
                               <div onClick={onOpen}>
                                  <Icon

@@ -27,7 +27,6 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useState, useRef } from 'react';
-import '../../assets/scss/main.scss';
 import Icon from '../Icon/Icon';
 import {
    Modal,

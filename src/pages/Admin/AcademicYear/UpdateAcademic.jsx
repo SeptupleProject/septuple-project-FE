@@ -97,7 +97,7 @@ const UpdateAcademic = () => {
               size="lg"
               className="mr-3"
               onClick={() => {
-                history.push("/academic-dashboard");
+                history.replace("/academic-dashboard");
               }}
             >
               Cancel
