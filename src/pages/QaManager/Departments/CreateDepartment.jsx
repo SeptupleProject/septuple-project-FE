@@ -20,7 +20,6 @@ import { useState } from "react";
 import Icon from "../../../components/Icon/Icon";
 import { history } from "../../../App";
 import makeAnimated from "react-select/animated";
-import "../../../assets/scss/main.scss";
 
 const animatedComponents = makeAnimated();
 

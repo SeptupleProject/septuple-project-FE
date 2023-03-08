@@ -14,7 +14,7 @@ import {
    Button,
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
-import { dangXuatReducer } from '../../redux/reducers/accountReducer';
+import { logoutAction } from '../../redux/action/accountAction';
 const Header = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
@@ -22,9 +22,9 @@ const Header = () => {
    let signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
-   
+
    const renderHeaderByRole = (role) => {
-      if (role === 'admin') {
+      if (role === 'Admin') {
          return (
             <>
                <li className='nav-item active'>
@@ -98,7 +98,7 @@ const Header = () => {
                   <p className='title-2 nav-link text-dark'>
                      Hello,{' '}
                      <span style={{ color: '#3182ce' }}>
-                        {signedInAccount.username}
+                        {signedInAccount.email}
                      </span>
                   </p>
                </li>
@@ -159,7 +159,8 @@ const Header = () => {
                   </Button>
                   <Button
                      onClick={() => {
-                        dispatch(dangXuatReducer());
+                        dispatch(logoutAction());
+                        onClose();
                      }}
                      colorScheme='red'
                   >
