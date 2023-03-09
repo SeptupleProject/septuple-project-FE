@@ -12,6 +12,7 @@
    font-weight: 700;
    font-size: $-fs-1;
 }
+
 .text-button-transparent {
    padding-left: 5%;
 }
@@ -85,6 +86,14 @@
    font-weight: 500;
    font-size: 12px;
    color: $-blue-1;
+}
+
+.text-academicyear-3 {
+   cursor: pointer;
+   transition: all 0.2s;
+   &:hover {
+      color: $-blue-1;
+   }
 }
 
 .staffName {
