@@ -215,7 +215,7 @@ const PostIdea = () => {
                <input
                   onChange={handleUploadImage}
                   accept='image/png,image/jpg,image/jpeg'
-                  className='disapear'
+                  className='disappear'
                   id='loadImgInput'
                   type='file'
                />

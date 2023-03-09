@@ -34,8 +34,10 @@ export const loginAction = (account) => {
 
          localStorage.setItem(ACCESS_TOKEN, result.data);
          const decodeAccessToken = jwt(result.data);
+
          let roleFromAPI = '',
             emailFromAPI = '';
+
          for (const key in decodeAccessToken) {
             if (
                key ===
@@ -53,6 +55,7 @@ export const loginAction = (account) => {
             email: emailFromAPI,
             role: roleFromAPI,
          };
+
          localStorage.setItem(
             'signedInAccount',
             JSON.stringify(signedInAccount)
@@ -199,7 +202,6 @@ export const deleteUserAction = (id) => {
    return async (dispatch) => {
       try {
          await deleteUserService(id);
-         let result = await getListUserService();
          toast.error('Account has been removed', {
             position: 'top-center',
             autoClose: 1000,
@@ -210,7 +212,6 @@ export const deleteUserAction = (id) => {
             theme: 'dark',
             transition: Slide,
          });
-         dispatch(getListUserReducer(result.data));
       } catch (error) {
          console.log(error);
       }

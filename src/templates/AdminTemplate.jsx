@@ -183,12 +183,26 @@ export const AdminTemplate = (props) => {
                      <div className='col-10 px-0'>
                         <nav className='navbar navbar-light py-4'>
                            <div className='header d-flex justify-content-between mx-auto'>
-                              <p className='title-2 d-flex'>
-                                 Hello, &nbsp;
-                                 <span style={{ color: '#3182ce' }}>
-                                    {signedInAccount.email}
-                                 </span>
-                              </p>
+                              <div className='d-flex align-middle'>
+                                 <NavLink
+                                    className='mr-3'
+                                    data-toggle='list'
+                                    role='tab'
+                                    to='/newsfeed'
+                                 >
+                                    <Icon
+                                       content='fa-solid fa-house'
+                                       fontSize='18px'
+                                    />
+                                 </NavLink>
+                                 <p className='title-2 d-flex mt-1'>
+                                    Hello, &nbsp;
+                                    <span style={{ color: '#3182ce' }}>
+                                       {signedInAccount.email}
+                                    </span>
+                                 </p>
+                              </div>
+
                               <div onClick={onOpen}>
                                  <Icon
                                     content='fa-solid fa-arrow-right-from-bracket'

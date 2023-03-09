@@ -44,11 +44,12 @@ const UserDashboard = (props) => {
    const [idToDelete, setIdToDelete] = useState(null);
    useEffect(() => {
       dispatch(getListUserAction());
-   }, []);
+   }, [listOfUser]);
 
    const showUserDetail = (id) => {
       dispatch(getUserDetailAction(id));
    };
+
    const renderModal = () => {
       return (
          <Modal
@@ -92,6 +93,7 @@ const UserDashboard = (props) => {
          </Modal>
       );
    };
+   
    const renderListOfUser = () => {
       return listOfUser.map((item) => {
          let { id, email, role, departmentName } = item;
@@ -192,7 +194,7 @@ const UserDashboard = (props) => {
                      </GridItem>
                   </Grid>
                </div>
-               <div className='user-table-list'>
+               <div className='user-table-list mx-4'>
                   <TableContainer className='table-user'>
                      <Table size='md'>
                         <Thead>

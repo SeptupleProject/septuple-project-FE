@@ -187,7 +187,17 @@ const Header = () => {
                      src={logo}
                   />
                </NavLink>
-
+               <button
+                  className='navbar-toggler bg-white'
+                  type='button'
+                  data-toggle='collapse'
+                  data-target='#navbarNav'
+                  aria-controls='navbarNav'
+                  aria-expanded='false'
+                  aria-label='Toggle navigation'
+               >
+                  <span className='navbar-toggler-icon text-dark' />
+               </button>
                <div
                   className='collapse navbar-collapse flex-grow-0'
                   id='navbarNav'
@@ -201,17 +211,3 @@ const Header = () => {
 };
 
 export default Header;
-
-{
-   /* <button
-className='navbar-toggler bg-dark'
-type='button'
-data-toggle='collapse'
-data-target='#navbarNav'
-aria-controls='navbarNav'
-aria-expanded='false'
-aria-label='Toggle navigation'
->
-<span className='navbar-toggler-icon' />
-</button> */
-}

@@ -3,15 +3,12 @@ import { http } from './configAPI';
 export const getListUserService = () => {
    return http.get('api/Users');
 };
-
 export const getUserDetailService = (id) => {
    return http.get(`api/Users/${id}`);
 };
-
 export const loginService = (data) => {
    return http.post('api/Logins', data);
 };
-
 export const createUserService = (data) => {
    return http.post('api/Users', data);
 };
