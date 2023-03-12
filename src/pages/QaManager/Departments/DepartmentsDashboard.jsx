@@ -20,6 +20,7 @@ const DepartmentsDashboard = () => {
    useEffect(() => {
       dispatch(getAllDepartmentAction());
    }, []);
+
    useEffect(() => {
       dispatch(getlistUserByRoleAction(Staff));
       dispatch(getlistUserByRoleAction(QAC));

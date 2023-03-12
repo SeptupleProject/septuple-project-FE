@@ -14,6 +14,7 @@ export const renderUserRole = (role) => {
 export const checkMatchedPassword = (pwd1, pwd2) => {
    return pwd1 === pwd2;
 };
+
 export const validateEmptyDate = (values) => {
    let valid = true;
    let object = {
@@ -160,13 +161,13 @@ export const validateDepartmentInputUpdate = (
       formik.initialValues.users = [...staffToAdd].concat(initialCoordinator);
    }
 };
-export const convertUserToIdArray = (values) => {
-   let array = [];
-   for (const item in values.users) {
+export const convertUserToIdArray = (array) => {
+   let arrayAfter = [];
+   for (const item in array) {
       let newObject = {
-         id: values.users[item].value,
+         id: array[item].value,
       };
-      array.push(newObject);
+      arrayAfter.push(newObject);
    }
-   return array;
+   return arrayAfter;
 };
