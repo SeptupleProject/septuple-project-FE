@@ -5,8 +5,51 @@ import Icon from '../../../components/Icon/Icon';
 import { Button } from '@chakra-ui/react';
 import Department from '../../../components/Department/Department';
 import { history } from '../../../App';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { getAllDepartmentAction } from '../../../redux/action/departmentAction';
+import { ToastContainer } from 'react-toastify';
+import { getlistUserByRoleAction } from '../../../redux/action/accountAction';
+import { QAC, Staff } from '../../../settings/setting';
 
 const DepartmentsDashboard = () => {
+   const dispatch = useDispatch();
+   const departmentList = useSelector(
+      (state) => state.departmentReducer.departmentList
+   );
+   useEffect(() => {
+      dispatch(getAllDepartmentAction());
+   }, []);
+   useEffect(() => {
+      dispatch(getlistUserByRoleAction(Staff));
+      dispatch(getlistUserByRoleAction(QAC));
+   }, []);
+   const renderDepartmentList = () => {
+      if (departmentList.length === 0) {
+         return (
+            <p className='text-center w-100 title-3'>
+               No departments available
+            </p>
+         );
+      } else {
+         return departmentList.map((item) => {
+            let { id, managedBy, name, users } = item;
+            return (
+               <div
+                  key={id}
+                  className='col-12 col-md-6 mb-4'
+               >
+                  <Department
+                     text={name}
+                     number={users}
+                     user={managedBy ? managedBy : 'Unassigned'}
+                     id={id}
+                  />
+               </div>
+            );
+         });
+      }
+   };
    return (
       <div>
          <div className='mt-3'>
@@ -62,24 +105,10 @@ const DepartmentsDashboard = () => {
             </Grid>
          </div>
 
-         <div className='container-fluid mt-5'>
-            <div className='row'>
-               <div className='col-12 col-md-6'>
-                  <Department
-                     text='Department 1'
-                     number='62'
-                     user='segun.adebayo'
-                  />
-               </div>
-               <div className='col-12 col-md-6 '>
-                  <Department
-                     text='Department 2'
-                     number='89'
-                     user='segun.adebayo'
-                  />
-               </div>
-            </div>
+         <div className='container-fluid mt-5 '>
+            <div className='row mx-4'>{renderDepartmentList()}</div>
          </div>
+         <ToastContainer />
       </div>
    );
 };

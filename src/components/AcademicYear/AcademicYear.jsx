@@ -30,7 +30,6 @@ const AcademicYear = (props) => {
    };
    const handleOnUpdate = () => {
       dispatch(getAcademicYearDetailAction(id));
-      history.push('/academic-dashboard/update-academic');
    };
    const renderModal = () => {
       return (
@@ -74,7 +73,7 @@ const AcademicYear = (props) => {
          <div className='d-flex align-middle justify-content-between'>
             <Heading
                fontSize={27}
-               className='text-academicyear-3'
+               className='text-link'
                onClick={handleOnUpdate}
                as='b'
             >

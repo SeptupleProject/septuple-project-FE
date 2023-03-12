@@ -23,17 +23,19 @@ import {
    VStack,
    FormLabel,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import Icon from '../../../components/Icon/Icon';
 import { history } from '../../../App';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import {
    updateUserAction,
    updateUserPasswordAction,
 } from '../../../redux/action/accountAction';
+import alert from '../../../settings/alert';
+import { renderUserRole, checkMatchedPassword } from '../../../settings/common';
+import { QAC, QAM, Staff } from '../../../settings/setting';
 const UpdateUser = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const dispatch = useDispatch();
@@ -64,32 +66,16 @@ const UpdateUser = () => {
       }),
       onSubmit: (values) => {
          let { id, newPwd, confirmPwd } = values;
-         if (checkPassword(newPwd, confirmPwd)) {
+         if (checkMatchedPassword(newPwd, confirmPwd)) {
             dispatch(updateUserPasswordAction(id, newPwd));
          } else {
-            toast.error(`Password does not match`, {
-               position: 'top-right',
-               autoClose: 1000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: false,
-               progress: undefined,
-               theme: 'colored',
-            });
+            alert.error(`Password does not match`, 'top-right');
          }
       },
    });
-   const renderUserRole = (role) => {
-      if (role === 'QAC') {
-         return 'Quality Assurance Coordinator';
-      } else if (role === 'QAM') {
-         return 'Quality Assurance Manager';
-      } else if (role === 'Staff') {
-         return 'Staff';
-      }
-   };
+
    const renderRoleInput = (role) => {
-      let roleArray = ['QAC', 'QAM', 'Staff'];
+      let roleArray = [QAC, QAM, Staff];
       roleArray = roleArray.filter((item) => {
          return item !== role;
       });
@@ -104,9 +90,7 @@ const UpdateUser = () => {
          );
       });
    };
-   const checkPassword = (pwd1, pwd2) => {
-      return pwd1 === pwd2;
-   };
+
    return (
       <>
          <Center>

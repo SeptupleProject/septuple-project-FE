@@ -92,7 +92,7 @@ export const AdminTemplate = (props) => {
                </NavLink>
             </>
          );
-      } else if (role === 'qaCoordinator') {
+      } else if (role === 'QAC') {
          return (
             <>
                <NavLink
@@ -121,7 +121,7 @@ export const AdminTemplate = (props) => {
                </NavLink>
             </>
          );
-      } else if (role === 'qaManager') {
+      } else if (role === 'QAM') {
          return (
             <>
                <NavLink
@@ -145,6 +145,18 @@ export const AdminTemplate = (props) => {
                   <div className='d-flex px-3 pb-2'>
                      <Icon content='fa-solid fa-server' />
                      <p className='ml-2'>Categories</p>
+                  </div>
+               </NavLink>
+               <div className='my-2'></div>
+               <NavLink
+                  className='list-group-item list-group-item-action p-0 mx-auto'
+                  data-toggle='list'
+                  role='tab'
+                  to='/academic-dashboard'
+               >
+                  <div className='d-flex px-3 pb-2'>
+                     <Icon content='fa-regular fa-clock' />
+                     <p className='ml-2'>Academic Year</p>
                   </div>
                </NavLink>
             </>

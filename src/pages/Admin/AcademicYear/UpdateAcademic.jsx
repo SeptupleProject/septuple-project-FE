@@ -1,22 +1,21 @@
 import React from 'react';
-import {
-   Input,
-   InputGroup,
-   InputLeftElement,
-   FormHelperText,
-} from '@chakra-ui/react';
+import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
 import Icon from '../../../components/Icon/Icon';
 import { Text } from '@chakra-ui/react';
 import ButtonBlue from '../../../components/Button/ButtonBlue';
 import moment from 'moment/moment';
 import { useFormik } from 'formik';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { Button } from '@chakra-ui/react';
 import { history } from '../../../App';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAcademicYearAction } from '../../../redux/action/academicYearAction';
+import {
+   createObjectDateToUpdate,
+   validateDateInThePast,
+} from '../../../settings/common';
 const UpdateAcademic = () => {
    const today = moment().format('YYYY-MM-DD');
    const [startDateInput, setStartDateInput] = useState('text');
@@ -30,24 +29,6 @@ const UpdateAcademic = () => {
    );
    let { name, startDate, endDate, ideaDeadline, id } = academicYearDetail;
 
-   const validateDateInThePast = (values) => {
-      let valid = false;
-      valid = values.startDate < values.endDate;
-      if (valid === false) {
-         toast.error(`Academic year is invalid`, {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-         });
-      }
-      return valid;
-   };
-
    const formik = useFormik({
       enableReinitialize: true,
       initialValues: {
@@ -58,56 +39,13 @@ const UpdateAcademic = () => {
       onSubmit: (values) => {
          let valid = false;
          valid = validateDateInThePast(values);
-         let dateToUpdate = {};
          if (valid) {
-            if (values.startDate == startDate && values.endDate == endDate) {
-               dateToUpdate = {
-                  id: id,
-                  name: values.name,
-                  startDate: moment(
-                     values.startDate,
-                     'DD.MM.YYYY HH:mm'
-                  ).toISOString(),
-                  endDate: moment(
-                     values.endDate,
-                     'DD.MM.YYYY HH:mm'
-                  ).toISOString(),
-               };
-            } else if (
-               values.startDate !== startDate &&
-               values.endDate !== endDate
-            ) {
-               dateToUpdate = {
-                  id: id,
-                  name: values.name,
-                  startDate: moment(values.startDate).toISOString(),
-                  endDate: moment(values.endDate).toISOString(),
-               };
-            } else if (
-               values.startDate == startDate &&
-               values.endDate !== endDate
-            ) {
-               dateToUpdate = {
-                  id: id,
-                  name: values.name,
-                  startDate: moment(
-                     values.startDate,
-                     'DD.MM.YYYY HH:mm'
-                  ).toISOString(),
-                  endDate: moment(values.endDate).toISOString(),
-               };
-            } else {
-               dateToUpdate = {
-                  id: id,
-                  name: values.name,
-                  startDate: moment(values.startDate).toISOString(),
-                  endDate: moment(
-                     values.endDate,
-                     'DD.MM.YYYY HH:mm'
-                  ).toISOString(),
-               };
-            }
-
+            let dateToUpdate = createObjectDateToUpdate(
+               id,
+               startDate,
+               endDate,
+               values
+            );
             dispatch(updateAcademicYearAction(id, dateToUpdate));
          }
       },

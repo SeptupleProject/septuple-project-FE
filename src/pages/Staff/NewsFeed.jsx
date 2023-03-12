@@ -5,6 +5,7 @@ import YourIdeaPost from '../../components/IdeaPost/YourIdeaPost';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { Helmet } from 'react-helmet';
+import { Staff } from '../../settings/setting';
 const NewsFeed = () => {
    const listOfIdeas = useSelector((state) => state.ideaReducer.listOfIdeas);
    const signedInAccount = useSelector(
@@ -42,7 +43,7 @@ const NewsFeed = () => {
          </Helmet>
          <div className=' staff-newsfeed pt-5'>
             <div style={{ width: '65%', margin: '0 auto' }}>
-               {signedInAccount.role === 'staff' ? <PostIdea /> : ''}
+               {signedInAccount.role === Staff ? <PostIdea /> : ''}
                <div className='mt-5'>{renderIdeas()}</div>
             </div>
             <ToastContainer />

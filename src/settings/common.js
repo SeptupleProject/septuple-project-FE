@@ -1,0 +1,172 @@
+import alert from './alert';
+import moment from 'moment';
+import { QAC, QAM, Staff } from './setting';
+
+export const renderUserRole = (role) => {
+   if (role === QAC) {
+      return 'Quality Assurance Coordinator';
+   } else if (role === QAM) {
+      return 'Quality Assurance Manager';
+   } else if (role === Staff) {
+      return 'Staff';
+   }
+};
+export const checkMatchedPassword = (pwd1, pwd2) => {
+   return pwd1 === pwd2;
+};
+export const validateEmptyDate = (values) => {
+   let valid = true;
+   let object = {
+      name: 'Name',
+      startDate: 'Start date',
+      endDate: 'End date',
+   };
+   for (const value in values) {
+      if (values[value] === '') {
+         for (const item in object) {
+            if (item === value) {
+               alert.error(`${object[item]} is empty`, 'top-right');
+            }
+         }
+         valid = false;
+      }
+   }
+   return valid;
+};
+export const validateDateInThePast = (values) => {
+   let valid = false;
+   const today = moment().format('YYYY-MM-DD');
+   valid =
+      values.startDate < values.endDate &&
+      values.startDate >= today &&
+      values.endDate >= today;
+   if (valid === false) {
+      alert.error(`Academic year is invalid`, 'top-right');
+   }
+   return valid;
+};
+export const createObjectDateToUpdate = (id, startDate, endDate, values) => {
+   let dateToUpdate = {};
+   if (values.startDate == startDate && values.endDate == endDate) {
+      dateToUpdate = {
+         id: id,
+         name: values.name,
+         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
+         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
+      };
+   } else if (values.startDate !== startDate && values.endDate !== endDate) {
+      dateToUpdate = {
+         id: id,
+         name: values.name,
+         startDate: moment(values.startDate).toISOString(),
+         endDate: moment(values.endDate).toISOString(),
+      };
+   } else if (values.startDate == startDate && values.endDate !== endDate) {
+      dateToUpdate = {
+         id: id,
+         name: values.name,
+         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
+         endDate: moment(values.endDate).toISOString(),
+      };
+   } else {
+      dateToUpdate = {
+         id: id,
+         name: values.name,
+         startDate: moment(values.startDate).toISOString(),
+         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
+      };
+   }
+   return dateToUpdate;
+};
+export const renderOptionDepartment = (array) => {
+   let arrayStaff = [];
+   array.map((item) => {
+      if (item.departmentName === '') {
+         let newStaff = {
+            label: item.email,
+            value: item.id,
+         };
+         arrayStaff.push(newStaff);
+      }
+   });
+   return arrayStaff;
+};
+export const renderOptionDepartmentUpdate = (array) => {
+   let arrayStaff = [];
+   array.map((item) => {
+      let newStaff = {
+         label: item.email,
+         value: item.id,
+      };
+      arrayStaff.push(newStaff);
+   });
+   return arrayStaff;
+};
+export const renderDefaultOptionDepartment = (array, role) => {
+   let arrayToRender = [];
+   if (array !== undefined) {
+      array.map((item) => {
+         if (item.role === role) {
+            let newObject = {
+               label: item.email,
+               value: item.id,
+            };
+            arrayToRender.push(newObject);
+         }
+      });
+   }
+   return arrayToRender;
+};
+export const validateDepartmentInput = (
+   coordinatorToAdd,
+   staffToAdd,
+   formik
+) => {
+   if (coordinatorToAdd === undefined && formik.errors.name) {
+      alert.error('Please choose coordinator');
+      alert.error(formik.errors.name);
+   } else if (coordinatorToAdd === undefined) {
+      alert.error('Please choose coordinator');
+   } else if (formik.errors.name) {
+      alert.error(formik.errors.name);
+   } else {
+      let coordinator = {
+         id: coordinatorToAdd.value,
+      };
+      formik.initialValues.users.push(coordinator);
+      let staff = {};
+      if (staffToAdd.length > 0) {
+         staffToAdd.map((item) => {
+            staff = {
+               id: item.value,
+            };
+            formik.initialValues.users.push(staff);
+         });
+      }
+      formik.handleSubmit();
+   }
+};
+export const validateDepartmentInputUpdate = (
+   coordinatorToAdd,
+   staffToAdd,
+   formik
+) => {
+   let initialCoordinator = formik.initialValues.users.filter((item) => {
+      return item.role !== Staff;
+   });
+   if (initialCoordinator !== coordinatorToAdd) {
+      formik.initialValues.users = [...staffToAdd].concat(coordinatorToAdd);
+   } else {
+      formik.initialValues.users = [...staffToAdd].concat(initialCoordinator);
+   }
+};
+export const convertUserToIdArray = (values) => {
+   let array = [];
+   for (const item in values.users) {
+      let newObject = {
+         id: values.users[item].value,
+      };
+      array.push(newObject);
+   }
+   return array;
+};
