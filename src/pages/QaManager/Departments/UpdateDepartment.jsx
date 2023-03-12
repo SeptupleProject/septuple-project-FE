@@ -41,6 +41,10 @@ const UpdateDepartment = () => {
    const [coordinatorToAdd, setCoordinatorToAdd] = useState(
       renderDefaultOptionDepartment(departmentDetail.users, QAC)
    );
+   const staffList = useSelector((state) => state.accountReducer.staffList);
+   const coordinatorList = useSelector(
+      (state) => state.accountReducer.coordinatorList
+   );
    const formik = useFormik({
       enableReinitialize: true,
       initialValues: {
@@ -49,15 +53,12 @@ const UpdateDepartment = () => {
          users: departmentDetail.users,
       },
       onSubmit: (values) => {
-         values.users = convertUserToIdArray(values);
+         values.users = convertUserToIdArray(
+            staffToAdd.concat(coordinatorToAdd)
+         );
          dispatch(updateDepartmentAction(values.id, values));
       },
    });
-
-   const staffList = useSelector((state) => state.accountReducer.staffList);
-   const coordinatorList = useSelector(
-      (state) => state.accountReducer.coordinatorList
-   );
 
    const handleOnStaffInput = (e) => {
       setStaffToAdd(e);
@@ -105,9 +106,9 @@ const UpdateDepartment = () => {
                            }
                         />
                         <Input
-                           disabled={
-                              departmentDetail.users.length > 0 ? true : false
-                           }
+                           // disabled={
+                           //    departmentDetail.users.length > 0 ? true : false
+                           // }
                            onChange={formik.handleChange}
                            name='name'
                            size='md'
@@ -146,9 +147,6 @@ const UpdateDepartment = () => {
                         placeholder='Including Staff'
                         onChange={handleOnStaffInput}
                         options={renderOptionDepartmentUpdate(staffList)}
-                        onClick={() => {
-                           alert('hehe');
-                        }}
                      />
                   </FormControl>
                </GridItem>
