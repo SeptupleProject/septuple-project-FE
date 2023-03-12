@@ -8,46 +8,40 @@ import {
    loginService,
    updateUserPasswordService,
    updateUserService,
+   getListUserByRoleService,
 } from '../../services/accountService';
 import {
    loginReducer,
    logoutReducer,
    getListUserReducer,
    getUserDetailReducer,
+   getlistStaffReducer,
+   getlistCoordinatorReducer,
 } from '../reducers/accountReducer';
 import jwt from 'jwt-decode';
-import { ACCESS_TOKEN } from '../../settings/setting';
+import {
+   ACCESS_TOKEN,
+   emaillKey,
+   QAC,
+   roleKey,
+   Staff,
+} from '../../settings/setting';
+import alert from '../../settings/alert';
 
 export const loginAction = (account) => {
    return async (dispatch) => {
       try {
          let result = await loginService(account);
-         toast.success('Log in successfully', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
-
+         alert.success('Login successfully', null, Slide);
          localStorage.setItem(ACCESS_TOKEN, result.data);
          const decodeAccessToken = jwt(result.data);
 
          let roleFromAPI = '',
             emailFromAPI = '';
-
          for (const key in decodeAccessToken) {
-            if (
-               key ===
-               `http://schemas.microsoft.com/ws/2008/06/identity/claims/role`
-            ) {
+            if (key === roleKey) {
                roleFromAPI = decodeAccessToken[key];
-            } else if (
-               key ===
-               `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress`
-            ) {
+            } else if (key === emaillKey) {
                emailFromAPI = decodeAccessToken[key];
             }
          }
@@ -55,7 +49,6 @@ export const loginAction = (account) => {
             email: emailFromAPI,
             role: roleFromAPI,
          };
-
          localStorage.setItem(
             'signedInAccount',
             JSON.stringify(signedInAccount)
@@ -65,16 +58,7 @@ export const loginAction = (account) => {
             history.replace('/newsfeed');
          }, '1000');
       } catch (error) {
-         toast.error(`${error}`, {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-            transition: Bounce,
-         });
+         alert.error(error);
       }
    };
 };
@@ -94,7 +78,7 @@ export const getListUserAction = () => {
          let result = await getListUserService();
          dispatch(getListUserReducer(result.data));
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };
@@ -104,21 +88,27 @@ export const getUserDetailAction = (id) => {
       try {
          let result = await getUserDetailService(id);
          dispatch(getUserDetailReducer(result.data));
-         toast.success('Wait a minute !', {
-            position: 'top-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'dark',
-            transition: Slide,
-         });
+         alert.success('Wait a minute !', null, Slide, 'dark');
          setTimeout(() => {
             history.replace('/user-dashboard/update-user');
          }, 1000);
       } catch (error) {
-         console.log(error);
+         alert.error(error);
+      }
+   };
+};
+
+export const getlistUserByRoleAction = (role) => {
+   return async (dispatch) => {
+      try {
+         let result = await getListUserByRoleService(role);
+         if (role === Staff) {
+            dispatch(getlistStaffReducer(result.data.data));
+         } else if (role === QAC) {
+            dispatch(getlistCoordinatorReducer(result.data.data));
+         }
+      } catch (error) {
+         alert.error(error);
       }
    };
 };
@@ -127,29 +117,12 @@ export const createUserAction = (data) => {
    return async (dispatch) => {
       try {
          await createUserService(data);
-         toast.success('Account has been created', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
-
+         alert.success('Account has been created');
          setTimeout(() => {
             history.replace('/user-dashboard');
          }, '1000');
       } catch (error) {
-         toast.error(`${error}`, {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.error(error);
       }
    };
 };
@@ -158,21 +131,12 @@ export const updateUserAction = (id, data) => {
    return async (dispatch) => {
       try {
          await updateUserService(id, data);
-         toast.success(`Updated successfully`, {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-            transition: Slide,
-         });
+         alert.success('Updated successfully', null, Slide);
          setTimeout(() => {
             history.replace('/user-dashboard');
          }, '1000');
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };
@@ -181,39 +145,23 @@ export const updateUserPasswordAction = (id, data) => {
    return async () => {
       try {
          await updateUserPasswordService(id, data);
-         toast.success('Password changed successfully', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.success('Password changed successfully', null);
          setTimeout(() => {
             history.replace('/user-dashboard');
          }, 1000);
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };
+
 export const deleteUserAction = (id) => {
    return async (dispatch) => {
       try {
          await deleteUserService(id);
-         toast.error('Account has been removed', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'dark',
-            transition: Slide,
-         });
+         alert.error('Account has been removed', null, Slide, 'dark');
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };

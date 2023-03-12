@@ -1,5 +1,4 @@
 import { http } from './configAPI';
-
 export const getAllAcademicYearService = () => {
    return http.get('api/AcademicYears');
 };

@@ -45,7 +45,7 @@ const Header = () => {
                </li>
             </>
          );
-      } else if (role === 'qaCoordinator') {
+      } else if (role === 'QAC') {
          return (
             <>
                <li className='nav-item active'>
@@ -53,7 +53,7 @@ const Header = () => {
                      className='nav-link text-dark'
                      to='/qacoordinator-dashboard'
                   >
-                     Dashboard
+                     Statistics Dashboard
                   </NavLink>
                </li>
                <li className='nav-item active'>
@@ -61,20 +61,28 @@ const Header = () => {
                      className='nav-link text-dark'
                      to='/staff-management'
                   >
-                     Staff Management
+                     Staff
                   </NavLink>
                </li>
             </>
          );
-      } else if (role === 'qaManager') {
+      } else if (role === 'QAM') {
          return (
             <>
                <li className='nav-item active'>
                   <NavLink
                      className='nav-link text-dark'
+                     to='/academic-dashboard'
+                  >
+                     Academic Year
+                  </NavLink>
+               </li>
+               <li className='nav-item active'>
+                  <NavLink
+                     className='nav-link text-dark'
                      to='/department-dashboard'
                   >
-                     Deparment Management
+                     Deparment
                   </NavLink>
                </li>
                <li className='nav-item active'>
@@ -82,7 +90,7 @@ const Header = () => {
                      className='nav-link text-dark'
                      to='/categories-dashboard'
                   >
-                     Categories Management
+                     Category
                   </NavLink>
                </li>
             </>

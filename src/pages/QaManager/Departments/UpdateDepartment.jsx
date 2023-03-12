@@ -17,36 +17,59 @@ import {
 import Icon from '../../../components/Icon/Icon';
 import { history } from '../../../App';
 import makeAnimated from 'react-select/animated';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import {
+   convertUserToIdArray,
+   renderDefaultOptionDepartment,
+   renderOptionDepartmentUpdate,
+} from '../../../settings/common';
+import { useState } from 'react';
+import { QAC, Staff } from '../../../settings/setting';
+import { validateDepartmentInputUpdate } from '../../../settings/common';
+import { updateDepartmentAction } from '../../../redux/action/departmentAction';
+import { ToastContainer } from 'react-toastify';
 const animatedComponents = makeAnimated();
-
-const coordinators = [
-   { value: 'segun', label: 'segun.adebayo' },
-   { value: 'mark', label: 'mar_kchandler' },
-   { value: 'lazar', label: 'lazarmikolov' },
-   { value: 'javier', label: 'javieralaves' },
-];
-
-const staff = [
-   { value: 'segun', label: 'segun.adebayo' },
-   { value: 'mark', label: 'mar_kchandler' },
-   { value: 'lazar', label: 'lazarmikolov' },
-   { value: 'javier', label: 'javieralaves' },
-   { value: 'bel', label: 'belfigula' },
-   { value: 'joy', label: 'joyniifer' },
-   { value: 'jake', label: 'jakegillen' },
-   { value: 'violet', label: 'violetbo' },
-   { value: 'aldous', label: 'aldousharding' },
-   { value: 'angel', label: 'angelolsen' },
-   { value: 'faye', label: 'fayewebster' },
-   { value: 'julian', label: 'julianbaker' },
-   { value: 'lucy', label: 'lucydasus' },
-   { value: 'maggie', label: 'maggierogers' },
-   { value: 'aurora', label: 'auroraaknes' },
-   { value: 'orla', label: 'orlagartland' },
-];
-
 const UpdateDepartment = () => {
+   const dispatch = useDispatch();
+   const departmentDetail = useSelector(
+      (state) => state.departmentReducer.departmentDetail
+   );
+   const [staffToAdd, setStaffToAdd] = useState(
+      renderDefaultOptionDepartment(departmentDetail.users, Staff)
+   );
+   const [coordinatorToAdd, setCoordinatorToAdd] = useState(
+      renderDefaultOptionDepartment(departmentDetail.users, QAC)
+   );
+   const formik = useFormik({
+      enableReinitialize: true,
+      initialValues: {
+         id: departmentDetail.id,
+         name: departmentDetail.name,
+         users: departmentDetail.users,
+      },
+      onSubmit: (values) => {
+         values.users = convertUserToIdArray(values);
+         dispatch(updateDepartmentAction(values.id, values));
+      },
+   });
+
+   const staffList = useSelector((state) => state.accountReducer.staffList);
+   const coordinatorList = useSelector(
+      (state) => state.accountReducer.coordinatorList
+   );
+
+   const handleOnStaffInput = (e) => {
+      setStaffToAdd(e);
+   };
+   const handleOnCoordinatorInput = (e) => {
+      setCoordinatorToAdd(e);
+   };
+   const handleOnUpdate = () => {
+      validateDepartmentInputUpdate(coordinatorToAdd, staffToAdd, formik);
+      formik.handleSubmit();
+   };
+
    return (
       <Center>
          <Card
@@ -82,8 +105,13 @@ const UpdateDepartment = () => {
                            }
                         />
                         <Input
+                           disabled={
+                              departmentDetail.users.length > 0 ? true : false
+                           }
+                           onChange={formik.handleChange}
+                           name='name'
                            size='md'
-                           placeholder='Department Name'
+                           placeholder={formik.initialValues.name}
                            variant='outline'
                         />
                      </InputGroup>
@@ -94,8 +122,13 @@ const UpdateDepartment = () => {
                      <FormLabel>QA Coordinator</FormLabel>
                      <Select
                         closeMenuOnSelect={false}
-                        options={coordinators}
+                        defaultValue={renderDefaultOptionDepartment(
+                           formik.initialValues.users,
+                           QAC
+                        )}
+                        options={renderOptionDepartmentUpdate(coordinatorList)}
                         placeholder='QA Coordinator'
+                        onChange={handleOnCoordinatorInput}
                      />
                   </FormControl>
                </GridItem>
@@ -106,8 +139,16 @@ const UpdateDepartment = () => {
                         closeMenuOnSelect={false}
                         components={animatedComponents}
                         isMulti
-                        options={staff}
+                        defaultValue={renderDefaultOptionDepartment(
+                           formik.initialValues.users,
+                           Staff
+                        )}
                         placeholder='Including Staff'
+                        onChange={handleOnStaffInput}
+                        options={renderOptionDepartmentUpdate(staffList)}
+                        onClick={() => {
+                           alert('hehe');
+                        }}
                      />
                   </FormControl>
                </GridItem>
@@ -126,6 +167,7 @@ const UpdateDepartment = () => {
                         <Button
                            variant='solid'
                            colorScheme='blue'
+                           onClick={handleOnUpdate}
                         >
                            Update
                         </Button>
@@ -133,6 +175,7 @@ const UpdateDepartment = () => {
                   </Center>
                </GridItem>
             </Grid>
+            <ToastContainer />
          </Card>
       </Center>
    );

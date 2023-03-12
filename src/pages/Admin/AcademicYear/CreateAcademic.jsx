@@ -10,8 +10,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { createNewAcademicYearAction } from '../../../redux/action/academicYearAction';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import moment from 'moment/moment';
+import {
+   validateEmptyDate,
+   validateDateInThePast,
+} from '../../../settings/common';
 const CreateAcademic = () => {
    const today = moment().format('YYYY-MM-DD');
    const [startDateInput, setStartDateInput] = useState('text');
@@ -21,52 +25,6 @@ const CreateAcademic = () => {
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
-   const validateEmptyInput = (values) => {
-      let valid = true;
-      let object = {
-         name: 'Name',
-         startDate: 'Start date',
-         endDate: 'End date',
-      };
-      for (const value in values) {
-         if (values[value] === '') {
-            for (const item in object) {
-               if (item === value) {
-                  toast.error(`${object[item]} is empty`, {
-                     position: 'top-right',
-                     autoClose: 1000,
-                     hideProgressBar: false,
-                     closeOnClick: true,
-                     pauseOnHover: false,
-                     draggable: true,
-                     progress: undefined,
-                     theme: 'colored',
-                  });
-               }
-            }
-            valid = false;
-         }
-      }
-      return valid;
-   };
-   const validateDateInThePast = (values) => {
-      let valid = false;
-      valid = moment(values.startDate) < moment(values.endDate);
-      if (valid === false) {
-         toast.error(`Academic year is invalid`, {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-         });
-      }
-      return valid;
-   };
-
    const formik = useFormik({
       initialValues: {
          name: '',
@@ -75,7 +33,7 @@ const CreateAcademic = () => {
       },
       onSubmit: (values) => {
          let valid = false;
-         valid = validateEmptyInput(values) && validateDateInThePast(values);
+         valid = validateEmptyDate(values) && validateDateInThePast(values);
          if (valid) {
             values = {
                name: values.name,

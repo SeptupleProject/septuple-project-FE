@@ -17,6 +17,8 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useRef } from 'react';
 import { createUserAction } from '../../../redux/action/accountAction';
+import alert from '../../../settings/alert';
+import { QAC, QAM, Staff } from '../../../settings/setting';
 const CreateUser = () => {
    const dispatch = useDispatch();
    const emailInput = useRef(null);
@@ -43,16 +45,7 @@ const CreateUser = () => {
    const handleOnClick = () => {
       if (Object.keys(formik.errors).length > 0) {
          for (const error in formik.errors) {
-            toast.error(`${formik.errors[error]}`, {
-               position: 'top-right',
-               autoClose: 1000,
-               hideProgressBar: false,
-               closeOnClick: true,
-               pauseOnHover: false,
-               draggable: true,
-               progress: undefined,
-               theme: 'colored',
-            });
+            alert.error(formik.errors[error], 'top-right');
          }
       } else {
          formik.handleSubmit();
@@ -127,9 +120,9 @@ const CreateUser = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                      >
-                        <option value='Staff'>Staff</option>
-                        <option value='QAC'>QA Coordinator</option>
-                        <option value='QAM'>QA Manager</option>
+                        <option value={Staff}>Staff</option>
+                        <option value={QAC}>QA Coordinator</option>
+                        <option value={QAM}>QA Manager</option>
                      </Select>
                   </GridItem>
                   <GridItem colSpan={4}>

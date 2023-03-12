@@ -1,7 +1,9 @@
 import { http } from './configAPI';
-
 export const getListUserService = () => {
    return http.get('api/Users');
+};
+export const getListUserByRoleService = (role) => {
+   return http.get(`api/Users/list?Role=${role}`);
 };
 export const getUserDetailService = (id) => {
    return http.get(`api/Users/${id}`);

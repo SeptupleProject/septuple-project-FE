@@ -1,6 +1,6 @@
 import { history } from '../../App';
-import { Bounce, Slide, toast, ToastContainer } from 'react-toastify';
-
+import { Slide} from 'react-toastify';
+import alert from '../../settings/alert';
 import {
    createNewAcademicYearService,
    deleteAcademicYearService,
@@ -27,7 +27,11 @@ export const getAcademicYearDetailAction = (id) => {
    return async (dispatch) => {
       try {
          let result = await getAcademicYearDetailService(id);
+         alert.success('Wait a minute !', null, Slide, 'dark');
          dispatch(getAcademicYearDetailReducer(result.data));
+         setTimeout(() => {
+            history.push('/academic-dashboard/update-academic');
+         }, 1000);
       } catch (error) {
          console.log(error);
       }
@@ -37,28 +41,12 @@ export const createNewAcademicYearAction = (data) => {
    return async (dispatch) => {
       try {
          await createNewAcademicYearService(data);
-         toast.success('Academic year created', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.success('Academic year created');
          setTimeout(() => {
             history.replace('/academic-dashboard');
          }, 1000);
       } catch (error) {
-         toast.error(`${error}`, {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.error(error);
       }
    };
 };
@@ -66,20 +54,12 @@ export const updateAcademicYearAction = (id, data) => {
    return async (dispatch) => {
       try {
          await updateAcademicYearService(id, data);
-         toast.success('Academic year updated', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.success('Academic year updated');
          setTimeout(() => {
             history.replace('/academic-dashboard');
          }, 1000);
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };
@@ -87,18 +67,9 @@ export const deleteAcademicYearAction = (id) => {
    return async (dispatch) => {
       try {
          await deleteAcademicYearService(id);
-         toast.success('Academic year removed', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'dark',
-            transition: Slide,
-         });
+         alert.error('Academic year removed', null, Slide, 'dark');
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };

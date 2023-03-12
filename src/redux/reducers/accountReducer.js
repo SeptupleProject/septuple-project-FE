@@ -12,6 +12,8 @@ const initialState = {
    signedInAccount: userSignedIn,
    userList: [],
    userDetail: {},
+   staffList: [],
+   coordinatorList: [],
 };
 
 const accountReducer = createSlice({
@@ -31,6 +33,12 @@ const accountReducer = createSlice({
       getUserDetailReducer: (state, action) => {
          state.userDetail = action.payload;
       },
+      getlistStaffReducer: (state, action) => {
+         state.staffList = action.payload;
+      },
+      getlistCoordinatorReducer: (state, action) => {
+         state.coordinatorList = action.payload;
+      },
    },
 });
 
@@ -39,6 +47,8 @@ export const {
    loginReducer,
    getListUserReducer,
    getUserDetailReducer,
+   getlistStaffReducer,
+   getlistCoordinatorReducer,
 } = accountReducer.actions;
 
 export default accountReducer.reducer;

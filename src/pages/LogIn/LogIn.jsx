@@ -23,7 +23,11 @@ const LogIn = () => {
          dispatch(loginAction(values));
       },
    });
-
+   const handleEnterLogin = (event) => {
+      if (event.keyCode === 13) {
+         formik.handleSubmit();
+      }
+   };
    return (
       <>
          <Helmet>
@@ -44,6 +48,7 @@ const LogIn = () => {
                            onChange={formik.handleChange}
                            onBlur={formik.handleBlur}
                            name='email'
+                           onKeyUp={handleEnterLogin}
                         />
                      </div>
                      {formik.errors.email ? (
@@ -65,6 +70,7 @@ const LogIn = () => {
                            placeholder='Password'
                            type='password'
                            name='password'
+                           onKeyUp={handleEnterLogin}
                         />
                      </div>
                      {formik.errors.password ? (
