@@ -18,21 +18,16 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-
 import Icon from '../../../components/Icon/Icon';
 import { history } from '../../../App';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import makeAnimated from 'react-select/animated';
-import { getlistUserByRoleAction } from '../../../redux/action/accountAction';
-import alert from '../../../settings/alert';
 import { ToastContainer } from 'react-toastify';
 import { createDepartmentAction } from '../../../redux/action/departmentAction';
 import {
    renderOptionDepartment,
    validateDepartmentInput,
 } from '../../../settings/common';
-
 const animatedComponents = makeAnimated();
 const CreateDepartment = () => {
    const [staffToAdd, setStaffToAdd] = useState([]);
@@ -49,7 +44,9 @@ const CreateDepartment = () => {
          users: [],
       },
       validationSchema: Yup.object({
-         name: Yup.string().required('Name cannot be empty'),
+         name: Yup.string()
+            .required('Name cannot be empty')
+            .max(20, `Department name is too long`),
       }),
       onSubmit: (values) => {
          dispatch(createDepartmentAction(values));
@@ -101,6 +98,7 @@ const CreateDepartment = () => {
                            }
                         />
                         <Input
+                         
                            type='text'
                            name='name'
                            size='md'

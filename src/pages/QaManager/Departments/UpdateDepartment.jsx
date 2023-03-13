@@ -29,6 +29,7 @@ import { QAC, Staff } from '../../../settings/setting';
 import { validateDepartmentInputUpdate } from '../../../settings/common';
 import { updateDepartmentAction } from '../../../redux/action/departmentAction';
 import { ToastContainer } from 'react-toastify';
+import * as Yup from 'yup';
 const animatedComponents = makeAnimated();
 const UpdateDepartment = () => {
    const dispatch = useDispatch();
@@ -52,6 +53,9 @@ const UpdateDepartment = () => {
          name: departmentDetail.name,
          users: departmentDetail.users,
       },
+      validationSchema: Yup.object({
+         name: Yup.string().max(20, `Department name is too long`),
+      }),
       onSubmit: (values) => {
          values.users = convertUserToIdArray(
             staffToAdd.concat(coordinatorToAdd)

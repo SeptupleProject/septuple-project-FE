@@ -15,6 +15,7 @@ import {
    Button,
 } from '@chakra-ui/react';
 import { logoutAction } from '../redux/action/accountAction';
+import { Admin, QAC, QAM } from '../settings/setting';
 export const AdminTemplate = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
@@ -64,7 +65,7 @@ export const AdminTemplate = (props) => {
    };
 
    const renderNavBarByRole = (role) => {
-      if (role === 'Admin') {
+      if (role === Admin) {
          return (
             <>
                <NavLink
@@ -92,7 +93,7 @@ export const AdminTemplate = (props) => {
                </NavLink>
             </>
          );
-      } else if (role === 'QAC') {
+      } else if (role === QAC) {
          return (
             <>
                <NavLink
@@ -121,7 +122,7 @@ export const AdminTemplate = (props) => {
                </NavLink>
             </>
          );
-      } else if (role === 'QAM') {
+      } else if (role === QAM) {
          return (
             <>
                <NavLink

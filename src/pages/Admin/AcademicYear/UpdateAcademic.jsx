@@ -14,12 +14,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateAcademicYearAction } from '../../../redux/action/academicYearAction';
 import {
    createObjectDateToUpdate,
-   validateDateInThePast,
+   validateDateToUpdate,
+   validateIdeaDeadline,
 } from '../../../settings/common';
+import { QAM } from '../../../settings/setting';
 const UpdateAcademic = () => {
    const today = moment().format('YYYY-MM-DD');
    const [startDateInput, setStartDateInput] = useState('text');
    const [endDateInput, setEndDateInput] = useState('text');
+   const [ideaDateInput, setIdeaDateInput] = useState('text');
    const dispatch = useDispatch();
    const academicYearDetail = useSelector(
       (state) => state.academicYearReducer.academicYearDetail
@@ -35,10 +38,11 @@ const UpdateAcademic = () => {
          name: name,
          startDate: startDate,
          endDate: endDate,
+         ideaDeadline: ideaDeadline,
       },
       onSubmit: (values) => {
          let valid = false;
-         valid = validateDateInThePast(values);
+         valid = validateDateToUpdate(values, formik.initialValues);
          if (valid) {
             let dateToUpdate = createObjectDateToUpdate(
                id,
@@ -54,9 +58,35 @@ const UpdateAcademic = () => {
    const formikIdea = useFormik({
       enableReinitialize: true,
       initialValues: {
+         name: name,
+         startDate: startDate,
+         endDate: endDate,
          ideaDeadline: ideaDeadline,
       },
-      onSubmit: (values) => {},
+      onSubmit: (values) => {
+         if (values.ideaDeadline !== 'Invalid date') {
+            let valid = validateIdeaDeadline(
+               values.ideaDeadline,
+               startDate,
+               endDate
+            );
+            if (valid) {
+               let dateToUpdate = createObjectDateToUpdate(
+                  id,
+                  startDate,
+                  endDate,
+                  values
+               );
+               dateToUpdate = {
+                  ...dateToUpdate,
+                  ideaDeadline: `${moment(values.ideaDeadline).toISOString()}`,
+               };
+               dispatch(updateAcademicYearAction(id, dateToUpdate));
+            }
+         } else {
+            alert.warning('Please pick a date', 'top-right', null, 'dark');
+         }
+      },
    });
 
    return (
@@ -90,9 +120,7 @@ const UpdateAcademic = () => {
                         }
                      />
                      <Input
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? true : false
-                        }
+                        isDisabled={signedInAccount.role === QAM ? true : false}
                         name='name'
                         type='text'
                         placeholder={formik.initialValues.name}
@@ -112,10 +140,7 @@ const UpdateAcademic = () => {
                         }
                      />
                      <Input
-                        min={today}
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? true : false
-                        }
+                        isDisabled={signedInAccount.role === QAM ? true : false}
                         name='startDate'
                         placeholder={formik.initialValues.startDate}
                         size='md'
@@ -142,10 +167,7 @@ const UpdateAcademic = () => {
                         }
                      />
                      <Input
-                        min={today}
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? true : false
-                        }
+                        isDisabled={signedInAccount.role === QAM ? true : false}
                         name='endDate'
                         placeholder={formik.initialValues.endDate}
                         onChange={formik.handleChange}
@@ -172,18 +194,22 @@ const UpdateAcademic = () => {
                         }
                      />
                      <Input
-                        min={today}
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? false : true
-                        }
+                        type={ideaDateInput}
+                        isDisabled={signedInAccount.role === QAM ? false : true}
                         name='ideaDeadline'
                         placeholder={
                            formikIdea.initialValues.ideaDeadline ===
                            'Invalid date'
-                              ? 'Not set yet'
-                              : formik.initialValues.ideaDeadline
+                              ? 'Set Idea Deadline'
+                              : formikIdea.initialValues.ideaDeadline
                         }
-                        onChange={formik.handleChange}
+                        onChange={formikIdea.handleChange}
+                        onFocus={() => {
+                           setIdeaDateInput('date');
+                        }}
+                        onBlur={() => {
+                           setIdeaDateInput('text');
+                        }}
                      />
                   </InputGroup>
                </GridItem>
@@ -199,16 +225,29 @@ const UpdateAcademic = () => {
                   >
                      Cancel
                   </Button>
-                  <div
-                     className='d-inline'
-                     onClick={formik.handleSubmit}
-                  >
-                     <ButtonBlue
-                        className='ml-3'
-                        padding='9px 25px'
-                        text='Update'
-                     />
-                  </div>
+                  {signedInAccount.role === QAM ? (
+                     <div
+                        className='d-inline'
+                        onClick={formikIdea.handleSubmit}
+                     >
+                        <ButtonBlue
+                           className='ml-3'
+                           padding='9px 25px'
+                           text='Update'
+                        />
+                     </div>
+                  ) : (
+                     <div
+                        className='d-inline'
+                        onClick={formik.handleSubmit}
+                     >
+                        <ButtonBlue
+                           className='ml-3'
+                           padding='9px 25px'
+                           text='Update'
+                        />
+                     </div>
+                  )}
                </GridItem>
             </Grid>
             <ToastContainer />

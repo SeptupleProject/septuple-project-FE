@@ -41,9 +41,10 @@ const Department = (props) => {
       <div className='deparment-infor px-4 py-3'>
          <div className='d-flex align-middle justify-content-between'>
             <Heading
-               className='text-link mt-2'
+               className='text-link'
                as='b'
-               size='md'
+               fontSize={30}
+               size='lg'
                onClick={handleOnUpdateButton}
             >
                {props.text}
@@ -133,7 +134,7 @@ const Department = (props) => {
                as='cite'
                className='text-department-2 text-right mt-1 m-0'
             >
-               Managed by: {props.user}
+               Managed by: <b>{props.user}</b>
             </Text>
          </div>
       </div>

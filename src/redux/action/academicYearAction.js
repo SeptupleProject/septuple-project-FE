@@ -1,5 +1,5 @@
 import { history } from '../../App';
-import { Slide} from 'react-toastify';
+import { Slide } from 'react-toastify';
 import alert from '../../settings/alert';
 import {
    createNewAcademicYearService,
@@ -55,6 +55,8 @@ export const updateAcademicYearAction = (id, data) => {
       try {
          await updateAcademicYearService(id, data);
          alert.success('Academic year updated');
+         let result = await getAllAcademicYearService();
+         dispatch(getAllAcademicYearReducer(result.data.data));
          setTimeout(() => {
             history.replace('/academic-dashboard');
          }, 1000);
@@ -68,6 +70,10 @@ export const deleteAcademicYearAction = (id) => {
       try {
          await deleteAcademicYearService(id);
          alert.error('Academic year removed', null, Slide, 'dark');
+         let result = await getAllAcademicYearService();
+         setTimeout(() => {
+            dispatch(getAllAcademicYearReducer(result.data.data));
+         }, 700);
       } catch (error) {
          alert.error(error);
       }
