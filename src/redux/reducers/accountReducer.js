@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { current } from '@reduxjs/toolkit';
-import { history } from '../../App';
 
 let userSignedIn = '';
 
@@ -25,6 +23,11 @@ const accountReducer = createSlice({
       },
       logoutReducer: (state, action) => {
          state.signedInAccount = '';
+         state.userList = [];
+         state.staffList = [];
+         state.coordinatorList = [];
+         state.userList = [];
+         state.userDetail = {};
       },
       getListUserReducer: (state, action) => {
          let { data } = action.payload;

@@ -11,57 +11,49 @@ import {
    Td,
    TableContainer,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Staff } from '../../settings/setting';
 import { useSelector, useDispatch } from 'react-redux';
-import { getListUserAction } from '../../redux/action/accountAction';
+import { getlistUserByRoleAction } from '../../redux/action/accountAction';
 import { useEffect } from 'react';
+import { getUserDetailAction } from '../../redux/action/accountAction';
+import { ToastContainer } from 'react-toastify';
+import Encouragement from '../../components/Encouragement/Encouragement';
 const StaffManagement = () => {
-   const [bulb, setBulb] = useState(false);
-   const userList = useSelector((state) => state.accountReducer.userList);
+   const staffList = useSelector((state) => state.accountReducer.staffList);
+   const signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+   const userDetail = useSelector((state) => state.accountReducer.userDetail);
+   console.log(userDetail);
    const dispatch = useDispatch();
-   //  useEffect(() => {
-   //     dispatch(getListUserAction());
-   //  }, [userList]);
+   useEffect(() => {
+      dispatch(getUserDetailAction(signedInAccount.id));
+      dispatch(getlistUserByRoleAction(Staff));
+   }, []);
 
    const renderUserList = () => {
-      if (userList.length === 0) {
-         return userList.map((item) => {
-            console.log(item);
-            return (
-               <Tr>
-                  <Td>Segun.adebayo</Td>
-                  <Td>10</Td>
-                  <Td>50</Td>
-                  <Td>
-                     <div
-                        className='text-center w-50'
-                        onClick={() => {
-                           if (!bulb) {
-                              setBulb(!bulb);
-                           }
-                           setTimeout(() => {
-                              setBulb(false);
-                           }, 5000);
-                        }}
-                     >
-                        <Icon
-                           color='#D7B12A'
-                           fontSize='20px'
-                           content={
-                              bulb
-                                 ? 'fa-solid fa-lightbulb'
-                                 : 'fa-regular fa-lightbulb'
-                           }
-                        />
-                     </div>
-                  </Td>
-               </Tr>
-            );
+      if (staffList.length > 0 && userDetail.email !== '') {
+         return staffList.map((item) => {
+            if (item.departmentName === userDetail.department.name) {
+               return (
+                  <Tr key={item.id}>
+                     <Td className='text-center'>{item.email}</Td>
+                     <Td className='text-center'>
+                        {item.ideas ? item.email : 0}
+                     </Td>
+                     <Td className='text-center'>
+                        {item.comments ? item.comments : 0}
+                     </Td>
+                     <Td>
+                        <Encouragement email={item.email} />
+                     </Td>
+                  </Tr>
+               );
+            }
          });
-      } else {
-         return <p>No user in department</p>;
       }
    };
+
    return (
       <>
          <div className='mt-3'>
@@ -95,18 +87,27 @@ const StaffManagement = () => {
          </div>
          <div className='user-table-list'>
             <TableContainer className='table-user'>
-               <Table size='md'>
-                  <Thead>
-                     <Tr>
-                        <Th>Email</Th>
-                        <Th>Ideas Posted</Th>
-                        <Th>Comments Made</Th>
-                        <Th>Send Encouragement</Th>
-                     </Tr>
-                  </Thead>
-                  <Tbody>{renderUserList()}</Tbody>
-               </Table>
+               {staffList.length > 0 ? (
+                  <Table size='md'>
+                     <Thead>
+                        <Tr>
+                           <Th className='text-center'>Email</Th>
+                           <Th className='text-center'>Ideas Posted</Th>
+                           <Th className='text-center'>Comments Made</Th>
+                           <Th className='text-center'>Send Encouragement</Th>
+                        </Tr>
+                     </Thead>
+                     <Tbody>{renderUserList()}</Tbody>
+                  </Table>
+               ) : (
+                  <>
+                     <span className='text-center d-block title-3 my-5'>
+                        No staff available
+                     </span>
+                  </>
+               )}
             </TableContainer>
+            <ToastContainer />
          </div>
       </>
    );

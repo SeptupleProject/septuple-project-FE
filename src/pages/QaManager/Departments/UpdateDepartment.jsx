@@ -36,6 +36,7 @@ const UpdateDepartment = () => {
    const departmentDetail = useSelector(
       (state) => state.departmentReducer.departmentDetail
    );
+
    const [staffToAdd, setStaffToAdd] = useState(
       renderDefaultOptionDepartment(departmentDetail.users, Staff)
    );
@@ -46,6 +47,7 @@ const UpdateDepartment = () => {
    const coordinatorList = useSelector(
       (state) => state.accountReducer.coordinatorList
    );
+
    const formik = useFormik({
       enableReinitialize: true,
       initialValues: {
@@ -110,9 +112,6 @@ const UpdateDepartment = () => {
                            }
                         />
                         <Input
-                           // disabled={
-                           //    departmentDetail.users.length > 0 ? true : false
-                           // }
                            onChange={formik.handleChange}
                            name='name'
                            size='md'
@@ -131,7 +130,10 @@ const UpdateDepartment = () => {
                            formik.initialValues.users,
                            QAC
                         )}
-                        options={renderOptionDepartmentUpdate(coordinatorList)}
+                        options={renderOptionDepartmentUpdate(
+                           coordinatorList,
+                           departmentDetail.name
+                        )}
                         placeholder='QA Coordinator'
                         onChange={handleOnCoordinatorInput}
                      />
@@ -150,7 +152,10 @@ const UpdateDepartment = () => {
                         )}
                         placeholder='Including Staff'
                         onChange={handleOnStaffInput}
-                        options={renderOptionDepartmentUpdate(staffList)}
+                        options={renderOptionDepartmentUpdate(
+                           staffList,
+                           departmentDetail.name
+                        )}
                      />
                   </FormControl>
                </GridItem>

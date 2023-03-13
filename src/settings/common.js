@@ -133,14 +133,19 @@ export const renderOptionDepartment = (array) => {
    });
    return arrayStaff;
 };
-export const renderOptionDepartmentUpdate = (array) => {
+export const renderOptionDepartmentUpdate = (array, departmentName) => {
    let arrayStaff = [];
    array.map((item) => {
-      let newStaff = {
-         label: item.email,
-         value: item.id,
-      };
-      arrayStaff.push(newStaff);
+      if (
+         item.departmentName === '' ||
+         item.departmentName === departmentName
+      ) {
+         let newStaff = {
+            label: item.email,
+            value: item.id,
+         };
+         arrayStaff.push(newStaff);
+      }
    });
    return arrayStaff;
 };

@@ -44,7 +44,6 @@ const Department = (props) => {
                className='text-link'
                as='b'
                fontSize={30}
-               size='lg'
                onClick={handleOnUpdateButton}
             >
                {props.text}

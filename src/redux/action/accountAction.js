@@ -36,18 +36,22 @@ export const loginAction = (account) => {
          localStorage.setItem(ACCESS_TOKEN, result.data);
          const decodeAccessToken = jwt(result.data);
 
-         let roleFromAPI = '',
-            emailFromAPI = '';
+         let roleDecoded = '',
+            emailDecoded = '',
+            idDecoded = '';
          for (const key in decodeAccessToken) {
             if (key === roleKey) {
-               roleFromAPI = decodeAccessToken[key];
+               roleDecoded = decodeAccessToken[key];
             } else if (key === emaillKey) {
-               emailFromAPI = decodeAccessToken[key];
+               emailDecoded = decodeAccessToken[key];
+            } else if (key === 'Id') {
+               idDecoded = decodeAccessToken[key];
             }
          }
          let signedInAccount = {
-            email: emailFromAPI,
-            role: roleFromAPI,
+            id: idDecoded,
+            email: emailDecoded,
+            role: roleDecoded,
          };
          localStorage.setItem(
             'signedInAccount',
@@ -89,9 +93,6 @@ export const getUserDetailAction = (id) => {
          let result = await getUserDetailService(id);
          dispatch(getUserDetailReducer(result.data));
          alert.success('Wait a minute !', null, Slide, 'dark');
-         setTimeout(() => {
-            history.replace('/user-dashboard/update-user');
-         }, 1000);
       } catch (error) {
          alert.error(error);
       }

@@ -46,7 +46,7 @@ const CreateDepartment = () => {
       validationSchema: Yup.object({
          name: Yup.string()
             .required('Name cannot be empty')
-            .max(20, `Department name is too long`),
+            .max(30, `Department name is too long`),
       }),
       onSubmit: (values) => {
          dispatch(createDepartmentAction(values));
@@ -98,7 +98,6 @@ const CreateDepartment = () => {
                            }
                         />
                         <Input
-                         
                            type='text'
                            name='name'
                            size='md'
