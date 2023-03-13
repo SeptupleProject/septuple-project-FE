@@ -49,6 +49,9 @@ const UserDashboard = (props) => {
 
    const showUserDetail = (id) => {
       dispatch(getUserDetailAction(id));
+      setTimeout(() => {
+         history.replace('/user-dashboard/update-user');
+      }, 1000);
    };
 
    const renderModal = () => {

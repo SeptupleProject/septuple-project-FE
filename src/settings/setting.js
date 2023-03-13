@@ -6,3 +6,6 @@ export const QAM = 'QAM';
 export const Admin = 'Admin';
 export const roleKey = `http://schemas.microsoft.com/ws/2008/06/identity/claims/role`;
 export const emaillKey = `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress`;
+export const SERVICE_ID = 'service_tdqzvgb';
+export const TEMPLATE_ID = 'template_eml32n3';
+export const PUBLIC_KEY = 'd-Fn2MvAz56MCzVJS';
