@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { logoutAction } from '../../redux/action/accountAction';
+import { QAC, QAM, Admin } from '../../settings/setting';
 const Header = () => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
@@ -24,7 +25,7 @@ const Header = () => {
    );
 
    const renderHeaderByRole = (role) => {
-      if (role === 'Admin') {
+      if (role === Admin) {
          return (
             <>
                <li className='nav-item active'>
@@ -45,7 +46,7 @@ const Header = () => {
                </li>
             </>
          );
-      } else if (role === 'QAC') {
+      } else if (role === QAC) {
          return (
             <>
                <li className='nav-item active'>
@@ -66,7 +67,7 @@ const Header = () => {
                </li>
             </>
          );
-      } else if (role === 'QAM') {
+      } else if (role === QAM) {
          return (
             <>
                <li className='nav-item active'>

@@ -4,7 +4,7 @@ export class Alert {
    success = (content, position, transition, theme) => {
       return toast.success(content, {
          position: position ? position : 'top-center',
-         autoClose: 1000,
+         autoClose: 700,
          hideProgressBar: false,
          closeOnClick: true,
          pauseOnHover: false,
@@ -17,7 +17,7 @@ export class Alert {
    error = (content, position, transition, theme) => {
       return toast.error(content, {
          position: position ? position : 'top-center',
-         autoClose: 1000,
+         autoClose: 700,
          hideProgressBar: false,
          closeOnClick: true,
          pauseOnHover: false,
@@ -30,7 +30,7 @@ export class Alert {
    warning = (content, position, transition, theme) => {
       return toast.warning(content, {
          position: position ? position : 'top-center',
-         autoClose: 1000,
+         autoClose: 700,
          hideProgressBar: false,
          closeOnClick: true,
          pauseOnHover: false,
@@ -43,7 +43,7 @@ export class Alert {
    info = (content, position, transition, theme) => {
       return toast.info(content, {
          position: position ? position : 'top-center',
-         autoClose: 1000,
+         autoClose: 700,
          hideProgressBar: false,
          closeOnClick: true,
          pauseOnHover: false,

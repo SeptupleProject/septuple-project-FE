@@ -46,6 +46,47 @@ export const validateDateInThePast = (values) => {
    }
    return valid;
 };
+export const validateDateToUpdate = (values, initialValues) => {
+   let valid = false;
+   if (
+      values.startDate !== initialValues.startDate &&
+      values.endDate == initialValues.endDate
+   ) {
+      alert.warning(
+         'Please change both start date & end date',
+         'top-right',
+         null,
+         'dark'
+      );
+   } else if (
+      values.startDate === initialValues.startDate &&
+      values.endDate !== initialValues.endDate
+   ) {
+      alert.warning(
+         'Please change both start date & end date',
+         'top-right',
+         null,
+         'dark'
+      );
+   } else {
+      valid = values.startDate < values.endDate;
+      if (valid === false) {
+         alert.error(`Academic year is invalid`, 'top-right');
+      }
+   }
+   return valid;
+};
+export const validateIdeaDeadline = (ideaDeadline, startDate, endDate) => {
+   let valid = false;
+   ideaDeadline = moment(ideaDeadline).toISOString();
+   startDate = moment(startDate, 'DD.MM.YYYY HH:mm').toISOString();
+   endDate = moment(endDate, 'DD.MM.YYYY HH:mm').toISOString();
+   valid = startDate < ideaDeadline && ideaDeadline < endDate;
+   if (!valid) {
+      alert.warning('Idea deadline is invalid', 'top-right', null, 'dark');
+   }
+   return valid;
+};
 export const createObjectDateToUpdate = (id, startDate, endDate, values) => {
    let dateToUpdate = {};
    if (values.startDate == startDate && values.endDate == endDate) {
@@ -67,13 +108,13 @@ export const createObjectDateToUpdate = (id, startDate, endDate, values) => {
          id: id,
          name: values.name,
          startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
-         endDate: moment(values.endDate).toISOString(),
+         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
       };
    } else {
       dateToUpdate = {
          id: id,
          name: values.name,
-         startDate: moment(values.startDate).toISOString(),
+         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
          endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
       };
    }

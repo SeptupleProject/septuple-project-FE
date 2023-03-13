@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllAcademicYearAction } from '../../../redux/action/academicYearAction';
 import { ToastContainer } from 'react-toastify';
+import { Admin } from '../../../settings/setting';
 const AcademicDashboard = () => {
    const dispatch = useDispatch();
    const listAcademicYear = useSelector(
@@ -19,13 +20,14 @@ const AcademicDashboard = () => {
    );
    useEffect(() => {
       dispatch(getAllAcademicYearAction());
-   }, [listAcademicYear]);
+   }, []);
+
    const renderAcademicYear = () => {
       return listAcademicYear.map((item) => {
          return (
             <div
                key={item.id}
-               className='col-12 col-md-6 mb-5'
+               className='col-12 col-md-6 mb-4'
             >
                <AcademicYear item={item} />
             </div>
@@ -63,7 +65,7 @@ const AcademicDashboard = () => {
                </GridItem>
                <GridItem
                   className={
-                     signedInAccount.role === 'Admin'
+                     signedInAccount.role === Admin
                         ? 'create-button ml-5 mt-4 mr-5'
                         : 'create-button ml-5 mt-4 mr-5 disappear'
                   }

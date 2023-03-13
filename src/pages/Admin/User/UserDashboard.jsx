@@ -33,6 +33,7 @@ import {
    getUserDetailAction,
 } from '../../../redux/action/accountAction';
 import { ToastContainer } from 'react-toastify';
+import { Admin } from '../../../settings/setting';
 const UserDashboard = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
@@ -93,11 +94,11 @@ const UserDashboard = (props) => {
          </Modal>
       );
    };
-   
+
    const renderListOfUser = () => {
       return listOfUser.map((item) => {
          let { id, email, role, departmentName } = item;
-         if (role !== 'Admin') {
+         if (role !== Admin) {
             return (
                <Tr key={id}>
                   <Td>{email}</Td>
@@ -142,7 +143,7 @@ const UserDashboard = (props) => {
 
    return (
       <>
-         {signedInAccount.role === 'Admin' ? (
+         {signedInAccount.role === Admin ? (
             <>
                <div className='mt-3'>
                   <Grid

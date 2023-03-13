@@ -16,6 +16,7 @@ import {
    validateEmptyDate,
    validateDateInThePast,
 } from '../../../settings/common';
+import { QAM } from '../../../settings/setting';
 const CreateAcademic = () => {
    const today = moment().format('YYYY-MM-DD');
    const [startDateInput, setStartDateInput] = useState('text');
@@ -76,9 +77,7 @@ const CreateAcademic = () => {
                         }
                      />
                      <Input
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? true : false
-                        }
+                        isDisabled={signedInAccount.role === QAM ? true : false}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         name='name'
@@ -99,9 +98,7 @@ const CreateAcademic = () => {
                         }
                      />
                      <Input
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? true : false
-                        }
+                        isDisabled={signedInAccount.role === QAM ? true : false}
                         min={today}
                         name='startDate'
                         placeholder='Start Date'
@@ -129,9 +126,7 @@ const CreateAcademic = () => {
                         }
                      />
                      <Input
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? true : false
-                        }
+                        isDisabled={signedInAccount.role === QAM ? true : false}
                         min={today}
                         name='endDate'
                         placeholder='End Date'
@@ -160,9 +155,7 @@ const CreateAcademic = () => {
                      />
                      <Input
                         min={today}
-                        isDisabled={
-                           signedInAccount.role === 'QAM' ? false : true
-                        }
+                        isDisabled={signedInAccount.role === QAM ? false : true}
                         type={ideaDeadlineInput}
                         placeholder="Idea's Deadline"
                         name='ideaDeadline'
