@@ -2,7 +2,6 @@ import React from "react";
 import PostIdea from "../../components/PostIdea/PostIdea";
 import OtherIdeaPost from "../../components/IdeaPost/OtherIdeaPost";
 import YourIdeaPost from "../../components/IdeaPost/YourIdeaPost";
-import FeaturedPost from "../../components/FeaturedPost/FeaturedPost";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { Helmet } from "react-helmet";
@@ -26,10 +25,6 @@ const NewsFeed = () => {
         return (
           <div key={item.id} className="my-5">
             <OtherIdeaPost item={item} />
-            <FeaturedPost post={"views"} />
-            <FeaturedPost post={"comments"} />
-            <FeaturedPost post={"likes"} />
-            <FeaturedPost post={"dislikes"} />
           </div>
         );
       }
