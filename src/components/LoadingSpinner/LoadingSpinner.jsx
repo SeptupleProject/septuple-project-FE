@@ -2,11 +2,16 @@ import React from 'react';
 
 const LoadingSpinner = () => {
    return (
-      <div className='spinner-container'>
-         <div className='cssload-loader'>
-            <div className='cssload-inner cssload-one'></div>
-            <div className='cssload-inner cssload-two'></div>
-            <div className='cssload-inner cssload-three'></div>
+      <div className='container-fluid'>
+         <div className='spinner-container'>
+            <div className='cssload-preloader cssload-loading'>
+               <span className='cssload-slice'></span>
+               <span className='cssload-slice'></span>
+               <span className='cssload-slice'></span>
+               <span className='cssload-slice'></span>
+               <span className='cssload-slice'></span>
+               <span className='cssload-slice'></span>
+            </div>
          </div>
       </div>
    );

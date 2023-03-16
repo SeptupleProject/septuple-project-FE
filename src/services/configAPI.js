@@ -18,7 +18,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
    function (response) {
       if (response.data.content) {
-         return response.data.content;
+         return response.data;
       }
       return response;
    },

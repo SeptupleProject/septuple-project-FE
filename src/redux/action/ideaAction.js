@@ -1,27 +1,83 @@
-import { toast, ToastContainer } from 'react-toastify';
+import { Slide } from 'react-toastify';
 import { history } from '../../App';
 import {
    addCommentReducer,
-   createNewIdeaReducer,
-   deleteIdeaReducer,
+   getIdeaDetailReducer,
 } from '../reducers/ideaReducer';
-export const createNewIdeaAction = (idea) => {
+import alert from '../../settings/alert';
+import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
+import {
+   createNewIdeaService,
+   deleteIdeaService,
+   getListIdeaService,
+   updateIdeaService,
+   getIdeaDetailService,
+   incrementViewIdeaService,
+} from '../../services/ideaService';
+import { getListIdeaReducer } from '../reducers/ideaReducer';
+import { http } from '../../services/configAPI';
+
+export const getListIdeaAction = () => {
    return async (dispatch) => {
       try {
-         toast.success('Idea is sent successfully', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            progress: undefined,
-            theme: 'colored',
-         });
-         setTimeout(() => {
-            dispatch(createNewIdeaReducer(idea));
-         }, 700);
+         let result = await getListIdeaService();
+         dispatch(getListIdeaReducer(result.data.data));
       } catch (error) {
-         console.log(error);
+         alert.error(error);
+      }
+   };
+};
+
+export const createNewIdeaAction = (data) => {
+   return async (dispatch) => {
+      await dispatch(openSpinner());
+      try {
+         alert.success('Idea is sent successfully');
+         await createNewIdeaService(data);
+      } catch (error) {
+         alert.error(error);
+      }
+      setTimeout(() => {
+         dispatch(closeSpinner());
+      }, 500);
+   };
+};
+
+export const getIdeaDetailAction = (id) => {
+   return async (dispatch) => {
+      try {
+         let result = await getIdeaDetailService(id);
+         dispatch(getIdeaDetailReducer(result));
+      } catch (error) {
+         alert(error);
+      }
+   };
+};
+
+export const incrementViewIdeaAction = (id) => {
+   return async () => {
+      try {
+         await incrementViewIdeaService(id);
+         await getListIdeaService();
+      } catch (error) {
+         alert.error(error);
+      }
+   };
+};
+
+export const updateIdeaAction = (id, data) => {
+   return async (dispatch) => {
+      await dispatch(openSpinner());
+      try {
+         await updateIdeaService(id, data);
+         let result = await getListIdeaService();
+         dispatch(getListIdeaReducer(result.data.data));
+      } catch (error) {
+         alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };
@@ -29,20 +85,19 @@ export const createNewIdeaAction = (idea) => {
 export const deleteIdeaAction = (id) => {
    return async (dispatch) => {
       try {
-         toast.success('Idea is deleted successfully', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: 0,
-            theme: 'dark',
-         });
+         await deleteIdeaService(id);
+         alert.success(
+            'Idea is deleted successfully',
+            'top-right',
+            Slide,
+            'dark'
+         );
+         let result = await getListIdeaService();
          setTimeout(() => {
-            dispatch(deleteIdeaReducer(id));
-         }, 700);
+            dispatch(getListIdeaReducer(result.data.data));
+         }, 500);
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };
@@ -52,7 +107,7 @@ export const addCommentAction = (comment) => {
       try {
          dispatch(addCommentReducer(comment));
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };

@@ -1,27 +1,36 @@
 import React from 'react';
 import { useRef, useState } from 'react';
 import Icon from '../Icon/Icon';
+import { Slide } from 'react-toastify';
 import emailjs from '@emailjs/browser';
 import { SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY } from '../../settings/setting';
+import alert from '../../settings/alert';
 const Encouragement = (props) => {
    const form = useRef();
    const [bulb, setBulb] = useState(false);
    const sendEmail = (e) => {
       e.preventDefault();
-      if (!bulb) {
-         setBulb(!bulb);
-      }
-      setTimeout(() => {
-         setBulb(false);
-      }, 5000);
-      emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY).then(
-         (result) => {
-            console.log(result.text);
-         },
-         (error) => {
-            console.log(error.text);
+      if (bulb) {
+         alert.info('Please wait for a while', null, Slide, 'dark');
+      } else {
+         if (!bulb) {
+            setBulb(!bulb);
+            alert.info('Your request is processing', null, Slide, 'dark');
+            emailjs
+               .sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
+               .then(
+                  (result) => {
+                     alert.success('Encouragement sent', null, Slide, 'dark');
+                  },
+                  (error) => {
+                     console.log(error.text);
+                  }
+               );
          }
-      );
+         setTimeout(() => {
+            setBulb(false);
+         }, 300000);
+      }
    };
 
    return (
@@ -58,11 +67,6 @@ const Encouragement = (props) => {
                }
             />
          </div>
-
-         {/* <input
-            type='submit'
-            value='Send'
-         /> */}
       </form>
    );
 };

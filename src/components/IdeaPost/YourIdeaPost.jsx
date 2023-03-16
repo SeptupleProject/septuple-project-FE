@@ -21,10 +21,14 @@ import {
    EditablePreview,
    EditableTextarea,
    EditableInput,
-   Alert,
    Switch,
    VStack,
+   ModalBody,
+   FormControl,
+   FormLabel,
+   Textarea,
 } from '@chakra-ui/react';
+
 import React from 'react';
 import { useState, useRef } from 'react';
 import Icon from '../Icon/Icon';
@@ -34,29 +38,31 @@ import {
    ModalContent,
    ModalHeader,
    ModalFooter,
-   ModalBody,
    ModalCloseButton,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import StaffComment from '../StaffComment/StaffComment';
 import alternativeImg from '../../assets/img/gwuni.png';
-import { toast } from 'react-toastify';
-import { deleteIdeaAction } from '../../redux/action/ideaAction';
+import {
+   deleteIdeaAction,
+   getIdeaDetailAction,
+} from '../../redux/action/ideaAction';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { addCommentAction } from '../../redux/action/ideaAction';
-import { ToastContainer } from 'react-toastify';
-
+import alert from '../../settings/alert';
+import { convertObjectToFormData } from '../../settings/common';
+import { updateIdeaAction } from '../../redux/action/ideaAction';
 const YourIdeaPost = (props) => {
    let {
       id,
-      email,
-      category,
+      createdBy,
+      categoryName,
       title,
       content,
       image,
       like,
-      dislike,
+      disLike,
       comments,
       isAnonymous,
       views,
@@ -70,56 +76,58 @@ const YourIdeaPost = (props) => {
       onOpen: uploadOnOpen,
       onClose: uploadOnClose,
    } = useDisclosure();
-   const [uploadImg, setUploadImg] = useState(image);
-   const signedInAccount = useSelector(
-      (state) => state.accountReducer.signedInAccount
-   );
+   const [uploadImgDetail, setUploadImgDetail] = useState('');
    const comment = useRef();
+   const ideaDetail = useSelector((state) => state.ideaReducer.ideaDetail);
    const formik = useFormik({
       initialValues: {
-         content: '',
-         email: signedInAccount.username,
-         ideaId: id,
-         isAnonymous: lock,
+         id: id,
+         title: title,
+         content: content,
+         image: image,
+         isAnonymous: isAnonymous,
+         File: null,
       },
       validationSchema: Yup.object({
-         content: Yup.string().required('Write something, dude !'),
+         title: Yup.string().max(50, 'Title cannot be longer than 50 letters'),
       }),
       onSubmit: (values) => {
-         dispatch(addCommentAction(values));
+         let ideaUpdate = convertObjectToFormData(values);
+         dispatch(updateIdeaAction(id, ideaUpdate));
+         uploadOnClose();
       },
    });
-   const handleOnChange = () => {
+
+   const handleOnChange = (e) => {
+      let { name, checked } = e.target;
+      formik.setFieldValue(name, checked);
       setLock(!lock);
    };
-   const handleUploadImage = (e) => {
+   const handleUploadImage = async (e) => {
       let file = e.target.files[0];
       if (
          file.type === 'image/jpeg' ||
          file.type === 'image/jpg' ||
          file.type === 'image/png'
       ) {
+         await formik.setFieldValue('File', file);
          let reader = new FileReader();
          reader.readAsDataURL(file);
-         reader.onload = (event) => setUploadImg(event.target.result);
+         reader.onload = (event) => {
+            setUploadImgDetail(event.target.result);
+         };
       }
    };
-   const handleSubmitComment = (e) => {
+   const handleOnOpenUpdateIdea = () => {
+      dispatch(getIdeaDetailAction(id));
+      uploadOnOpen();
+   };
+   const handleOnUpdate = (e) => {
       e.preventDefault();
-      if (formik.errors.content) {
-         toast.warn(`${formik.errors.content}`, {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'dark',
-         });
+      if (formik.errors.title) {
+         alert.warning(`${formik.errors.title}`, 'top-right', null, 'dark');
       } else {
          formik.handleSubmit();
-         comment.current.value = '';
       }
    };
    const openModal = () => {
@@ -128,11 +136,95 @@ const YourIdeaPost = (props) => {
             isOpen={uploadIsOpen}
             onClose={uploadOnClose}
             isCentered
+            size='xl'
+            scrollBehavior='inside'
          >
             <ModalOverlay />
             <ModalContent>
-               <ModalHeader>Do you want to update your post ?</ModalHeader>
+               <ModalHeader>
+                  <Text
+                     fontSize='3xl'
+                     className='text-center title-2'
+                  >
+                     Update your post
+                  </Text>
+               </ModalHeader>
                <ModalCloseButton />
+               <ModalBody>
+                  <FormControl>
+                     <FormLabel>Title</FormLabel>
+                     <Input
+                        name='title'
+                        onChange={formik.handleChange}
+                        placeholder={ideaDetail.title}
+                     />
+                  </FormControl>
+
+                  <FormControl mt={4}>
+                     <FormLabel>Content</FormLabel>
+                     <Textarea
+                        name='content'
+                        onChange={formik.handleChange}
+                        placeholder={ideaDetail.content}
+                     />
+                  </FormControl>
+                  <HStack>
+                     <div className='px-0 d-flex text-center w-75 mx-auto my-4'>
+                        <div className='w-50'>
+                           <div className='my-3'>
+                              <b>As an anonymous ?</b>
+                           </div>
+                           <div className='d-flex justify-content-center'>
+                              <Switch
+                                 name='isAnonymous'
+                                 defaultChecked={ideaDetail.isAnonymous}
+                                 size='sm'
+                                 className='p-0 mt-1 mr-3'
+                                 onChange={handleOnChange}
+                              />
+
+                              <Icon
+                                 content={
+                                    lock
+                                       ? 'fa-solid fa-lock'
+                                       : 'fa-solid fa-lock-open'
+                                 }
+                                 fontSize='15px'
+                              />
+                           </div>
+                        </div>
+                        <div className='container px-0 w-50 '>
+                           <label
+                              htmlFor='uploadImageToEdid'
+                              className='w-75 d-flex justify-content-center uploadBtn p-0 mx-auto mt-3'
+                           >
+                              <HStack className='uploadStack'>
+                                 <Icon
+                                    content='fa-solid fa-upload'
+                                    color='#3182ce'
+                                    fontSize='18px'
+                                 />
+                                 <p className='ml-2 uploadBtnText'>New photo</p>
+                              </HStack>
+                           </label>
+                           <input
+                              onChange={handleUploadImage}
+                              accept='image/png,image/jpg,image/jpeg'
+                              className='disappear'
+                              id='uploadImageToEdid'
+                              type='file'
+                           />
+                        </div>
+                     </div>
+                  </HStack>
+                  <FormControl>
+                     <img
+                        height='100px'
+                        className='img-fluid mx-auto'
+                        src={uploadImgDetail == '' ? '' : uploadImgDetail}
+                     />
+                  </FormControl>
+               </ModalBody>
                <ModalFooter>
                   <Button
                      variant='ghost'
@@ -144,9 +236,7 @@ const YourIdeaPost = (props) => {
                   </Button>
                   <Button
                      colorScheme='facebook'
-                     onClick={() => {
-                        setUploadImg();
-                     }}
+                     onClick={handleOnUpdate}
                      variant='outline'
                   >
                      Update
@@ -157,7 +247,7 @@ const YourIdeaPost = (props) => {
       );
    };
    const renderListComment = () => {
-      if (comments !== undefined) {
+      if (comments !== 0) {
          return comments.map((item) => {
             return (
                <div
@@ -169,17 +259,12 @@ const YourIdeaPost = (props) => {
             );
          });
       } else {
-         toast.error('No comment to show !!!', {
-            position: 'top-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.error('No comment to show !!!', 'top-right', null, 'dark');
+         setShowComment(!showComment);
       }
+   };
+   const handleOnDelete = () => {
+      dispatch(deleteIdeaAction(id));
    };
    return (
       <Accordion allowToggle>
@@ -211,7 +296,7 @@ const YourIdeaPost = (props) => {
                         size='md'
                         className='categoryTag'
                      >
-                        {category}
+                        {categoryName}
                      </Tag>
                   </HStack>
                   <HStack className='justify-content-center'>
@@ -247,6 +332,7 @@ const YourIdeaPost = (props) => {
                            fontSize='2xl'
                            className='ideaTitle w-50 text-wrap'
                            placeholder={title}
+                           isDisabled={true}
                            style={{ marginLeft: '1%' }}
                         >
                            <EditablePreview />
@@ -304,11 +390,7 @@ const YourIdeaPost = (props) => {
                                              size='sm'
                                           >
                                              <Button
-                                                onClick={() => {
-                                                   dispatch(
-                                                      deleteIdeaAction(id)
-                                                   );
-                                                }}
+                                                onClick={handleOnDelete}
                                                 size='md'
                                                 colorScheme='red'
                                              >
@@ -353,6 +435,7 @@ const YourIdeaPost = (props) => {
 
                      <AccordionPanel className='hiddenPanel'>
                         <Editable
+                           isDisabled={true}
                            className='editablePara my-4'
                            placeholder={content}
                         >
@@ -362,74 +445,28 @@ const YourIdeaPost = (props) => {
                               maxHeight={'max-content'}
                            />
                         </Editable>
-
-                        <HStack>
-                           <img
-                              src={uploadImg === null ? alternativeImg : image}
-                              alt='...'
-                              className='img-fluid image'
-                           />
-
-                           <div className='col-2 px-0 ml-4 text-center'>
-                              <div className='container px-0'>
-                                 <label
-                                    htmlFor='uploadImageToEdid'
-                                    className='d-flex justify-content-center uploadBtn p-0'
-                                 >
-                                    <HStack className='uploadStack'>
-                                       <Icon
-                                          content='fa-solid fa-upload'
-                                          color='#3182ce'
-                                          fontSize='18px'
-                                       />
-                                       <p className='ml-2 uploadBtnText'>
-                                          New photo
-                                       </p>
-                                    </HStack>
-                                 </label>
-                                 <input
-                                    onChange={handleUploadImage}
-                                    accept='image/png,image/jpg,image/jpeg'
-                                    className='disappear'
-                                    id='uploadImageToEdid'
-                                    type='file'
-                                 />
-                              </div>
-                              <div className='my-3'>
-                                 <b>As an anonymous ?</b>
-                              </div>
-                              <div className='d-flex justify-content-center align-middle'>
-                                 <Switch
-                                    defaultChecked={isAnonymous}
-                                    size='sm'
-                                    className='p-0 mt-1 mr-3'
-                                    onChange={handleOnChange}
-                                 />
-
-                                 <Icon
-                                    content={
-                                       lock
-                                          ? 'fa-solid fa-lock'
-                                          : 'fa-solid fa-lock-open'
-                                    }
-                                    fontSize='15px'
-                                 />
-                              </div>
-                              <VStack>
-                                 <Button
-                                    className='mt-4'
-                                    variant='outline'
-                                    size='md'
-                                    colorScheme='facebook'
-                                    onClick={uploadOnOpen}
-                                 >
-                                    Edit
-                                 </Button>
-                              </VStack>
-                              {openModal()}
+                        <div className='d-flex'>
+                           <div className='w-75'>
+                              <img
+                                 src={image !== '' ? image : alternativeImg}
+                                 alt='...'
+                                 className='img-fluid image'
+                              />
                            </div>
-                        </HStack>
 
+                           <VStack className='w-25'>
+                              <Button
+                                 className='my-auto mx-auto'
+                                 variant='outline'
+                                 size='md'
+                                 colorScheme='facebook'
+                                 onClick={handleOnOpenUpdateIdea}
+                              >
+                                 Edit Post
+                              </Button>
+                           </VStack>
+                           {openModal()}
+                        </div>
                         <ButtonGroup
                            variant='ghost'
                            size='lg'
@@ -450,7 +487,7 @@ const YourIdeaPost = (props) => {
                                  <Icon content='fa-regular fa-thumbs-down' />
                               }
                            >
-                              {dislike}
+                              {disLike}
                            </Button>
                            <Button
                               onClick={() => {
@@ -461,7 +498,7 @@ const YourIdeaPost = (props) => {
                               }
                               colorScheme='gray'
                            >
-                              {comments === undefined ? '0' : comments.length}
+                              {comments}
                            </Button>
                         </ButtonGroup>
                         <Divider />
@@ -478,13 +515,12 @@ const YourIdeaPost = (props) => {
                                  borderRadius={'20px'}
                                  onChange={formik.handleChange}
                                  onBlur={formik.handleBlur}
-                                 name='content'
                                  ref={comment}
                               />
 
                               <InputRightElement>
                                  <IconButton
-                                    onClick={handleSubmitComment}
+                                    // onClick={handleOnUpdate}
                                     icon={
                                        <Icon
                                           content='fa-regular fa-paper-plane'
@@ -507,7 +543,6 @@ const YourIdeaPost = (props) => {
                {showComment ? renderListComment() : ''}
             </div>
          </Card>
-         <ToastContainer />
       </Accordion>
    );
 };

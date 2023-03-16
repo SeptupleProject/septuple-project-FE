@@ -22,35 +22,31 @@ import CategoriesDashboard from './pages/QaManager/Categories/CategoriesDashboar
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
 import CreateDepartment from './pages/QaManager/Departments/CreateDepartment';
 import UpdateDepartment from './pages/QaManager/Departments/UpdateDepartment';
-
+import { useSelector } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 export const history = createBrowserHistory();
 function App() {
-   const [loading, setLoading] = useState(false);
-
-   // useEffect(() => {
-   //    setTimeout(() => {
-   //       setLoading(false);
-   //    }, 1500);
-   // }, []);
-
+   const show = useSelector((state) => state.loadingReducer.show);
+   
    return (
       <>
-         {!loading ? (
-            <Router history={history}>
-               <Switch>
-                  {/* common route  */}
-                  <FormTemplate
-                     path='/login'
-                     component={LogIn}
-                  />
+         {show && <LoadingSpinner />}
+         <ToastContainer />
+         <Router history={history}>
+            <Switch>
+               {/* common route  */}
+               <FormTemplate
+                  path='/login'
+                  component={LogIn}
+               />
 
-                  {/* staff routes */}
+               {/* staff routes */}
 
-                  <HomeTemplate
-                     exact
-                     path='/newsfeed'
-                     component={NewsFeed}
-                  />
+               <HomeTemplate
+                  exact
+                  path='/newsfeed'
+                  component={NewsFeed}
+               />
 
                   <HomeTemplate
                      exact
@@ -58,81 +54,78 @@ function App() {
                      component={FeaturedPosts}
                   />
 
-                  {/* QA Coordinator routes */}
-                  <AdminTemplate
-                     exact
-                     path='/qacoordinator-dashboard'
-                     component={QACoorDashboard}
-                  />
-                  <AdminTemplate
-                     exact
-                     path='/staff-management'
-                     component={StaffManagement}
-                  />
-                  {/* QA Manager routes */}
-                  <AdminTemplate
-                     exact
-                     path='/department-dashboard'
-                     component={DepartmentsDashboard}
-                  />
+               {/* QA Coordinator routes */}
+               <AdminTemplate
+                  exact
+                  path='/qacoordinator-dashboard'
+                  component={QACoorDashboard}
+               />
+               <AdminTemplate
+                  exact
+                  path='/staff-management'
+                  component={StaffManagement}
+               />
+               {/* QA Manager routes */}
+               <AdminTemplate
+                  exact
+                  path='/department-dashboard'
+                  component={DepartmentsDashboard}
+               />
 
-                  <AdminTemplate
-                     exact
-                     path='/department-dashboard/create-department'
-                     component={CreateDepartment}
-                  />
+               <AdminTemplate
+                  exact
+                  path='/department-dashboard/create-department'
+                  component={CreateDepartment}
+               />
 
-                  <AdminTemplate
-                     exact
-                     path='/department-dashboard/update-department'
-                     component={UpdateDepartment}
-                  />
+               <AdminTemplate
+                  exact
+                  path='/department-dashboard/update-department'
+                  component={UpdateDepartment}
+               />
 
-                  <AdminTemplate
-                     exact
-                     path='/categories-dashboard'
-                     component={CategoriesDashboard}
-                  />
-                  {/* Administrator routes */}
-                  <AdminTemplate
-                     exact
-                     path='/user-dashboard'
-                     component={UserDashboard}
-                  />
-                  <AdminTemplate
-                     exact
-                     path='/user-dashboard/create-user'
-                     component={CreateUser}
-                  />
-                  <AdminTemplate
-                     exact
-                     path='/user-dashboard/update-user'
-                     component={UpdateUser}
-                  />
-                  <AdminTemplate
-                     exact
-                     path='/academic-dashboard'
-                     component={AcademicDashboard}
-                  />
-                  <AdminTemplate
-                     exact
-                     path='/academic-dashboard/create-academic'
-                     component={CreateAcademic}
-                  />
-                  <AdminTemplate
-                     exact
-                     path='/academic-dashboard/update-academic'
-                     component={UpdateAcademic}
-                  />
-                  <HomeTemplate
-                     path='/'
-                     component={NewsFeed}
-                  />
-               </Switch>
-            </Router>
-         ) : (
-            <LoadingSpinner />
-         )}
+               <AdminTemplate
+                  exact
+                  path='/categories-dashboard'
+                  component={CategoriesDashboard}
+               />
+               {/* Administrator routes */}
+               <AdminTemplate
+                  exact
+                  path='/user-dashboard'
+                  component={UserDashboard}
+               />
+               <AdminTemplate
+                  exact
+                  path='/user-dashboard/create-user'
+                  component={CreateUser}
+               />
+               <AdminTemplate
+                  exact
+                  path='/user-dashboard/update-user'
+                  component={UpdateUser}
+               />
+               <AdminTemplate
+                  exact
+                  path='/academic-dashboard'
+                  component={AcademicDashboard}
+               />
+               <AdminTemplate
+                  exact
+                  path='/academic-dashboard/create-academic'
+                  component={CreateAcademic}
+               />
+               <AdminTemplate
+                  exact
+                  path='/academic-dashboard/update-academic'
+                  component={UpdateAcademic}
+               />
+               <HomeTemplate
+                  path='/'
+                  component={NewsFeed}
+               />
+            </Switch>
+         </Router>
       </>
    );
 }

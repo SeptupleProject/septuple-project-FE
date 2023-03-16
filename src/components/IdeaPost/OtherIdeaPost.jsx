@@ -34,19 +34,22 @@ import alternativeImg from '../../assets/img/gwuni.png';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { addCommentAction } from '../../redux/action/ideaAction';
+import {
+   addCommentAction,
+   incrementViewIdeaAction,
+} from '../../redux/action/ideaAction';
 import { ToastContainer } from 'react-toastify';
 
 const OtherIdeaPost = (props) => {
    let {
       id,
-      email,
-      category,
+      createdBy,
+      categoryName,
       title,
       content,
       image,
       like,
-      dislike,
+      disLike,
       comments,
       isAnonymous,
       views,
@@ -121,6 +124,9 @@ const OtherIdeaPost = (props) => {
          });
       }
    };
+   const handleOnIncrementView = () => {
+      dispatch(incrementViewIdeaAction(id));
+   };
    return (
       <Accordion allowToggle>
          <Card
@@ -144,14 +150,14 @@ const OtherIdeaPost = (props) => {
                         fontSize='2xl'
                         className='staffName'
                      >
-                        {!isAnonymous ? 'Anonymous' : email}
+                        {isAnonymous ? 'Anonymous' : createdBy}
                      </Text>
                      <Tag
                         colorScheme='blue'
                         size='md'
                         className='categoryTag'
                      >
-                        {category}
+                        {categoryName}
                      </Tag>
                   </HStack>
                   <HStack className='justify-content-center'>
@@ -184,6 +190,7 @@ const OtherIdeaPost = (props) => {
                   <>
                      <HStack>
                         <Editable
+                           isDisabled={true}
                            fontSize='2xl'
                            className='ideaTitle w-50 text-wrap'
                            placeholder={title}
@@ -224,6 +231,7 @@ const OtherIdeaPost = (props) => {
                            <AccordionButton
                               className='text-wrap w-auto p-0 mx-5'
                               variant='ghost'
+                              onClick={handleOnIncrementView}
                            >
                               <HStack>
                                  <div
@@ -246,6 +254,7 @@ const OtherIdeaPost = (props) => {
 
                      <AccordionPanel className='hiddenPanel'>
                         <Editable
+                           isDisabled={true}
                            className='editablePara my-4'
                            placeholder={content}
                         >
@@ -258,7 +267,7 @@ const OtherIdeaPost = (props) => {
 
                         <HStack>
                            <img
-                              src={uploadImg === null ? alternativeImg : image}
+                              src={uploadImg === '' ? alternativeImg : image}
                               alt='...'
                               className='img-fluid image'
                            />
@@ -282,7 +291,7 @@ const OtherIdeaPost = (props) => {
                                  <Icon content='fa-regular fa-thumbs-down' />
                               }
                            >
-                              {dislike}
+                              {disLike}
                            </Button>
                            <Button
                               onClick={() => {
@@ -293,7 +302,7 @@ const OtherIdeaPost = (props) => {
                               }
                               colorScheme='gray'
                            >
-                              {comments === undefined ? '0' : comments.length}
+                              {comments}
                            </Button>
                         </ButtonGroup>
                         <Divider />
@@ -360,7 +369,6 @@ const OtherIdeaPost = (props) => {
                {showComment ? renderListComment() : ''}
             </div>
          </Card>
-         <ToastContainer />
       </Accordion>
    );
 };

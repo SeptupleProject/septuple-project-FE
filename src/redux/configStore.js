@@ -4,7 +4,7 @@ import ideaReducer from './reducers/ideaReducer';
 import categoryReducer from './reducers/categoryReducer';
 import academicYearReducer from './reducers/academicYearReducer';
 import departmentReducer from './reducers/departmentReducer';
-
+import loadingReducer from './reducers/loadingReducer';
 export const store = configureStore({
    reducer: {
       accountReducer,
@@ -12,5 +12,6 @@ export const store = configureStore({
       categoryReducer,
       academicYearReducer,
       departmentReducer,
+      loadingReducer,
    },
 });

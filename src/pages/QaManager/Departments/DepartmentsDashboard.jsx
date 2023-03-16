@@ -109,7 +109,7 @@ const DepartmentsDashboard = () => {
          <div className='container-fluid mt-5 '>
             <div className='row mx-4'>{renderDepartmentList()}</div>
          </div>
-         <ToastContainer />
+      
       </div>
    );
 };
