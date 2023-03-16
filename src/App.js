@@ -54,7 +54,7 @@ function App() {
 
                   <HomeTemplate
                      exact
-                     path='/FeaturedPosts'
+                     path='/featuredposts'
                      component={FeaturedPosts}
                   />
 
