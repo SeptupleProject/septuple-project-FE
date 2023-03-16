@@ -14,6 +14,7 @@ import AcademicDashboard from './pages/Admin/AcademicYear/AcademicDashboard';
 import CreateAcademic from './pages/Admin/AcademicYear/CreateAcademic';
 import UpdateAcademic from './pages/Admin/AcademicYear/UpdateAcademic';
 import NewsFeed from './pages/Staff/NewsFeed';
+import FeaturedPosts from './pages/Staff/FeaturedPosts';
 import QACoorDashboard from './pages/QaCoordinator/QACoorDashboard';
 import StaffManagement from './pages/QaCoordinator/StaffManagement';
 import DepartmentsDashboard from './pages/QaManager/Departments/DepartmentsDashboard';
@@ -49,6 +50,12 @@ function App() {
                      exact
                      path='/newsfeed'
                      component={NewsFeed}
+                  />
+
+                  <HomeTemplate
+                     exact
+                     path='/featuredposts'
+                     component={FeaturedPosts}
                   />
 
                   {/* QA Coordinator routes */}

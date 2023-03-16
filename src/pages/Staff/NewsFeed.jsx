@@ -4,9 +4,11 @@ import OtherIdeaPost from "../../components/IdeaPost/OtherIdeaPost";
 import YourIdeaPost from "../../components/IdeaPost/YourIdeaPost";
 import { useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
+import Icon from "../../components/Icon/Icon";
+import { Button } from "@chakra-ui/react";
+import { history } from "../../App";
 import { Helmet } from "react-helmet";
 import { Staff } from "../../settings/setting";
-
 const NewsFeed = () => {
   const listOfIdeas = useSelector((state) => state.ideaReducer.listOfIdeas);
   const signedInAccount = useSelector(
@@ -38,7 +40,7 @@ const NewsFeed = () => {
       </Helmet>
       <div className=" staff-newsfeed pt-5">
         <div style={{ width: "65%", margin: "0 auto" }}>
-          {signedInAccount.role === Staff ? <PostIdea /> : ""}
+          {/* {signedInAccount.role === Staff ? <PostIdea /> : ''} */}
           <div className="mt-5">{renderIdeas()}</div>
         </div>
         <ToastContainer />
