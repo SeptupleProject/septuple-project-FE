@@ -25,7 +25,16 @@
    line-height: $-lh-1;
    margin-top: 20px;
 }
-
+.text-blue {
+   color: $-blue-2;
+   font-family: $-poppin;
+   cursor: pointer;
+   transition: all 0.3s;
+   transform: translateY(0);
+   &:hover {
+      text-decoration: none;
+   }
+}
 .comment {
    background: $-white-2;
    border-radius: $-br-3;

@@ -74,7 +74,7 @@ const Category = (props) => {
       <Card variant='elevated'>
          <div className='px-4 py-3'>
             <div className='d-flex align-middle justify-content-between'>
-               <Heading fontSize={30}>{name}</Heading>
+               <Heading fontSize={27}>{name}</Heading>
                <div className='d-flex'>
                   <div className='mr-3'>
                      <IconButton

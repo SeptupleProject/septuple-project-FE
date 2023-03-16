@@ -49,9 +49,7 @@ const UserDashboard = (props) => {
 
    const showUserDetail = (id) => {
       dispatch(getUserDetailAction(id));
-      setTimeout(() => {
-         history.replace('/user-dashboard/update-user');
-      }, 1000);
+      history.replace('/user-dashboard/update-user');
    };
 
    const renderModal = () => {
@@ -217,7 +215,7 @@ const UserDashboard = (props) => {
          ) : (
             ''
          )}
-         <ToastContainer />
+        
       </>
    );
 };

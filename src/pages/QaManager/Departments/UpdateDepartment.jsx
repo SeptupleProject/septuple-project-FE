@@ -56,7 +56,7 @@ const UpdateDepartment = () => {
          users: departmentDetail.users,
       },
       validationSchema: Yup.object({
-         name: Yup.string().max(20, `Department name is too long`),
+         name: Yup.string().max(30, `Department name is too long`),
       }),
       onSubmit: (values) => {
          values.users = convertUserToIdArray(
@@ -182,7 +182,7 @@ const UpdateDepartment = () => {
                   </Center>
                </GridItem>
             </Grid>
-            <ToastContainer />
+            
          </Card>
       </Center>
    );

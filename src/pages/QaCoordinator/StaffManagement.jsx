@@ -24,13 +24,11 @@ const StaffManagement = () => {
       (state) => state.accountReducer.signedInAccount
    );
    const userDetail = useSelector((state) => state.accountReducer.userDetail);
-   console.log(userDetail);
    const dispatch = useDispatch();
    useEffect(() => {
       dispatch(getUserDetailAction(signedInAccount.id));
       dispatch(getlistUserByRoleAction(Staff));
    }, []);
-
    const renderUserList = () => {
       if (staffList.length > 0 && userDetail.email !== '') {
          return staffList.map((item) => {
@@ -107,7 +105,7 @@ const StaffManagement = () => {
                   </>
                )}
             </TableContainer>
-            <ToastContainer />
+          
          </div>
       </>
    );

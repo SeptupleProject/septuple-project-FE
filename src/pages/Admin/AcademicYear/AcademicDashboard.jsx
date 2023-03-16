@@ -94,7 +94,7 @@ const AcademicDashboard = () => {
          <div className='container-fluid mt-5'>
             <div className='row mx-3'>{renderAcademicYear()}</div>
          </div>
-         <ToastContainer />
+        
       </div>
    );
 };

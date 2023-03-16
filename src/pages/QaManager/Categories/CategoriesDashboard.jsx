@@ -191,7 +191,7 @@ const CategoriesDashboard = () => {
          <div className='container-fluid mt-5'>
             <div className='row mx-3'>{renderCategoryList()}</div>
          </div>
-         <ToastContainer />
+      
       </div>
    );
 };

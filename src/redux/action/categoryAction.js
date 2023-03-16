@@ -3,16 +3,26 @@ import {
    deleteCategoryService,
    getAllCategoryService,
    updateCategoryService,
+   getCategoryDropdownService,
 } from '../../services/categoryService';
 import alert from '../../settings/alert';
-import { getAllCategoryReducer } from '../reducers/categoryReducer';
+import {
+   getAllCategoryReducer,
+   getCategoryDropdownReducer,
+} from '../reducers/categoryReducer';
+import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 export const getAllCategoryAction = () => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
          let result = await getAllCategoryService();
          dispatch(getAllCategoryReducer(result.data.data));
       } catch (error) {
          alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };
@@ -21,11 +31,24 @@ export const createNewCategoryAction = (data) => {
    return async (dispatch) => {
       try {
          await createNewCategoryService(data);
-         let result = await getAllCategoryService();
          alert.success('Category created successfully', null);
+         let result = await getAllCategoryService();
+         await dispatch(openSpinner());
+         dispatch(getAllCategoryReducer(result.data.data));
+      } catch (error) {
+         alert.error(error);
+      } finally {
          setTimeout(() => {
-            dispatch(getAllCategoryReducer(result.data.data));
-         }, 800);
+            dispatch(closeSpinner());
+         }, 500);
+      }
+   };
+};
+export const getCategoryDropdownAction = () => {
+   return async (dispatch) => {
+      try {
+         let result = await getCategoryDropdownService();
+         dispatch(getCategoryDropdownReducer(result.data));
       } catch (error) {
          alert.error(error);
       }
@@ -33,29 +56,35 @@ export const createNewCategoryAction = (data) => {
 };
 export const updateCategoryAction = (id, data) => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
          await updateCategoryService(id, data);
          alert.success('Category updated successfully', null, null, 'dark');
          let result = await getAllCategoryService();
-         setTimeout(() => {
-            dispatch(getAllCategoryReducer(result.data.data));
-         }, 800);
+         dispatch(getAllCategoryReducer(result.data.data));
       } catch (error) {
          alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };
 export const deleteCategoryAction = (id) => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
          await deleteCategoryService(id);
          alert.error('Category removed successfully', null, null, 'dark');
          let result = await getAllCategoryService();
-         setTimeout(() => {
-            dispatch(getAllCategoryReducer(result.data.data));
-         }, 800);
+         dispatch(getAllCategoryReducer(result.data.data));
       } catch (error) {
          alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };

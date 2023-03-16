@@ -38,8 +38,8 @@ const CreateAcademic = () => {
          if (valid) {
             values = {
                name: values.name,
-               startDate: moment(values.startDate).toISOString(),
-               endDate: moment(values.endDate).toISOString(),
+               startDate: moment(values.startDate).add(1, 'day').toISOString(),
+               endDate: moment(values.endDate).add(1, 'day').toISOString(),
             };
             dispatch(createNewAcademicYearAction(values));
          }
@@ -195,7 +195,7 @@ const CreateAcademic = () => {
                </GridItem>
             </Grid>
          </center>
-         <ToastContainer />
+        
       </>
    );
 };

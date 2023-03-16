@@ -27,23 +27,24 @@ import {
 import { logoutAction } from "../redux/action/accountAction";
 import { Admin, QAC, QAM } from "../settings/setting";
 export const AdminTemplate = (props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const finalRef = React.useRef(null);
-  const dispatch = useDispatch();
-  let signedInAccount = useSelector(
-    (state) => state.accountReducer.signedInAccount
-  );
-
-  const renderModal = () => {
-    return (
-      <Modal
-        closeOnOverlayClick={true}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
-        isCentered
-      >
-        <ModalOverlay />
+   const { isOpen, onOpen, onClose } = useDisclosure();
+   const finalRef = React.useRef(null);
+   const dispatch = useDispatch();
+   let signedInAccount = useSelector(
+      (state) => state.accountReducer.signedInAccount
+   );
+   const show = useSelector((state) => state.loadingReducer.show);
+  
+   const renderModal = () => {
+      return (
+         <Modal
+            closeOnOverlayClick={true}
+            finalFocusRef={finalRef}
+            isOpen={isOpen}
+            onClose={onClose}
+            isCentered
+         >
+            <ModalOverlay />
 
         <ModalContent>
           <ModalHeader className="title-2 display-3 ">Log Out</ModalHeader>

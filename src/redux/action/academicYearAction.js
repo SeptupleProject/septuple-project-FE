@@ -12,28 +12,35 @@ import {
    getAcademicYearDetailReducer,
    getAllAcademicYearReducer,
 } from '../reducers/academicYearReducer';
-
+import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 export const getAllAcademicYearAction = () => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
          let result = await getAllAcademicYearService();
          dispatch(getAllAcademicYearReducer(result.data.data));
       } catch (error) {
-         console.log(error);
+         alert.error(error, 'top-right');
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };
 export const getAcademicYearDetailAction = (id) => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
          let result = await getAcademicYearDetailService(id);
-         alert.success('Wait a minute !', null, Slide, 'dark');
          dispatch(getAcademicYearDetailReducer(result.data));
-         setTimeout(() => {
-            history.push('/academic-dashboard/update-academic');
-         }, 1000);
+         history.push('/academic-dashboard/update-academic');
       } catch (error) {
          console.log(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };

@@ -27,15 +27,16 @@ import {
    Staff,
 } from '../../settings/setting';
 import alert from '../../settings/alert';
+import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 
 export const loginAction = (account) => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
          let result = await loginService(account);
          alert.success('Login successfully', null, Slide);
          localStorage.setItem(ACCESS_TOKEN, result.data);
          const decodeAccessToken = jwt(result.data);
-
          let roleDecoded = '',
             emailDecoded = '',
             idDecoded = '';
@@ -87,29 +88,42 @@ export const getListUserAction = () => {
    };
 };
 
-export const getUserDetailAction = (id) => {
+export const getUserDetailAction = (id, requestorRole) => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
-         let result = await getUserDetailService(id);
-         dispatch(getUserDetailReducer(result.data));
-         alert.success('Wait a minute !', null, Slide, 'dark');
+         if (requestorRole !== Staff) {
+            let result = await getUserDetailService(id);
+            dispatch(getUserDetailReducer(result.data));
+         }
       } catch (error) {
          alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };
 
-export const getlistUserByRoleAction = (role) => {
+export const getlistUserByRoleAction = (role, requestorRole) => {
    return async (dispatch) => {
+      await dispatch(openSpinner());
       try {
-         let result = await getListUserByRoleService(role);
-         if (role === Staff) {
-            dispatch(getlistStaffReducer(result.data.data));
-         } else if (role === QAC) {
-            dispatch(getlistCoordinatorReducer(result.data.data));
+         if (requestorRole !== Staff) {
+            let result = await getListUserByRoleService(role);
+            if (role === Staff) {
+               dispatch(getlistStaffReducer(result.data.data));
+            } else if (role === QAC) {
+               dispatch(getlistCoordinatorReducer(result.data.data));
+            }
          }
       } catch (error) {
          alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };

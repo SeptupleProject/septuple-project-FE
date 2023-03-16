@@ -49,6 +49,7 @@ const UpdateAcademic = () => {
                startDate,
                endDate,
                values
+   
             );
             dispatch(updateAcademicYearAction(id, dateToUpdate));
          }
@@ -79,7 +80,9 @@ const UpdateAcademic = () => {
                );
                dateToUpdate = {
                   ...dateToUpdate,
-                  ideaDeadline: `${moment(values.ideaDeadline).toISOString()}`,
+                  ideaDeadline: `${moment(values.ideaDeadline)
+                     .add(1, 'day')
+                     .toISOString()}`,
                };
                dispatch(updateAcademicYearAction(id, dateToUpdate));
             }
@@ -250,7 +253,7 @@ const UpdateAcademic = () => {
                   )}
                </GridItem>
             </Grid>
-            <ToastContainer />
+       
          </center>
       </>
    );

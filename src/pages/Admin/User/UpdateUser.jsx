@@ -255,7 +255,7 @@ const UpdateUser = () => {
                </ButtonGroup>
             </Card>
          </Center>
-         <ToastContainer />
+     
       </>
    );
 };

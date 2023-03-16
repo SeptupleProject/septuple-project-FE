@@ -93,29 +93,41 @@ export const createObjectDateToUpdate = (id, startDate, endDate, values) => {
       dateToUpdate = {
          id: id,
          name: values.name,
-         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
-         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
+         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+            .add(1, 'day')
+            .toISOString(),
+         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+            .add(1, 'day')
+            .toISOString(),
       };
    } else if (values.startDate !== startDate && values.endDate !== endDate) {
       dateToUpdate = {
          id: id,
          name: values.name,
-         startDate: moment(values.startDate).toISOString(),
-         endDate: moment(values.endDate).toISOString(),
+         startDate: moment(values.startDate).add(1, 'day').toISOString(),
+         endDate: moment(values.endDate).add(1, 'day').toISOString(),
       };
    } else if (values.startDate == startDate && values.endDate !== endDate) {
       dateToUpdate = {
          id: id,
          name: values.name,
-         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
-         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
+         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+            .add(1, 'day')
+            .toISOString(),
+         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+            .add(1, 'day')
+            .toISOString(),
       };
    } else {
       dateToUpdate = {
          id: id,
          name: values.name,
-         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm').toISOString(),
-         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm').toISOString(),
+         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+            .add(1, 'day')
+            .toISOString(),
+         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+            .add(1, 'day')
+            .toISOString(),
       };
    }
    return dateToUpdate;
@@ -216,4 +228,27 @@ export const convertUserToIdArray = (array) => {
       arrayAfter.push(newObject);
    }
    return arrayAfter;
+};
+
+
+export const convertObjectToFormData = (values) => {
+   let ideaUpdate = new FormData();
+   if (values.File === null) {
+      for (const key in values) {
+         if (key !== 'File') {
+            ideaUpdate.append(key, values[key]);
+         }
+      }
+   } else {
+      for (const key in values) {
+         if (key !== 'image') {
+            if (key !== 'File') {
+               ideaUpdate.append(key, values[key]);
+            } else {
+               ideaUpdate.append('File', values.File, values.File.name);
+            }
+         }
+      }
+   }
+   return ideaUpdate;
 };

@@ -1,4 +1,3 @@
-import React from 'react';
 import Icon from '../Icon/Icon';
 import {
    Text,
@@ -10,13 +9,14 @@ import {
    Button,
    Select,
 } from '@chakra-ui/react';
-import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useDispatch, useSelector } from 'react-redux';
 import { createNewIdeaAction } from '../../redux/action/ideaAction';
-import { toast, ToastContainer } from 'react-toastify';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import * as Yup from 'yup';
+import alert from '../../settings/alert';
+import { Slide } from 'react-toastify';
+import { convertObjectToFormData } from '../../settings/common';
 const PostIdea = () => {
    const [lock, setLock] = useState(false);
    const [post, setPost] = useState(false);
@@ -24,40 +24,34 @@ const PostIdea = () => {
    const titleInput = useRef(null);
    const contentInput = useRef(null);
    const categoryInput = useRef(null);
+   const switchInput = useRef(null);
    const dispatch = useDispatch();
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
+
    const listOfCategory = useSelector(
-      (state) => state.categoriesReducer.categoriesList
+      (state) => state.categoryReducer.categoryDropdown
    );
    const formik = useFormik({
       initialValues: {
          title: '',
          content: '',
-         views: 0,
-         image: null,
+         File: null,
          isAnonymous: false,
-         createdBy: signedInAccount.username,
-         category: '',
+         categoryId: '',
       },
       validationSchema: Yup.object({
          title: Yup.string()
             .required('Write something, dude !')
             .max(50, 'Title cannot be longer than 50 letters'),
          content: Yup.string().required('Share you idea !'),
-         category: Yup.string().required('What is your idea about ?'),
+         categoryId: Yup.string().required('What is your idea about ?'),
       }),
       onSubmit: (values) => {
          setPost(true);
-         setTimeout(() => {
-            setUploadImg(null);
-            setPost(false);
-         }, 700);
-         dispatch(createNewIdeaAction(values));
-         titleInput.current.value = '';
-         contentInput.current.value = '';
-         categoryInput.current.value = '';
+         let newIdea = convertObjectToFormData(values);
+         dispatch(createNewIdeaAction(newIdea));
       },
    });
    const handleOnSwitch = (e) => {
@@ -67,19 +61,15 @@ const PostIdea = () => {
    };
    const handleOnClick = () => {
       if (titleInput.current.value == '' || contentInput.current.value == '') {
-         toast.warn('Come on, fill in something!', {
-            position: 'top-center',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'dark',
-         });
+         alert.warning(
+            'Come on, fill in something!',
+            'top-right',
+            Slide,
+            'dark'
+         );
+      } else {
+         formik.handleSubmit();
       }
-      formik.handleSubmit();
-      
    };
    const handleUploadImage = (e) => {
       let file = e.target.files[0];
@@ -92,9 +82,8 @@ const PostIdea = () => {
          reader.readAsDataURL(file);
          reader.onload = (event) => {
             setUploadImg(event.target.result);
-            formik.setFieldValue('image', event.target.result);
          };
-         // formik.setFieldValue('image', file);
+         formik.setFieldValue('File', file);
       }
    };
    return (
@@ -159,8 +148,8 @@ const PostIdea = () => {
                      variant='filled'
                      size='md'
                      placeholder='Choose category'
-                     onChange={formik.handleChange} 
-                     name='category'
+                     onChange={formik.handleChange}
+                     name='categoryId'
                      ref={categoryInput}
                      isRequired
                   >
@@ -168,19 +157,19 @@ const PostIdea = () => {
                         return (
                            <option
                               key={item.id}
-                              value={item.name}
+                              value={item.id}
                            >
                               {item.name}
                            </option>
                         );
                      })}
                   </Select>
-                  {formik.errors.category ? (
+                  {formik.errors.categoryId ? (
                      <Text
                         fontSize='sm'
                         className='mt-1 text-danger'
                      >
-                        {formik.errors.category}
+                        {formik.errors.categoryId}
                      </Text>
                   ) : null}
                </div>
@@ -245,6 +234,7 @@ const PostIdea = () => {
             </div>
             <div className='d-flex justify-content-center align-middle'>
                <Switch
+                  ref={switchInput}
                   name='isAnonymous'
                   size='sm'
                   className='p-0 mt-1 mr-3'
