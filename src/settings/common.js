@@ -252,3 +252,13 @@ export const convertObjectToFormData = (values) => {
    }
    return ideaUpdate;
 };
+
+export const convertContentToArray = (value) => {
+   let convertToString = null;
+   if (typeof value == 'string') {
+      convertToString = value;
+   } else {
+      convertToString = JSON.stringify(value);
+   }
+   return (convertToString = convertToString.split(' '));
+};

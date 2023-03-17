@@ -11,8 +11,6 @@ import {
    InputGroup,
    InputRightElement,
    IconButton,
-   useDisclosure,
-   SlideFade,
    Accordion,
    AccordionButton,
    AccordionItem,
@@ -21,10 +19,9 @@ import {
    EditablePreview,
    EditableTextarea,
    EditableInput,
-   Alert,
    Switch,
-   VStack,
 } from '@chakra-ui/react';
+import { getIdeaDetailAction } from '../../redux/action/ideaAction';
 import React from 'react';
 import { useState, useRef } from 'react';
 import Icon from '../Icon/Icon';
@@ -35,11 +32,11 @@ import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import {
-   addCommentAction,
+   dislikeIdeaAtion,
    incrementViewIdeaAction,
+   likeIdeaAction,
 } from '../../redux/action/ideaAction';
-import { ToastContainer } from 'react-toastify';
-
+import { createNewCommentAction } from '../../redux/action/commentAction';
 const OtherIdeaPost = (props) => {
    let {
       id,
@@ -54,6 +51,7 @@ const OtherIdeaPost = (props) => {
       isAnonymous,
       views,
    } = props.item;
+
    const [lock, setLock] = useState(false);
    const dispatch = useDispatch();
    const [showComment, setShowComment] = useState(false);
@@ -61,34 +59,25 @@ const OtherIdeaPost = (props) => {
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
+   const ideaDetail = useSelector((state) => state.ideaReducer.ideaDetail);
    const comment = useRef();
    const formik = useFormik({
       initialValues: {
-         content: '',
-         email: signedInAccount.username,
-         ideaId: id,
-         isCmtAnonymous: false,
+         Content: '',
+         IsAnonymous: false,
+         IdeaId: id,
       },
       validationSchema: Yup.object({
-         content: Yup.string().required('Write something, dude !'),
+         Content: Yup.string().required('Write something, dude !'),
       }),
       onSubmit: (values) => {
-         dispatch(addCommentAction(values));
+         dispatch(createNewCommentAction(values, id));
+         comment.current.value = '';
       },
    });
-   const handleSubmitComment = (e) => {
-      e.preventDefault();
-      if (formik.errors.content) {
-         toast.warn(`${formik.errors.content}`, {
-            position: 'top-right',
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: 'dark',
-         });
+   const handleAddComment = (e) => {
+      if (formik.errors.Content) {
+         alert.error(formik.errors.Content, 'top-right', null, 'dark');
       } else {
          formik.handleSubmit();
       }
@@ -100,32 +89,29 @@ const OtherIdeaPost = (props) => {
    };
 
    const renderListComment = () => {
-      if (comments !== undefined) {
-         return comments.map((item) => {
+      if (ideaDetail.comments !== 0) {
+         return ideaDetail.comments.map((item) => {
             return (
                <div
                   key={item.id}
                   className='my-4'
                >
-                  <StaffComment item={item} />
+                  <StaffComment
+                     // createdBy={createdBy}
+                     item={item}
+                     ideaId={id}
+                  />
                </div>
             );
          });
       } else {
-         toast.error('No comment to show !!!', {
-            position: 'top-center',
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'colored',
-         });
+         alert.error('No comment to show !!!', 'top-right', null, 'dark');
+         setShowComment(!showComment);
       }
    };
    const handleOnIncrementView = () => {
       dispatch(incrementViewIdeaAction(id));
+      dispatch(getIdeaDetailAction(id));
    };
    return (
       <Accordion allowToggle>
@@ -278,6 +264,9 @@ const OtherIdeaPost = (props) => {
                            size='lg'
                         >
                            <Button
+                              onClick={() => {
+                                 dispatch(likeIdeaAction(id));
+                              }}
                               colorScheme='blue'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-up' />
@@ -286,6 +275,9 @@ const OtherIdeaPost = (props) => {
                               {like}
                            </Button>
                            <Button
+                              onClick={() => {
+                                 dispatch(dislikeIdeaAtion(id));
+                              }}
                               colorScheme='red'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-down' />
@@ -319,13 +311,11 @@ const OtherIdeaPost = (props) => {
                                  variant='outline'
                                  borderRadius={'20px'}
                                  onChange={formik.handleChange}
-                                 onBlur={formik.handleBlur}
-                                 name='content'
+                                 name='Content'
                               />
-
                               <InputRightElement>
                                  <IconButton
-                                    onClick={handleSubmitComment}
+                                    onClick={handleAddComment}
                                     icon={
                                        <Icon
                                           content='fa-regular fa-paper-plane'
@@ -341,7 +331,7 @@ const OtherIdeaPost = (props) => {
 
                            <div className='d-flex justify-content-center align-middle'>
                               <Switch
-                                 name='isCmtAnonymous'
+                                 name='IsAnonymous'
                                  data-toggle='tooltip'
                                  data-placement='bottom'
                                  title='Comment as an anonymous'
