@@ -9,6 +9,12 @@ export const getIdeaDetailService = (id) => {
 export const createNewIdeaService = (data) => {
    return http.post(`api/Ideas`, data);
 };
+export const likeIdeaService = (id) => {
+   return http.post(`api/Ideas/likeIdea/${id}`);
+};
+export const dislikeIdeaService = (id) => {
+   return http.post(`api/Ideas/dislikeIdea/${id}`);
+};
 export const incrementViewIdeaService = (id) => {
    return http.put(`api/Ideas/incrementview/${id}`);
 };

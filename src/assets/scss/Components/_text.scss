@@ -50,10 +50,11 @@
    }
 
    .comment-content {
-      font-family: $-poppin;
+      font-family: Arial, Helvetica, sans-serif;
       font-weight: 400;
       font-style: 16px;
       line-height: $-lh-1;
+      letter-spacing: 1.1px;
    }
 
    .see-more {

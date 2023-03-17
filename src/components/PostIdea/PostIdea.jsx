@@ -26,10 +26,6 @@ const PostIdea = () => {
    const categoryInput = useRef(null);
    const switchInput = useRef(null);
    const dispatch = useDispatch();
-   const signedInAccount = useSelector(
-      (state) => state.accountReducer.signedInAccount
-   );
-
    const listOfCategory = useSelector(
       (state) => state.categoryReducer.categoryDropdown
    );

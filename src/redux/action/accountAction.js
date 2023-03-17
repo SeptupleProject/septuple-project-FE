@@ -1,4 +1,4 @@
-import { Bounce, Slide, toast, ToastContainer } from 'react-toastify';
+import { Slide, } from 'react-toastify';
 import { history } from '../../App';
 import {
    createUserService,
@@ -87,7 +87,7 @@ export const getListUserAction = () => {
       }
    };
 };
-
+ 
 export const getUserDetailAction = (id, requestorRole) => {
    return async (dispatch) => {
       await dispatch(openSpinner());

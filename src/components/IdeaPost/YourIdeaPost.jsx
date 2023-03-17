@@ -46,13 +46,13 @@ import alternativeImg from '../../assets/img/gwuni.png';
 import {
    deleteIdeaAction,
    getIdeaDetailAction,
+   updateIdeaAction,
 } from '../../redux/action/ideaAction';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { addCommentAction } from '../../redux/action/ideaAction';
 import alert from '../../settings/alert';
 import { convertObjectToFormData } from '../../settings/common';
-import { updateIdeaAction } from '../../redux/action/ideaAction';
+import { createNewCommentAction } from '../../redux/action/commentAction';
 const YourIdeaPost = (props) => {
    let {
       id,
@@ -79,6 +79,7 @@ const YourIdeaPost = (props) => {
    const [uploadImgDetail, setUploadImgDetail] = useState('');
    const comment = useRef();
    const ideaDetail = useSelector((state) => state.ideaReducer.ideaDetail);
+
    const formik = useFormik({
       initialValues: {
          id: id,
@@ -98,11 +99,27 @@ const YourIdeaPost = (props) => {
       },
    });
 
+   const formikComment = useFormik({
+      initialValues: {
+         Content: '',
+         IsAnonymous: false,
+         IdeaId: id,
+      },
+      validationSchema: Yup.object({
+         Content: Yup.string().required('Fill in something !!!'),
+      }),
+      onSubmit: (values) => {
+         dispatch(createNewCommentAction(values, id));
+         comment.current.value = '';
+      },
+   });
+
    const handleOnChange = (e) => {
       let { name, checked } = e.target;
       formik.setFieldValue(name, checked);
       setLock(!lock);
    };
+
    const handleUploadImage = async (e) => {
       let file = e.target.files[0];
       if (
@@ -118,10 +135,12 @@ const YourIdeaPost = (props) => {
          };
       }
    };
+
    const handleOnOpenUpdateIdea = () => {
       dispatch(getIdeaDetailAction(id));
       uploadOnOpen();
    };
+
    const handleOnUpdate = (e) => {
       e.preventDefault();
       if (formik.errors.title) {
@@ -130,6 +149,15 @@ const YourIdeaPost = (props) => {
          formik.handleSubmit();
       }
    };
+
+   const handleAddComment = () => {
+      if (formikComment.errors.Content) {
+         alert.error(formikComment.errors.Content, 'top-right', null, 'dark');
+      } else {
+         formikComment.handleSubmit();
+      }
+   };
+
    const openModal = () => {
       return (
          <Modal
@@ -247,14 +275,18 @@ const YourIdeaPost = (props) => {
       );
    };
    const renderListComment = () => {
-      if (comments !== 0) {
-         return comments.map((item) => {
+      if (ideaDetail.comments !== 0) {
+         return ideaDetail.comments.map((item) => {
             return (
                <div
                   key={item.id}
                   className='my-4'
                >
-                  <StaffComment item={item} />
+                  <StaffComment
+                     // createdBy={createdBy}
+                     item={item}
+                     ideaId={id}
+                  />
                </div>
             );
          });
@@ -265,6 +297,9 @@ const YourIdeaPost = (props) => {
    };
    const handleOnDelete = () => {
       dispatch(deleteIdeaAction(id));
+   };
+   const handleGetIdeaDetail = () => {
+      dispatch(getIdeaDetailAction(id));
    };
    return (
       <Accordion allowToggle>
@@ -323,7 +358,7 @@ const YourIdeaPost = (props) => {
                   borderTopLeftRadius: '8px',
                   borderBottom: 'none',
                }}
-               className='p-3'
+               className='px-3 pt-3 pb-0'
             >
                {({ isExpanded }) => (
                   <>
@@ -413,6 +448,7 @@ const YourIdeaPost = (props) => {
                            <AccordionButton
                               className='text-wrap w-auto p-0 mx-5'
                               variant='ghost'
+                              onClick={handleGetIdeaDetail}
                            >
                               <HStack>
                                  <div
@@ -433,7 +469,7 @@ const YourIdeaPost = (props) => {
                         )}
                      </HStack>
 
-                     <AccordionPanel className='hiddenPanel'>
+                     <AccordionPanel className='hiddenPanel pb-1'>
                         <Editable
                            isDisabled={true}
                            className='editablePara my-4'
@@ -513,14 +549,14 @@ const YourIdeaPost = (props) => {
                                  placeholder='What do you think?'
                                  variant='outline'
                                  borderRadius={'20px'}
-                                 onChange={formik.handleChange}
-                                 onBlur={formik.handleBlur}
+                                 onChange={formikComment.handleChange}
                                  ref={comment}
+                                 name='Content'
                               />
 
                               <InputRightElement>
                                  <IconButton
-                                    // onClick={handleOnUpdate}
+                                    onClick={handleAddComment}
                                     icon={
                                        <Icon
                                           content='fa-regular fa-paper-plane'

@@ -1,18 +1,16 @@
 import { Slide } from 'react-toastify';
-import { history } from '../../App';
-import {
-   addCommentReducer,
-   getIdeaDetailReducer,
-} from '../reducers/ideaReducer';
+import { getIdeaDetailReducer } from '../reducers/ideaReducer';
 import alert from '../../settings/alert';
 import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 import {
+   likeIdeaService,
    createNewIdeaService,
    deleteIdeaService,
    getListIdeaService,
    updateIdeaService,
    getIdeaDetailService,
    incrementViewIdeaService,
+   dislikeIdeaService,
 } from '../../services/ideaService';
 import { getListIdeaReducer } from '../reducers/ideaReducer';
 import { http } from '../../services/configAPI';
@@ -82,6 +80,29 @@ export const updateIdeaAction = (id, data) => {
    };
 };
 
+export const likeIdeaAction = (id) => {
+   return async (dispatch) => {
+      try {
+         await likeIdeaService(id);
+         let result = await getListIdeaService();
+         dispatch(getListIdeaReducer(result.data.data));
+      } catch (error) {
+         alert.error(error);
+      }
+   };
+};
+
+export const dislikeIdeaAtion = (id) => {
+   return async (dispatch) => {
+      try {
+         await dislikeIdeaService(id);
+         let result = await getListIdeaService();
+         dispatch(getListIdeaReducer(result.data.data));
+      } catch (error) {
+         alert.error(error);
+      }
+   };
+};
 export const deleteIdeaAction = (id) => {
    return async (dispatch) => {
       try {
@@ -96,16 +117,6 @@ export const deleteIdeaAction = (id) => {
          setTimeout(() => {
             dispatch(getListIdeaReducer(result.data.data));
          }, 500);
-      } catch (error) {
-         alert.error(error);
-      }
-   };
-};
-
-export const addCommentAction = (comment) => {
-   return async (dispatch) => {
-      try {
-         dispatch(addCommentReducer(comment));
       } catch (error) {
          alert.error(error);
       }
