@@ -21,22 +21,37 @@ import {
    EditableInput,
    Switch,
 } from '@chakra-ui/react';
+import {
+   Modal,
+   ModalOverlay,
+   ModalBody,
+   ModalContent,
+   ModalHeader,
+   ModalFooter,
+   ModalCloseButton,
+} from '@chakra-ui/react';
+import { USER_SIGNED_IN } from '../../settings/setting';
 import { getIdeaDetailAction } from '../../redux/action/ideaAction';
 import React from 'react';
+import { Slide } from 'react-toastify';
 import { useState, useRef } from 'react';
 import Icon from '../Icon/Icon';
 import { useDispatch, useSelector } from 'react-redux';
 import StaffComment from '../StaffComment/StaffComment';
 import alternativeImg from '../../assets/img/gwuni.png';
-import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { clearIdeaDetailReducer } from '../../redux/reducers/ideaReducer';
 import {
    dislikeIdeaAtion,
    incrementViewIdeaAction,
    likeIdeaAction,
 } from '../../redux/action/ideaAction';
+import alert from '../../settings/alert';
 import { createNewCommentAction } from '../../redux/action/commentAction';
+import { resetFormInput } from '../../settings/common';
+import { useDisclosure } from '@chakra-ui/react';
+import { today } from '../../settings/setting';
 const OtherIdeaPost = (props) => {
    let {
       id,
@@ -51,15 +66,16 @@ const OtherIdeaPost = (props) => {
       isAnonymous,
       views,
    } = props.item;
-
    const [lock, setLock] = useState(false);
    const dispatch = useDispatch();
    const [showComment, setShowComment] = useState(false);
    const [uploadImg, setUploadImg] = useState(image);
-   const signedInAccount = useSelector(
-      (state) => state.accountReducer.signedInAccount
-   );
    const ideaDetail = useSelector((state) => state.ideaReducer.ideaDetail);
+   const {
+      isOpen: commentIsOpen,
+      onOpen: commentOnOpen,
+      onClose: commentOnClose,
+   } = useDisclosure();
    const comment = useRef();
    const formik = useFormik({
       initialValues: {
@@ -68,11 +84,12 @@ const OtherIdeaPost = (props) => {
          IdeaId: id,
       },
       validationSchema: Yup.object({
-         Content: Yup.string().required('Write something, dude !'),
+         Content: Yup.string().required('Write something !!!'),
       }),
       onSubmit: (values) => {
          dispatch(createNewCommentAction(values, id));
-         comment.current.value = '';
+         resetFormInput(comment);
+         setLock(false);
       },
    });
    const handleAddComment = (e) => {
@@ -89,7 +106,7 @@ const OtherIdeaPost = (props) => {
    };
 
    const renderListComment = () => {
-      if (ideaDetail.comments !== 0) {
+      if (Object.keys(ideaDetail).length > 0) {
          return ideaDetail.comments.map((item) => {
             return (
                <div
@@ -97,21 +114,78 @@ const OtherIdeaPost = (props) => {
                   className='my-4'
                >
                   <StaffComment
-                     // createdBy={createdBy}
                      item={item}
                      ideaId={id}
                   />
                </div>
             );
          });
-      } else {
-         alert.error('No comment to show !!!', 'top-right', null, 'dark');
-         setShowComment(!showComment);
       }
    };
    const handleOnIncrementView = () => {
       dispatch(incrementViewIdeaAction(id));
       dispatch(getIdeaDetailAction(id));
+   };
+   const handleOnLikePost = () => {
+      if (USER_SIGNED_IN) {
+         dispatch(likeIdeaAction(id));
+      } else {
+         alert.info('Please sign in first !', null, Slide, 'dark');
+      }
+   };
+   const handleOnDislikePost = () => {
+      if (USER_SIGNED_IN) {
+         dispatch(dislikeIdeaAtion(id));
+      } else {
+         alert.info('Please sign in first !', null, Slide, 'dark');
+      }
+   };
+   const unexpiredComment = today <= props.currentAcademicYear.endDate;
+   const openModalListComment = () => {
+      return (
+         <Modal
+            isOpen={commentIsOpen}
+            onClose={commentOnClose}
+            isCentered
+            size='5xl'
+            scrollBehavior='inside'
+         >
+            <ModalOverlay />
+            <ModalContent>
+               <ModalHeader className='mt-3'>
+                  <Text
+                     fontSize='xl'
+                     className='text-left title-2'
+                  >
+                     This post has {comments} comments
+                  </Text>
+               </ModalHeader>
+               <ModalCloseButton />
+               <ModalBody>
+                  <div style={{ width: '90%', margin: '0 auto' }}>
+                     {renderListComment()}
+                  </div>
+               </ModalBody>
+               <ModalFooter>
+                  <Button
+                     variant='ghost'
+                     colorScheme='red'
+                     mr={3}
+                     onClick={commentOnClose}
+                  >
+                     Close
+                  </Button>
+               </ModalFooter>
+            </ModalContent>
+         </Modal>
+      );
+   };
+   const handleOnOpenCommentModal = () => {
+      dispatch(clearIdeaDetailReducer());
+      dispatch(getIdeaDetailAction(id));
+      setTimeout(() => {
+         commentOnOpen();
+      }, 100);
    };
    return (
       <Accordion allowToggle>
@@ -264,9 +338,7 @@ const OtherIdeaPost = (props) => {
                            size='lg'
                         >
                            <Button
-                              onClick={() => {
-                                 dispatch(likeIdeaAction(id));
-                              }}
+                              onClick={handleOnLikePost}
                               colorScheme='blue'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-up' />
@@ -275,9 +347,7 @@ const OtherIdeaPost = (props) => {
                               {like}
                            </Button>
                            <Button
-                              onClick={() => {
-                                 dispatch(dislikeIdeaAtion(id));
-                              }}
+                              onClick={handleOnDislikePost}
                               colorScheme='red'
                               leftIcon={
                                  <Icon content='fa-regular fa-thumbs-down' />
@@ -286,9 +356,7 @@ const OtherIdeaPost = (props) => {
                               {disLike}
                            </Button>
                            <Button
-                              onClick={() => {
-                                 setShowComment(!showComment);
-                              }}
+                              onClick={handleOnOpenCommentModal}
                               leftIcon={
                                  <Icon content='fa-regular fa-comment-dots' />
                               }
@@ -296,9 +364,14 @@ const OtherIdeaPost = (props) => {
                            >
                               {comments}
                            </Button>
+                           {openModalListComment()}
                         </ButtonGroup>
                         <Divider />
-                        <HStack>
+                        <HStack
+                           className={
+                              USER_SIGNED_IN === null ? 'disappear' : ''
+                           }
+                        >
                            <Icon
                               content='fa-regular fa-circle-user'
                               fontSize='34px'
@@ -306,6 +379,7 @@ const OtherIdeaPost = (props) => {
                            ></Icon>
                            <InputGroup>
                               <Input
+                                 disabled={unexpiredComment ? false : true}
                                  ref={comment}
                                  placeholder='What do you think?'
                                  variant='outline'
@@ -331,6 +405,7 @@ const OtherIdeaPost = (props) => {
 
                            <div className='d-flex justify-content-center align-middle'>
                               <Switch
+                                 isChecked={lock}
                                  name='IsAnonymous'
                                  data-toggle='tooltip'
                                  data-placement='bottom'

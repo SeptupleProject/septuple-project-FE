@@ -76,7 +76,7 @@ export const deleteCategoryAction = (id) => {
       await dispatch(openSpinner());
       try {
          await deleteCategoryService(id);
-         alert.error('Category removed successfully', null, null, 'dark');
+         alert.info('Category removed successfully', null, null, 'dark');
          let result = await getAllCategoryService();
          dispatch(getAllCategoryReducer(result.data.data));
       } catch (error) {

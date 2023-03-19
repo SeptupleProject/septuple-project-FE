@@ -23,6 +23,9 @@
 }
 .admin-navigation {
    .menu-col-2 {
+      position: sticky;
+      top: 0;
+      bottom: 0;
       background: $-white-1;
       height: 100vh;
       border-right: 2px solid $-grey-1;

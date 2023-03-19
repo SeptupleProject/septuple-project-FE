@@ -58,10 +58,14 @@ const Category = (props) => {
       },
    });
    const handleOnDelete = () => {
-      dispatch(deleteCategoryAction(id));
-      setTimeout(() => {
-         deleteOnClose();
-      }, 300);
+      if (numOfIdeas == 0) {
+         dispatch(deleteCategoryAction(id));
+         setTimeout(() => {
+            deleteOnClose();
+         }, 300);
+      } else {
+         alert.error('Category is in use', 'top-right', null, 'dark');
+      }
    };
    const handleOnUpdate = () => {
       if (Object.keys(formik.errors).length > 0) {
@@ -182,7 +186,7 @@ const Category = (props) => {
                <HStack spacing={20}>
                   <Badge
                      variant='subtle'
-                     colorScheme={numOfIdeas > 0 ? 'blue' : 'red'}
+                     colorScheme={numOfIdeas > 0 ? 'green' : 'red'}
                   >
                      {numOfIdeas > 0 ? 'USING' : 'NOT IN USE'}
                   </Badge>

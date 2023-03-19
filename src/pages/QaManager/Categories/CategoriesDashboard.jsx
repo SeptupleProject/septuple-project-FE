@@ -28,7 +28,8 @@ import {
 } from '../../../redux/action/categoryAction';
 import alert from '../../../settings/alert';
 import { useEffect, useRef } from 'react';
-import { ToastContainer } from 'react-toastify';
+import ReactPaginate from 'react-paginate';
+import { useState } from 'react';
 const CategoriesDashboard = () => {
    const {
       isOpen: createIsOpen,
@@ -39,7 +40,7 @@ const CategoriesDashboard = () => {
       dispatch(getAllCategoryAction());
    }, []);
    const name = useRef(null);
-   let categoryList = useSelector(
+   const categoryList = useSelector(
       (state) => state.categoryReducer.categoryList
    );
    const dispatch = useDispatch();
@@ -59,6 +60,16 @@ const CategoriesDashboard = () => {
          }, 700);
       },
    });
+   const items = categoryList;
+   const [itemOffset, setItemOffset] = useState(0);
+   const itemsPerPage = 6;
+   const endOffset = itemOffset + itemsPerPage;
+   const currentItems = items.slice(itemOffset, endOffset);
+   const pageCount = Math.ceil(items.length / itemsPerPage);
+   const handlePageClick = (event) => {
+      const newOffset = (event.selected * itemsPerPage) % items.length;
+      setItemOffset(newOffset);
+   };
    const handleOnSubmit = () => {
       if (formik.errors.name) {
          alert.warning(formik.errors.name, 'top-right', null, 'dark');
@@ -117,9 +128,9 @@ const CategoriesDashboard = () => {
          </Modal>
       );
    };
-   const renderCategoryList = () => {
-      if (categoryList.length > 0) {
-         return categoryList.map((item) => {
+   const renderCategoryList = (currentItems) => {
+      if (currentItems.length > 0) {
+         return currentItems.map((item) => {
             return (
                <div
                   key={item.id}
@@ -189,9 +200,48 @@ const CategoriesDashboard = () => {
          </div>
          {renderModal()}
          <div className='container-fluid mt-5'>
-            <div className='row mx-3'>{renderCategoryList()}</div>
+            <div className='row mx-3'>{renderCategoryList(currentItems)}</div>
+            <ReactPaginate
+               marginPagesDisplayed={1}
+               pageRangeDisplayed={1}
+               breakLabel='...'
+               breakClassName='pagin-list'
+               nextLabel={
+                  <Button
+                     colorScheme='facebook'
+                     variant='ghost'
+                     size='sm'
+                  >
+                     <Icon
+                        content='fa-solid fa-caret-right'
+                        fontSize='14px'
+                     />
+                  </Button>
+               }
+               onPageChange={handlePageClick}
+               pageCount={pageCount}
+               previousLabel={
+                  <Button
+                     colorScheme='facebook'
+                     variant='ghost'
+                     size='sm'
+                  >
+                     <Icon
+                        content='fa-solid fa-caret-left'
+                        fontSize='14px'
+                     />
+                  </Button>
+               }
+               renderOnZeroPageCount={null}
+               previousLinkClassName='pagin-link'
+               nextLinkClassName='pagin-link'
+               nextClassName='pagin-list'
+               previousClassName='pagin-list'
+               pageClassName='pagin-list my-1 mx-1'
+               activeLinkClassName='pagin-list active px-3 py-2 m-0'
+               containerClassName='d-flex justify-content-end w-90 mt-3'
+            />
          </div>
-      
       </div>
    );
 };

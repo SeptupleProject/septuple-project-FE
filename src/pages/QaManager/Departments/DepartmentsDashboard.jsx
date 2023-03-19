@@ -8,9 +8,9 @@ import { history } from '../../../App';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllDepartmentAction } from '../../../redux/action/departmentAction';
-import { ToastContainer } from 'react-toastify';
 import { getlistUserByRoleAction } from '../../../redux/action/accountAction';
 import { QAC, Staff } from '../../../settings/setting';
+import Pagination from '../../../components/Pagination/Pagination';
 
 const DepartmentsDashboard = () => {
    const dispatch = useDispatch();
@@ -25,15 +25,15 @@ const DepartmentsDashboard = () => {
       dispatch(getlistUserByRoleAction(Staff));
       dispatch(getlistUserByRoleAction(QAC));
    }, []);
-   const renderDepartmentList = () => {
-      if (departmentList.length === 0) {
+   const renderDepartmentList = (currentItems) => {
+      if (currentItems.length === 0) {
          return (
             <p className='text-center w-100 title-3'>
                No departments available
             </p>
          );
       } else {
-         return departmentList.map((item) => {
+         return currentItems.map((item) => {
             let { id, managedBy, name, users } = item;
             return (
                <div
@@ -107,9 +107,14 @@ const DepartmentsDashboard = () => {
          </div>
 
          <div className='container-fluid mt-5 '>
-            <div className='row mx-4'>{renderDepartmentList()}</div>
+            <div className='row mx-4'>
+               <Pagination
+                  data={departmentList}
+                  itemPerPage={4}
+                  renderTable={renderDepartmentList}
+               />
+            </div>
          </div>
-      
       </div>
    );
 };

@@ -8,8 +8,8 @@ import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllAcademicYearAction } from '../../../redux/action/academicYearAction';
-import { ToastContainer } from 'react-toastify';
 import { Admin } from '../../../settings/setting';
+import Pagination from '../../../components/Pagination/Pagination';
 const AcademicDashboard = () => {
    const dispatch = useDispatch();
    const listAcademicYear = useSelector(
@@ -22,8 +22,8 @@ const AcademicDashboard = () => {
       dispatch(getAllAcademicYearAction());
    }, []);
 
-   const renderAcademicYear = () => {
-      return listAcademicYear.map((item) => {
+   const renderAcademicYear = (currentItems) => {
+      return currentItems.map((item) => {
          return (
             <div
                key={item.id}
@@ -92,9 +92,14 @@ const AcademicDashboard = () => {
          </div>
 
          <div className='container-fluid mt-5'>
-            <div className='row mx-3'>{renderAcademicYear()}</div>
+            <div className='row mx-3'>
+               <Pagination
+                  data={listAcademicYear}
+                  renderTable={renderAcademicYear}
+                  itemPerPage={4}
+               />
+            </div>
          </div>
-        
       </div>
    );
 };

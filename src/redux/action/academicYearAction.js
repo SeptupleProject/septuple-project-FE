@@ -6,11 +6,13 @@ import {
    deleteAcademicYearService,
    getAcademicYearDetailService,
    getAllAcademicYearService,
+   getCurrentAcademicYearService,
    updateAcademicYearService,
 } from '../../services/academicYearService';
 import {
    getAcademicYearDetailReducer,
    getAllAcademicYearReducer,
+   getCurrentAcademicYearReducer,
 } from '../reducers/academicYearReducer';
 import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 export const getAllAcademicYearAction = () => {
@@ -41,6 +43,17 @@ export const getAcademicYearDetailAction = (id) => {
          setTimeout(() => {
             dispatch(closeSpinner());
          }, 500);
+      }
+   };
+};
+
+export const getCurrentAcademicYearAction = () => {
+   return async (dispatch) => {
+      try {
+         let result = await getCurrentAcademicYearService();
+         dispatch(getCurrentAcademicYearReducer(result.data));
+      } catch (error) {
+         alert.error(error);
       }
    };
 };
