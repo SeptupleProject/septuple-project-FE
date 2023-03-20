@@ -230,7 +230,6 @@ export const convertUserToIdArray = (array) => {
    return arrayAfter;
 };
 
-
 export const convertObjectToFormData = (values) => {
    let ideaUpdate = new FormData();
    if (values.File === null) {
@@ -262,3 +261,10 @@ export const convertContentToArray = (value) => {
    }
    return (convertToString = convertToString.split(' '));
 };
+export const resetFormInput = (...input) => {
+   let array = [...input];
+   return array.map((item) => {
+      item.current.value = '';
+   });
+};
+

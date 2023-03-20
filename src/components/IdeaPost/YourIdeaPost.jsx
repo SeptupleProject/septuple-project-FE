@@ -28,7 +28,6 @@ import {
    FormLabel,
    Textarea,
 } from '@chakra-ui/react';
-
 import React from 'react';
 import { useState, useRef } from 'react';
 import Icon from '../Icon/Icon';
@@ -53,6 +52,9 @@ import { useFormik } from 'formik';
 import alert from '../../settings/alert';
 import { convertObjectToFormData } from '../../settings/common';
 import { createNewCommentAction } from '../../redux/action/commentAction';
+import { resetFormInput } from '../../settings/common';
+import { clearIdeaDetailReducer } from '../../redux/reducers/ideaReducer';
+import { today } from '../../settings/setting';
 const YourIdeaPost = (props) => {
    let {
       id,
@@ -69,12 +71,18 @@ const YourIdeaPost = (props) => {
    } = props.item;
    const dispatch = useDispatch();
    const [lock, setLock] = useState(isAnonymous);
-   const [showComment, setShowComment] = useState(false);
+   const updateTitle = useRef();
+   const updateContent = useRef();
    const { isOpen: deleteIsOpen, onToggle: deleteOnToggle } = useDisclosure();
    const {
       isOpen: uploadIsOpen,
       onOpen: uploadOnOpen,
       onClose: uploadOnClose,
+   } = useDisclosure();
+   const {
+      isOpen: commentIsOpen,
+      onOpen: commentOnOpen,
+      onClose: commentOnClose,
    } = useDisclosure();
    const [uploadImgDetail, setUploadImgDetail] = useState('');
    const comment = useRef();
@@ -86,11 +94,11 @@ const YourIdeaPost = (props) => {
          title: title,
          content: content,
          image: image,
-         isAnonymous: isAnonymous,
+         isAnonymos: isAnonymous,
          File: null,
       },
       validationSchema: Yup.object({
-         title: Yup.string().max(50, 'Title cannot be longer than 50 letters'),
+         title: Yup.string().max(70, 'Title cannot be longer than 70 letters'),
       }),
       onSubmit: (values) => {
          let ideaUpdate = convertObjectToFormData(values);
@@ -110,7 +118,7 @@ const YourIdeaPost = (props) => {
       }),
       onSubmit: (values) => {
          dispatch(createNewCommentAction(values, id));
-         comment.current.value = '';
+         resetFormInput(comment);
       },
    });
 
@@ -119,6 +127,7 @@ const YourIdeaPost = (props) => {
       formik.setFieldValue(name, checked);
       setLock(!lock);
    };
+   const unexpiredComment = today <= props.currentAcademicYear.endDate;
 
    const handleUploadImage = async (e) => {
       let file = e.target.files[0];
@@ -137,10 +146,12 @@ const YourIdeaPost = (props) => {
    };
 
    const handleOnOpenUpdateIdea = () => {
+      setLock(false);
+      dispatch(clearIdeaDetailReducer());
+      setUploadImgDetail('');
       dispatch(getIdeaDetailAction(id));
       uploadOnOpen();
    };
-
    const handleOnUpdate = (e) => {
       e.preventDefault();
       if (formik.errors.title) {
@@ -149,7 +160,6 @@ const YourIdeaPost = (props) => {
          formik.handleSubmit();
       }
    };
-
    const handleAddComment = () => {
       if (formikComment.errors.Content) {
          alert.error(formikComment.errors.Content, 'top-right', null, 'dark');
@@ -157,8 +167,7 @@ const YourIdeaPost = (props) => {
          formikComment.handleSubmit();
       }
    };
-
-   const openModal = () => {
+   const openModalUpdate = () => {
       return (
          <Modal
             isOpen={uploadIsOpen}
@@ -182,18 +191,20 @@ const YourIdeaPost = (props) => {
                   <FormControl>
                      <FormLabel>Title</FormLabel>
                      <Input
+                        ref={updateTitle}
                         name='title'
                         onChange={formik.handleChange}
-                        placeholder={ideaDetail.title}
+                        defaultValue={ideaDetail.title}
                      />
                   </FormControl>
 
                   <FormControl mt={4}>
                      <FormLabel>Content</FormLabel>
                      <Textarea
+                        ref={updateContent}
                         name='content'
                         onChange={formik.handleChange}
-                        placeholder={ideaDetail.content}
+                        defaultValue={ideaDetail.content}
                      />
                   </FormControl>
                   <HStack>
@@ -204,7 +215,7 @@ const YourIdeaPost = (props) => {
                            </div>
                            <div className='d-flex justify-content-center'>
                               <Switch
-                                 name='isAnonymous'
+                                 name='isAnonymos'
                                  defaultChecked={ideaDetail.isAnonymous}
                                  size='sm'
                                  className='p-0 mt-1 mr-3'
@@ -275,7 +286,7 @@ const YourIdeaPost = (props) => {
       );
    };
    const renderListComment = () => {
-      if (ideaDetail.comments !== 0) {
+      if (Object.keys(ideaDetail).length > 0) {
          return ideaDetail.comments.map((item) => {
             return (
                <div
@@ -283,16 +294,12 @@ const YourIdeaPost = (props) => {
                   className='my-4'
                >
                   <StaffComment
-                     // createdBy={createdBy}
                      item={item}
                      ideaId={id}
                   />
                </div>
             );
          });
-      } else {
-         alert.error('No comment to show !!!', 'top-right', null, 'dark');
-         setShowComment(!showComment);
       }
    };
    const handleOnDelete = () => {
@@ -300,6 +307,52 @@ const YourIdeaPost = (props) => {
    };
    const handleGetIdeaDetail = () => {
       dispatch(getIdeaDetailAction(id));
+   };
+   const handleOnOpenCommentModal = () => {
+      dispatch(clearIdeaDetailReducer());
+      dispatch(getIdeaDetailAction(id));
+      setTimeout(() => {
+         commentOnOpen();
+      }, 100);
+   };
+   const openModalListComment = () => {
+      return (
+         <Modal
+            isOpen={commentIsOpen}
+            onClose={commentOnClose}
+            isCentered
+            size='5xl'
+            scrollBehavior='inside'
+         >
+            <ModalOverlay />
+            <ModalContent>
+               <ModalHeader className='mt-3'>
+                  <div className='w-90'>
+                     <Text
+                        fontSize='2xl'
+                        className='text-left title-3'
+                     >
+                        Your post has {comments} comments
+                     </Text>
+                  </div>
+               </ModalHeader>
+               <ModalCloseButton />
+               <ModalBody>
+                  <div className='w-90'>{renderListComment()}</div>
+               </ModalBody>
+               <ModalFooter>
+                  <Button
+                     variant='ghost'
+                     colorScheme='red'
+                     mr={3}
+                     onClick={commentOnClose}
+                  >
+                     Close
+                  </Button>
+               </ModalFooter>
+            </ModalContent>
+         </Modal>
+      );
    };
    return (
       <Accordion allowToggle>
@@ -378,12 +431,7 @@ const YourIdeaPost = (props) => {
                            <>
                               <div className='d-flex align-baseline'>
                                  <div className='mx-5'>
-                                    <AccordionButton
-                                       onClick={() => {
-                                          setShowComment(false);
-                                       }}
-                                       className='p-0'
-                                    >
+                                    <AccordionButton className='p-0'>
                                        <div
                                           style={{
                                              border: '2px solid #2b6bb1',
@@ -501,7 +549,7 @@ const YourIdeaPost = (props) => {
                                  Edit Post
                               </Button>
                            </VStack>
-                           {openModal()}
+                           {openModalUpdate()}
                         </div>
                         <ButtonGroup
                            variant='ghost'
@@ -526,9 +574,7 @@ const YourIdeaPost = (props) => {
                               {disLike}
                            </Button>
                            <Button
-                              onClick={() => {
-                                 setShowComment(!showComment);
-                              }}
+                              onClick={handleOnOpenCommentModal}
                               leftIcon={
                                  <Icon content='fa-regular fa-comment-dots' />
                               }
@@ -536,6 +582,7 @@ const YourIdeaPost = (props) => {
                            >
                               {comments}
                            </Button>
+                           {openModalListComment()}
                         </ButtonGroup>
                         <Divider />
                         <HStack>
@@ -546,6 +593,7 @@ const YourIdeaPost = (props) => {
                            ></Icon>
                            <InputGroup>
                               <Input
+                                 disabled={unexpiredComment ? false : true}
                                  placeholder='What do you think?'
                                  variant='outline'
                                  borderRadius={'20px'}
@@ -574,10 +622,6 @@ const YourIdeaPost = (props) => {
                   </>
                )}
             </AccordionItem>
-
-            <div style={{ width: '85%', margin: '0 auto' }}>
-               {showComment ? renderListComment() : ''}
-            </div>
          </Card>
       </Accordion>
    );

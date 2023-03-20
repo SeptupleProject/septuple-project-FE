@@ -8,24 +8,30 @@ import {
    Textarea,
    Button,
    Select,
+   FormErrorMessage,
 } from '@chakra-ui/react';
+import { today } from '../../settings/setting';
 import { useFormik } from 'formik';
 import React, { useDispatch, useSelector } from 'react-redux';
 import { createNewIdeaAction } from '../../redux/action/ideaAction';
 import { useRef, useState } from 'react';
 import * as Yup from 'yup';
 import alert from '../../settings/alert';
+import { resetFormInput } from '../../settings/common';
 import { Slide } from 'react-toastify';
 import { convertObjectToFormData } from '../../settings/common';
 const PostIdea = () => {
    const [lock, setLock] = useState(false);
    const [post, setPost] = useState(false);
+   const [switchInput, setSwitchInput] = useState(false);
    const [uploadImg, setUploadImg] = useState(null);
    const titleInput = useRef(null);
    const contentInput = useRef(null);
    const categoryInput = useRef(null);
-   const switchInput = useRef(null);
    const dispatch = useDispatch();
+   const currentAcademicYear = useSelector(
+      (state) => state.academicYearReducer.currentAcademicYear
+   );
    const listOfCategory = useSelector(
       (state) => state.categoryReducer.categoryDropdown
    );
@@ -34,26 +40,30 @@ const PostIdea = () => {
          title: '',
          content: '',
          File: null,
-         isAnonymous: false,
+         isAnonymos: false,
          categoryId: '',
       },
       validationSchema: Yup.object({
          title: Yup.string()
-            .required('Write something, dude !')
-            .max(50, 'Title cannot be longer than 50 letters'),
+            .required('We need a titlte !')
+            .max(70, 'Title cannot be longer than 70 letters'),
          content: Yup.string().required('Share you idea !'),
          categoryId: Yup.string().required('What is your idea about ?'),
       }),
       onSubmit: (values) => {
-         setPost(true);
          let newIdea = convertObjectToFormData(values);
          dispatch(createNewIdeaAction(newIdea));
+         setPost(true);
+         setLock(false);
+         setSwitchInput(false);
+         resetFormInput(titleInput, contentInput, categoryInput, switchInput);
       },
    });
    const handleOnSwitch = (e) => {
       let { name, checked } = e.target;
       formik.setFieldValue(name, checked);
       setLock(!lock);
+      setSwitchInput(true);
    };
    const handleOnClick = () => {
       if (titleInput.current.value == '' || contentInput.current.value == '') {
@@ -82,8 +92,10 @@ const PostIdea = () => {
          formik.setFieldValue('File', file);
       }
    };
+   const unexpried = today <= currentAcademicYear.ideaDeadline;
    return (
       <FormControl
+         id='postIdeaForm'
          isInvalid={(formik.errors.title, formik.errors.content)}
          className='row post-idea mx-0'
       >
@@ -103,6 +115,7 @@ const PostIdea = () => {
                className='post-idea-input'
             >
                <Input
+                  disabled={unexpried ? false : true}
                   ref={titleInput}
                   name='title'
                   placeholder='Title'
@@ -120,6 +133,7 @@ const PostIdea = () => {
                   </Text>
                ) : null}
                <Textarea
+                  disabled={unexpried ? false : true}
                   ref={contentInput}
                   name='content'
                   height={150}
@@ -140,6 +154,7 @@ const PostIdea = () => {
 
                <div className='w-100 mt-3 font-poppin'>
                   <Select
+                     disabled={unexpried ? false : true}
                      color='#2B6CB0'
                      variant='filled'
                      size='md'
@@ -171,18 +186,27 @@ const PostIdea = () => {
                </div>
 
                <div className='w-100 d-flex justify-content-end'>
-                  <Button
-                     style={{ width: 'fit-content' }}
-                     className={post ? 'mt-4 button-post' : 'mt-3'}
-                     colorScheme='facebook'
-                     variant='outline'
-                     onClick={handleOnClick}
-                  >
-                     <Icon
-                        content='fa-solid fa-paper-plane'
-                        fontSize='20px'
-                     />
-                  </Button>
+                  {unexpried ? (
+                     <Button
+                        style={{ width: 'fit-content' }}
+                        className={post ? 'mt-4 button-post' : 'mt-3'}
+                        colorScheme='facebook'
+                        variant='outline'
+                        onClick={handleOnClick}
+                     >
+                        <Icon
+                           content='fa-solid fa-paper-plane'
+                           fontSize='20px'
+                        />
+                     </Button>
+                  ) : (
+                     <Text
+                        fontSize={17}
+                        className='mt-4 alert alert-danger'
+                     >
+                        Idea deadline is overdue
+                     </Text>
+                  )}
                </div>
             </div>
          </div>
@@ -198,6 +222,7 @@ const PostIdea = () => {
                   </div>
                </label>
                <input
+                  disabled={unexpried ? false : true}
                   onChange={handleUploadImage}
                   accept='image/png,image/jpg,image/jpeg'
                   className='disappear'
@@ -230,13 +255,14 @@ const PostIdea = () => {
             </div>
             <div className='d-flex justify-content-center align-middle'>
                <Switch
-                  ref={switchInput}
-                  name='isAnonymous'
+                  disabled={unexpried ? false : true}
+                  name='isAnonymos'
                   size='sm'
                   className='p-0 mt-1 mr-3'
                   onChange={(e) => {
                      handleOnSwitch(e);
                   }}
+                  isChecked={switchInput}
                />
 
                <Icon

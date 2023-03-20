@@ -5,6 +5,9 @@ export const getAllAcademicYearService = () => {
 export const getAcademicYearDetailService = (id) => {
    return http.get(`api/AcademicYears/${id}`);
 };
+export const getCurrentAcademicYearService = () => {
+   return http.get(`api/AcademicYears/current`);
+};
 export const createNewAcademicYearService = (data) => {
    return http.post('api/AcademicYears', data);
 };

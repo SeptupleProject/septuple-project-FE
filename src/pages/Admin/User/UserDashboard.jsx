@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, GridItem } from '@chakra-ui/react';
+import ReactPaginate from 'react-paginate';
+import { Grid, GridItem, Tfoot } from '@chakra-ui/react';
 import { Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import Icon from '../../../components/Icon/Icon';
 import { Button } from '@chakra-ui/react';
@@ -32,16 +33,16 @@ import {
    deleteUserAction,
    getUserDetailAction,
 } from '../../../redux/action/accountAction';
-import { ToastContainer } from 'react-toastify';
 import { Admin } from '../../../settings/setting';
+import Pagination from '../../../components/Pagination/Pagination';
 const UserDashboard = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
-   const finalRef = React.useRef(null);
-   const dispatch = useDispatch();
    const signedInAccount = useSelector(
       (state) => state.accountReducer.signedInAccount
    );
    const listOfUser = useSelector((state) => state.accountReducer.userList);
+   const finalRef = React.useRef(null);
+   const dispatch = useDispatch();
    const [idToDelete, setIdToDelete] = useState(null);
    useEffect(() => {
       dispatch(getListUserAction());
@@ -51,7 +52,6 @@ const UserDashboard = (props) => {
       dispatch(getUserDetailAction(id));
       history.replace('/user-dashboard/update-user');
    };
-
    const renderModal = () => {
       return (
          <Modal
@@ -95,53 +95,72 @@ const UserDashboard = (props) => {
          </Modal>
       );
    };
-
-   const renderListOfUser = () => {
-      return listOfUser.map((item) => {
-         let { id, email, role, departmentName } = item;
-         if (role !== Admin) {
-            return (
-               <Tr key={id}>
-                  <Td>{email}</Td>
-                  <Td>{role}</Td>
-                  <Td>
-                     {departmentName == '' ? 'Not have yet' : departmentName}
-                  </Td>
-                  <Td>
-                     <Center w='30%'>
-                        <div
-                           onClick={() => {
-                              showUserDetail(id);
-                           }}
-                        >
-                           <Icon
-                              color='#D7B12A'
-                              fontSize='20px'
-                              content='fa-solid fa-pen-to-square'
-                              paddingRight='15px'
-                           />
-                        </div>
-                        <div
-                           onClick={() => {
-                              onOpen();
-                              setIdToDelete(id);
-                           }}
-                        >
-                           <Icon
-                              color='#FF0000CC'
-                              fontSize='20px'
-                              content='fa-regular fa-trash-can'
-                           />
-                        </div>
-                     </Center>
-                     {renderModal()}
-                  </Td>
-               </Tr>
-            );
-         }
-      });
+   const renderTableUser = (currentItems) => {
+      return (
+         <TableContainer
+            height={400}
+            className='table-user'
+         >
+            <Table size='md'>
+               <Thead>
+                  <Tr>
+                     <Th>EMAIL</Th>
+                     <Th>ROLE</Th>
+                     <Th>DEPARTMENT</Th>
+                     <Th>ACTION</Th>
+                  </Tr>
+               </Thead>
+               <Tbody>
+                  {currentItems.map((item) => {
+                     let { id, email, role, departmentName } = item;
+                     if (role !== Admin) {
+                        return (
+                           <Tr key={id}>
+                              <Td>{email}</Td>
+                              <Td>{role}</Td>
+                              <Td>
+                                 {departmentName == ''
+                                    ? 'Not have yet'
+                                    : departmentName}
+                              </Td>
+                              <Td>
+                                 <Center w='30%'>
+                                    <div
+                                       onClick={() => {
+                                          showUserDetail(id);
+                                       }}
+                                    >
+                                       <Icon
+                                          color='#D7B12A'
+                                          fontSize='20px'
+                                          content='fa-solid fa-pen-to-square'
+                                          paddingRight='15px'
+                                       />
+                                    </div>
+                                    <div
+                                       onClick={() => {
+                                          onOpen();
+                                          setIdToDelete(id);
+                                       }}
+                                    >
+                                       <Icon
+                                          color='#FF0000CC'
+                                          fontSize='20px'
+                                          content='fa-regular fa-trash-can'
+                                       />
+                                    </div>
+                                 </Center>
+                                 {renderModal()}
+                              </Td>
+                           </Tr>
+                        );
+                     }
+                  })}
+               </Tbody>
+            </Table>
+         </TableContainer>
+      );
    };
-
    return (
       <>
          {signedInAccount.role === Admin ? (
@@ -197,25 +216,16 @@ const UserDashboard = (props) => {
                   </Grid>
                </div>
                <div className='user-table-list mx-4'>
-                  <TableContainer className='table-user'>
-                     <Table size='md'>
-                        <Thead>
-                           <Tr>
-                              <Th>EMAIL</Th>
-                              <Th>ROLE</Th>
-                              <Th>DEPARTMENT</Th>
-                              <Th>ACTION</Th>
-                           </Tr>
-                        </Thead>
-                        <Tbody>{renderListOfUser()}</Tbody>
-                     </Table>
-                  </TableContainer>
+                  <Pagination
+                     data={listOfUser}
+                     renderTable={renderTableUser}
+                     itemPerPage={6}
+                  />
                </div>
             </>
          ) : (
             ''
          )}
-        
       </>
    );
 };

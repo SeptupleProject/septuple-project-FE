@@ -96,7 +96,7 @@ const StaffComment = (props) => {
             for (let i = 0; i < 30; i++) {
                paragraph.push(convertContentToArray(content)[i]);
             }
-            return paragraph.join(' ') + '. . . ';
+            return paragraph.join(' ') + '...';
          }
       }
    };
@@ -198,8 +198,7 @@ const StaffComment = (props) => {
          formik.handleSubmit();
       }
    };
-   console.log(signedInAccount.email);
-   console.log(props.createdBy);
+
    return (
       <div className='row align-middle mx-0 comment'>
          <div className='col-1 text-center px-0'>
@@ -226,6 +225,7 @@ const StaffComment = (props) => {
                      <>
                         <div>
                            <IconButton
+                              size='sm'
                               onClick={updateOnOpen}
                               colorScheme='blackAlpha'
                               variant='ghost'
@@ -241,6 +241,7 @@ const StaffComment = (props) => {
                         </div>
                         <div className='ml-2'>
                            <IconButton
+                              size='sm'
                               onClick={deleteOnOpen}
                               colorScheme='blackAlpha'
                               variant='ghost'

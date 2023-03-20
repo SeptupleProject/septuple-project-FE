@@ -16,9 +16,16 @@ const ideaReducer = createSlice({
       getIdeaDetailReducer: (state, action) => {
          state.ideaDetail = action.payload;
       },
+      clearIdeaDetailReducer: (state, action) => {
+         state.ideaDetail = {};
+      },
    },
 });
 
-export const { getListIdeaReducer, getIdeaDetailReducer } = ideaReducer.actions;
+export const {
+   getListIdeaReducer,
+   getIdeaDetailReducer,
+   clearIdeaDetailReducer,
+} = ideaReducer.actions;
 
 export default ideaReducer.reducer;
