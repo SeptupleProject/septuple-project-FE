@@ -53,14 +53,13 @@ export const createDepartmentAction = (data) => {
 export const updateDepartmentAction = (id, data) => {
    return async (dispatch) => {
       try {
-         console.log(data);
          await updateDepartmentService(id, data);
          alert.success('Department updated successfully', null, Slide);
          setTimeout(() => {
             history.replace('/department-dashboard');
          }, 1000);
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       }
    };
 };

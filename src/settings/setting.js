@@ -10,5 +10,4 @@ export const emaillKey = `http://schemas.xmlsoap.org/ws/2005/05/identity/claims/
 export const SERVICE_ID = 'service_tdqzvgb';
 export const TEMPLATE_ID = 'template_eml32n3';
 export const PUBLIC_KEY = 'd-Fn2MvAz56MCzVJS';
-export const USER_SIGNED_IN = localStorage.getItem('signedInAccount');
 export const today = moment().format('DD-MM-YYYY');

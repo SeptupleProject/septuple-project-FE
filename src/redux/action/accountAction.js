@@ -1,4 +1,4 @@
-import { Slide, } from 'react-toastify';
+import { Slide } from 'react-toastify';
 import { history } from '../../App';
 import {
    createUserService,
@@ -17,6 +17,7 @@ import {
    getUserDetailReducer,
    getlistStaffReducer,
    getlistCoordinatorReducer,
+   searchUserByEmailReducer,
 } from '../reducers/accountReducer';
 import jwt from 'jwt-decode';
 import {
@@ -28,6 +29,8 @@ import {
 } from '../../settings/setting';
 import alert from '../../settings/alert';
 import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
+import { clearListIdeaReducer } from '../reducers/ideaReducer';
+import { clearAcademicYearReducer } from '../reducers/academicYearReducer';
 
 export const loginAction = (account) => {
    return async (dispatch) => {
@@ -54,10 +57,12 @@ export const loginAction = (account) => {
             email: emailDecoded,
             role: roleDecoded,
          };
+
          localStorage.setItem(
             'signedInAccount',
             JSON.stringify(signedInAccount)
          );
+         dispatch(clearListIdeaReducer());
          dispatch(loginReducer(signedInAccount));
          setTimeout(() => {
             history.replace('/newsfeed');
@@ -73,6 +78,7 @@ export const logoutAction = () => {
       localStorage.removeItem('signedInAccount');
       localStorage.removeItem('ACCESS_TOKEN');
       dispatch(logoutReducer());
+      dispatch(clearAcademicYearReducer());
       history.replace('/login');
    };
 };
@@ -87,7 +93,7 @@ export const getListUserAction = () => {
       }
    };
 };
- 
+
 export const getUserDetailAction = (id, requestorRole) => {
    return async (dispatch) => {
       await dispatch(openSpinner());
@@ -178,5 +184,20 @@ export const deleteUserAction = (id) => {
       } catch (error) {
          alert.error(error);
       }
+   };
+};
+
+export const searchUserByEmailAction = (email) => {
+   return async (dispatch) => {
+      if (email !== '') {
+         let result = await getListUserService();
+         dispatch(getListUserReducer(result.data));
+         dispatch(searchUserByEmailReducer(email));
+      } else {
+         let result = await getListUserService();
+         dispatch(getListUserReducer(result.data));
+      }
+      try {
+      } catch (error) {}
    };
 };

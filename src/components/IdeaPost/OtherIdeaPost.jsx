@@ -30,7 +30,6 @@ import {
    ModalFooter,
    ModalCloseButton,
 } from '@chakra-ui/react';
-import { USER_SIGNED_IN } from '../../settings/setting';
 import { getIdeaDetailAction } from '../../redux/action/ideaAction';
 import React from 'react';
 import { Slide } from 'react-toastify';
@@ -52,7 +51,9 @@ import { createNewCommentAction } from '../../redux/action/commentAction';
 import { resetFormInput } from '../../settings/common';
 import { useDisclosure } from '@chakra-ui/react';
 import { today } from '../../settings/setting';
+
 const OtherIdeaPost = (props) => {
+   const USER_SIGNED_IN = localStorage.getItem('signedInAccount');
    let {
       id,
       createdBy,
@@ -106,6 +107,7 @@ const OtherIdeaPost = (props) => {
    };
 
    const renderListComment = () => {
+
       if (Object.keys(ideaDetail).length > 0) {
          return ideaDetail.comments.map((item) => {
             return (

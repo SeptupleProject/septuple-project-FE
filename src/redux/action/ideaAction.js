@@ -1,5 +1,10 @@
 import { Slide } from 'react-toastify';
-import { getIdeaDetailReducer } from '../reducers/ideaReducer';
+import {
+   getIdeaCommentsByDeptReducer,
+   getIdeaDetailReducer,
+   getStatisticActionReducer,
+   getStatisticIdeaReducer,
+} from '../reducers/ideaReducer';
 import alert from '../../settings/alert';
 import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 import {
@@ -11,9 +16,15 @@ import {
    getIdeaDetailService,
    incrementViewIdeaService,
    dislikeIdeaService,
+   getMostViewIdeaService,
+   getMostCommentIdeaService,
+   getMostLikeIdeaService,
+   getMostDislikeIdeaService,
+   downloadMediaFileService,
+   downloadIdeaFileService,
+   getIdeasCommentsByDeptService,
 } from '../../services/ideaService';
 import { getListIdeaReducer } from '../reducers/ideaReducer';
-import { http } from '../../services/configAPI';
 
 export const getListIdeaAction = () => {
    return async (dispatch) => {
@@ -22,6 +33,10 @@ export const getListIdeaAction = () => {
          dispatch(getListIdeaReducer(result.data.data));
       } catch (error) {
          alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };
@@ -45,13 +60,59 @@ export const getIdeaDetailAction = (id) => {
    return async (dispatch) => {
       try {
          let result = await getIdeaDetailService(id);
+
          dispatch(getIdeaDetailReducer(result));
       } catch (error) {
-         alert(error);
+         alert.error(error);
       }
    };
 };
-
+export const getIdeasCommentsByDeptAction = () => {
+   return async (dispatch) => {
+      try {
+         let result = await getIdeasCommentsByDeptService();
+         dispatch(getIdeaCommentsByDeptReducer(result.data.result));
+      } catch (error) {
+         alert.error(error);
+      }
+   };
+};
+export const getStatisticIdeaAction = (action) => {
+   return async (dispatch) => {
+      try {
+         let result = [];
+         switch (action) {
+            case 'views':
+               dispatch(getStatisticActionReducer(action));
+               result = await getMostViewIdeaService();
+               dispatch(getStatisticIdeaReducer(result.data));
+               break;
+            case 'comments':
+               dispatch(getStatisticActionReducer(action));
+               result = await getMostCommentIdeaService();
+               dispatch(getStatisticIdeaReducer(result.data));
+               break;
+            case 'likes':
+               dispatch(getStatisticActionReducer(action));
+               result = await getMostLikeIdeaService();
+               dispatch(getStatisticIdeaReducer(result.data));
+               break;
+            case 'dislikes':
+               dispatch(getStatisticActionReducer(action));
+               result = await getMostDislikeIdeaService();
+               dispatch(getStatisticIdeaReducer(result.data));
+               break;
+            default:
+               dispatch(getStatisticActionReducer('views'));
+               result = await getMostViewIdeaService();
+               dispatch(getStatisticIdeaReducer(result.data));
+               break;
+         }
+      } catch (error) {
+         alert.error(error);
+      }
+   };
+};
 export const incrementViewIdeaAction = (id) => {
    return async () => {
       try {
@@ -103,6 +164,7 @@ export const dislikeIdeaAtion = (id) => {
       }
    };
 };
+
 export const deleteIdeaAction = (id) => {
    return async (dispatch) => {
       try {
@@ -119,6 +181,38 @@ export const deleteIdeaAction = (id) => {
          }, 500);
       } catch (error) {
          alert.error(error);
+      }
+   };
+};
+
+export const downloadMediaFileAction = () => {
+   return async (dispatch) => {
+      await dispatch(openSpinner());
+      try {
+         await downloadMediaFileService();
+         alert.success('Check your download folder', null, Slide);
+      } catch (error) {
+         alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
+      }
+   };
+};
+
+export const downloadIdeaFileAction = () => {
+   return async (dispatch) => {
+      await dispatch(openSpinner());
+      try {
+         await downloadIdeaFileService();
+         alert.success('Check your download folder', null, Slide);
+      } catch (error) {
+         alert.error(error);
+      } finally {
+         setTimeout(() => {
+            dispatch(closeSpinner());
+         }, 500);
       }
    };
 };

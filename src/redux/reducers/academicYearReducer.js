@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { current } from '@reduxjs/toolkit';
 import moment from 'moment';
-import { today } from '../../settings/setting';
 const initialState = {
    listAcademicYear: [],
    academicYearDetail: {},
@@ -36,7 +36,7 @@ const academicYearReducer = createSlice({
             ideaDeadline: moment(ideaDeadline).format('DD-MM-YYYY'),
          };
          state.currentAcademicYear = currentAcademicYear;
-         var academicEndDate = moment(
+         var academicIdeaDeadline = moment(
             `${moment(ideaDeadline)?.format('DD-MM-YYYY')}`,
             'DD-MM-YYYY'
          );
@@ -44,8 +44,24 @@ const academicYearReducer = createSlice({
             `${moment(today).format('DD-MM-YYYY')}`,
             'DD-MM-YYYY'
          );
-         var daysLeft = academicEndDate.diff(today, 'days');
+         var daysLeft = academicIdeaDeadline.diff(today, 'days');
          state.daysLeft = daysLeft;
+      },
+      clearAcademicYearReducer: (state, action) => {
+         state.listAcademicYear = [];
+         state.academicYearDetail = {};
+         state.currentAcademicYear = {};
+         state.daysLeft = 0;
+      },
+      searchAcademicYearByNameReducer: (state, action) => {
+         if (action.payload !== '') {
+            state.listAcademicYear = state.listAcademicYear.filter((item) => {
+               return item.name
+                  .replace(/\s/g, '')
+                  .toLowerCase()
+                  .match(action.payload);
+            });
+         }
       },
    },
 });
@@ -54,6 +70,8 @@ export const {
    getAllAcademicYearReducer,
    getAcademicYearDetailReducer,
    getCurrentAcademicYearReducer,
+   clearAcademicYearReducer,
+   searchAcademicYearByNameReducer,
 } = academicYearReducer.actions;
 
 export default academicYearReducer.reducer;

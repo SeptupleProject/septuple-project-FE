@@ -411,7 +411,7 @@ const YourIdeaPost = (props) => {
                   borderTopLeftRadius: '8px',
                   borderBottom: 'none',
                }}
-               className='px-3 pt-3 pb-0'
+               className='p-3'
             >
                {({ isExpanded }) => (
                   <>

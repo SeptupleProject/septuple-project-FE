@@ -13,8 +13,10 @@ import {
    getAcademicYearDetailReducer,
    getAllAcademicYearReducer,
    getCurrentAcademicYearReducer,
+   searchAcademicYearByNameReducer,
 } from '../reducers/academicYearReducer';
 import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
+
 export const getAllAcademicYearAction = () => {
    return async (dispatch) => {
       await dispatch(openSpinner());
@@ -30,6 +32,7 @@ export const getAllAcademicYearAction = () => {
       }
    };
 };
+
 export const getAcademicYearDetailAction = (id) => {
    return async (dispatch) => {
       await dispatch(openSpinner());
@@ -38,7 +41,7 @@ export const getAcademicYearDetailAction = (id) => {
          dispatch(getAcademicYearDetailReducer(result.data));
          history.push('/academic-dashboard/update-academic');
       } catch (error) {
-         console.log(error);
+         alert.error(error);
       } finally {
          setTimeout(() => {
             dispatch(closeSpinner());
@@ -97,5 +100,20 @@ export const deleteAcademicYearAction = (id) => {
       } catch (error) {
          alert.error(error);
       }
+   };
+};
+
+export const searchAcademicYearByNameAction = (name) => {
+   return async (dispatch) => {
+      if (name !== '') {
+         let result = await getAllAcademicYearService();
+         dispatch(getAllAcademicYearReducer(result.data.data));
+         dispatch(searchAcademicYearByNameReducer(name));
+      } else {
+         let result = await getAllAcademicYearService();
+         dispatch(getAllAcademicYearReducer(result.data.data));
+      }
+      try {
+      } catch (error) {}
    };
 };

@@ -18,6 +18,10 @@ import {
 import { logoutAction } from '../redux/action/accountAction';
 import { Admin, QAC, QAM } from '../settings/setting';
 import { today } from '../settings/setting';
+import {
+   downloadIdeaFileAction,
+   downloadMediaFileAction,
+} from '../redux/action/ideaAction';
 export const AdminTemplate = (props) => {
    const { isOpen, onOpen, onClose } = useDisclosure();
    const finalRef = React.useRef(null);
@@ -182,7 +186,13 @@ export const AdminTemplate = (props) => {
                            content='fa-solid fa-newspaper'
                            paddingRight='10px'
                         />
-                        <span>All Idea Posts</span>
+                        <span
+                           onClick={() => {
+                              dispatch(downloadIdeaFileAction());
+                           }}
+                        >
+                           All Idea Posts
+                        </span>
                      </MenuItem>
                      <MenuItem minH='40px'>
                         <Icon
@@ -190,7 +200,14 @@ export const AdminTemplate = (props) => {
                            content='fa-regular fa-image'
                            paddingRight='10px'
                         />
-                        <span>All Photos</span>
+                        <span
+                           className='w-90'
+                           onClick={() => {
+                              dispatch(downloadMediaFileAction());
+                           }}
+                        >
+                           All Photos
+                        </span>
                      </MenuItem>
                   </MenuList>
                </Menu>

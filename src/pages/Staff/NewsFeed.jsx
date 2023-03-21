@@ -5,7 +5,6 @@ import YourIdeaPost from '../../components/IdeaPost/YourIdeaPost';
 import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { Staff } from '../../settings/setting';
-import { USER_SIGNED_IN } from '../../settings/setting';
 import { useDispatch } from 'react-redux';
 import { getlistUserByRoleAction } from '../../redux/action/accountAction';
 import { getUserDetailAction } from '../../redux/action/accountAction';
@@ -17,10 +16,8 @@ import { Button } from '@chakra-ui/react';
 import ReactPaginate from 'react-paginate';
 import Icon from '../../components/Icon/Icon';
 import { Slide, toast } from 'react-toastify';
-import { today } from '../../settings/setting';
 import { getCurrentAcademicYearAction } from '../../redux/action/academicYearAction';
 import moment from 'moment/moment';
-import { calculateDifferenceDate } from '../../settings/common';
 const NewsFeed = () => {
    const dispatch = useDispatch();
    const listOfIdeas = useSelector((state) => state.ideaReducer.listOfIdeas);
@@ -30,6 +27,7 @@ const NewsFeed = () => {
    const currentAcademicYear = useSelector(
       (state) => state.academicYearReducer.currentAcademicYear
    );
+   const USER_SIGNED_IN = localStorage.getItem('signedInAccount');
    const daysLeft = useSelector((state) => state.academicYearReducer.daysLeft);
    const items = listOfIdeas;
    const [itemOffset, setItemOffset] = useState(0);
@@ -48,9 +46,9 @@ const NewsFeed = () => {
             getUserDetailAction(signedInAccount.id, signedInAccount.role)
          );
          dispatch(getCategoryDropdownAction());
+         dispatch(getCurrentAcademicYearAction());
       }
       dispatch(getListIdeaAction());
-      dispatch(getCurrentAcademicYearAction());
    }, []);
 
    useEffect(() => {
