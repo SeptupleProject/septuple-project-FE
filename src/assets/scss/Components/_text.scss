@@ -1,0 +1,148 @@
+@import '../Helpers/_variable.scss';
+.title-1 {
+   font-family: $-poppin;
+   font-weight: 700;
+   font-size: 1.7rem;
+   line-height: $-lh-1;
+   margin-bottom: 5%;
+}
+
+.title-2 {
+   font-family: $-poppin !important;
+   font-weight: 700;
+   font-size: $-fs-1;
+}
+
+.title-3 {
+   font-family: $-poppin;
+   font-weight: 700;
+   color: $-blue-2;
+   font-size: 1.7rem;
+   line-height: $-lh-1;
+   margin-top: 20px;
+}
+
+.title-3 {
+   font-family: $-poppin;
+   font-weight: 700;
+   color: $-blue-2;
+   font-size: 1.3rem;
+   line-height: $-lh-1;
+   margin-top: 20px;
+}
+.text-button-transparent {
+   padding-left: 5%;
+}
+
+.text-blue {
+   color: $-blue-2;
+   font-family: $-poppin;
+   cursor: pointer;
+   transition: all 0.3s;
+   transform: translateY(0);
+   &:hover {
+      text-decoration: none;
+   }
+}
+.comment {
+   background: $-white-2;
+   border-radius: $-br-3;
+   box-shadow: $-bs-2;
+   padding: 2%;
+   padding-right: 4%;
+   .comment-name {
+      font-family: $-poppin;
+      font-weight: 700;
+      color: $-blue-1;
+      font-size: 1.4rem;
+      line-height: $-lh-1;
+   }
+
+   .comment-content {
+      font-family: Arial, Helvetica, sans-serif;
+      font-weight: 400;
+      font-style: 16px;
+      line-height: $-lh-1;
+      letter-spacing: 1.1px;
+   }
+
+   .see-more {
+      color: $-blue-1;
+      cursor: pointer;
+      font-weight: 600;
+      &:hover {
+         color: #6099d5;
+      }
+   }
+}
+
+.text-department-1 {
+   font-family: $-poppin;
+   font-style: italic;
+   font-weight: 600;
+   font-size: 15px;
+   line-height: 16px;
+   color: $-blue-1;
+}
+.text-department-2 {
+   font-family: $-poppin;
+   font-style: italic;
+   font-weight: 500;
+   font-size: 12px;
+   color: $-black-1;
+}
+.text-academicyear-1 {
+   font-family: $-poppin;
+   font-style: italic;
+   font-weight: 600;
+   font-size: 15px;
+   line-height: 16px;
+   color: $-black-1;
+}
+.text-academicyear-2 {
+   font-family: $-poppin;
+   font-style: italic;
+   font-weight: 500;
+   font-size: 12px;
+   color: $-blue-1;
+}
+
+.text-link {
+   cursor: pointer;
+   transition: all 0.2s;
+   &:hover {
+      color: $-blue-1;
+   }
+}
+
+.staffName {
+   font-family: $-poppin;
+   color: $-blue-1;
+   font-weight: bold;
+}
+
+.ideaTitle {
+   font-family: $-poppin;
+   text-align: left;
+   font-weight: bold;
+}
+
+.editablePara {
+   text-align: justify;
+   font-family: $-poppin;
+}
+
+.uploadBtnText {
+   color: $-blue-2;
+   font-family: $-poppin;
+}
+
+.numOfIdeaPost {
+   color: $-blue-1;
+   font-family: $-poppin;
+   font-weight: bold;
+}
+
+.deleteNotice {
+   font-family: $-poppin;
+}

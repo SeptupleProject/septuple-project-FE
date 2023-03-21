@@ -1,8 +1,13 @@
 import axios from 'axios';
+import { ACCESS_TOKEN, Domain } from '../settings/setting';
 export const http = axios.create();
 
 http.interceptors.request.use(
    function (config) {
+      config.baseURL = Domain;
+      config.headers = {
+         Authorization: 'Bearer ' + localStorage.getItem(ACCESS_TOKEN),
+      };
       return { ...config };
    },
    function (error) {
@@ -13,12 +18,13 @@ http.interceptors.request.use(
 http.interceptors.response.use(
    function (response) {
       if (response.data.content) {
-         return response.data.content;
+         return response.data;
       }
       return response;
    },
    function (error) {
       if (error.response.data) {
+         console.log(error.response.data);
          return Promise.reject(error.response.data);
       }
       return Promise.reject(error);

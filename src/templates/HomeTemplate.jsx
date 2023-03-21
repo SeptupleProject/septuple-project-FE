@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Header from '../components/Header';
+import Header from '../components/Header/Header';
+import { useSelector } from 'react-redux';
+import Footer from '../components/Footer/Footer';
 export const HomeTemplate = (props) => {
    return (
       <Route
@@ -11,6 +13,7 @@ export const HomeTemplate = (props) => {
                <>
                   <Header />
                   <props.component {...propsRoute} />
+                  <Footer />
                </>
             );
          }}

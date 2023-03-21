@@ -1,0 +1,88 @@
+@import '../Helpers/_variable.scss';
+
+.post {
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: column;
+}
+
+.idea {
+   display: flex;
+   flex-direction: row;
+   gap: 3%;
+   height: 80px;
+}
+
+.iconAvater {
+   margin-top: -6;
+}
+
+.categoryTag {
+   margin: 0;
+   margin-top: 1%;
+}
+
+.deleteBtn {
+   display: flex;
+   justify-content: center;
+   font-family: $-poppin;
+   color: $-blue-3;
+   align-items: baseline;
+}
+
+.hiddenPanel {
+   display: flex;
+   flex-direction: column;
+   gap: 20px;
+}
+
+.disappear {
+   visibility: hidden;
+}
+
+.uploadBtn {
+   border: 2px solid $-blue-2;
+   border-radius: 8px;
+}
+
+.uploadStack {
+   padding: 8%;
+}
+
+.uploadBtn:hover {
+   cursor: pointer;
+   background-color: $-blue-4;
+   transition: 0.3s;
+}
+
+.like-active {
+   background: $-blue-2;
+   color: white;
+}
+
+.dislikes-active {
+   background: $-red-2;
+   color: white;
+}
+
+.image {
+   max-width: 40vw;
+   object-fit: cover;
+   margin-right: 5%;
+}
+
+.hiddenBtn {
+   visibility: hidden;
+}
+
+.actionsBtn:hover + .hiddenBtn {
+   visibility: visible;
+   transition: 0.5s;
+}
+
+.post-idea {
+   padding: 2% 2%;
+   border-radius: $-br-3;
+   background-color: $-white-1;
+   box-shadow: $-bs-2;
+}

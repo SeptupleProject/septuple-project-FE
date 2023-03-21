@@ -1,0 +1,17 @@
+@import '../Helpers/_variable.scss';
+.staff-newsfeed {
+   background: rgba(240, 240, 240, 0.619);
+}
+.staff-featuredposts{
+   background-color: $-grey-2 ;
+   
+}
+.staff-featuredposts-detail{
+   width: 90%;
+   margin: 0 auto;
+}
+
+.staff-tabname {
+   background-color: $-grey-2;
+   font-family: $-poppin;
+}

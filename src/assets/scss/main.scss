@@ -1,9 +1,20 @@
 @import './Base/reset';
+@import './Base/common';
 
-;
 @import './Components/header';
-
+@import './Components/button';
+@import './Components/text';
+@import './Components/img';
+@import './Components/icon';
+@import './Components/department';
+@import './Components/ideapost';
+@import './Components/academicyear';
+@import './Components/pagination';
 
 @import './Helpers/variable';
 
 @import './Layouts/home';
+@import './Layouts/userdashboard';
+@import './Layouts/userupdate';
+@import './Layouts/staff';
+@import './Layouts/categorydashboard';

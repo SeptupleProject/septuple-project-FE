@@ -4,14 +4,15 @@ import './assets/scss/main.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { ChakraBaseProvider } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { store } from './redux/configStore';
+import 'react-toastify/dist/ReactToastify.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    <Provider store={store}>
-      <ChakraBaseProvider>
+      <ChakraProvider>
          <App />
-      </ChakraBaseProvider>
+      </ChakraProvider>
    </Provider>
 );
 
