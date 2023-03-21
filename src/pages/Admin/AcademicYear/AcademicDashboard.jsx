@@ -6,12 +6,18 @@ import Icon from '../../../components/Icon/Icon';
 import { Button } from '@chakra-ui/react';
 import { history } from '../../../App';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { getAllAcademicYearAction } from '../../../redux/action/academicYearAction';
+import { useEffect, useRef, useState } from 'react';
+import {
+   getAllAcademicYearAction,
+   searchAcademicYearByNameAction,
+} from '../../../redux/action/academicYearAction';
 import { Admin } from '../../../settings/setting';
+import { handleOnSearch } from '../../../settings/common';
 import Pagination from '../../../components/Pagination/Pagination';
 const AcademicDashboard = () => {
    const dispatch = useDispatch();
+   const search = useRef(null);
+   const [searchTerm, setSearchTerm] = useState();
    const listAcademicYear = useSelector(
       (state) => state.academicYearReducer.listAcademicYear
    );
@@ -52,8 +58,20 @@ const AcademicDashboard = () => {
                      w='550'
                   >
                      <Input
+                        ref={search}
                         type='text'
                         placeholder='Search for academic year'
+                        onChange={(e) => {
+                           setSearchTerm(e.target.value);
+                        }}
+                        onKeyUp={() => {
+                           handleOnSearch(
+                              search,
+                              searchTerm,
+                              searchAcademicYearByNameAction,  
+                              dispatch
+                           );
+                        }}
                      />
                      <InputRightElement width='4.5rem'>
                         <Icon

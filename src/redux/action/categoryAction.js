@@ -9,6 +9,7 @@ import alert from '../../settings/alert';
 import {
    getAllCategoryReducer,
    getCategoryDropdownReducer,
+   searchCategoryByNameReducer,
 } from '../reducers/categoryReducer';
 import { closeSpinner, openSpinner } from '../reducers/loadingReducer';
 export const getAllCategoryAction = () => {
@@ -86,5 +87,20 @@ export const deleteCategoryAction = (id) => {
             dispatch(closeSpinner());
          }, 500);
       }
+   };
+};
+
+export const searchCategoryByNameAction = (name) => {
+   return async (dispatch) => {
+      if (name !== '') {
+         let result = await getAllCategoryService();
+         dispatch(getAllCategoryReducer(result.data.data));
+         dispatch(searchCategoryByNameReducer(name));
+      } else {
+         let result = await getAllCategoryService();
+         dispatch(getAllCategoryReducer(result.data.data));
+      }
+      try {
+      } catch (error) {}
    };
 };

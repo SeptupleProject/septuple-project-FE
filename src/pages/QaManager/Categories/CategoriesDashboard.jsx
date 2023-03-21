@@ -25,7 +25,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
    createNewCategoryAction,
    getAllCategoryAction,
+   searchCategoryByNameAction,
 } from '../../../redux/action/categoryAction';
+import { handleOnSearch } from '../../../settings/common';
 import alert from '../../../settings/alert';
 import { useEffect, useRef } from 'react';
 import ReactPaginate from 'react-paginate';
@@ -36,6 +38,8 @@ const CategoriesDashboard = () => {
       onOpen: createOnOpen,
       onClose: createOnClose,
    } = useDisclosure();
+   const search = useRef(null);
+   const [searchTerm, setSearchTerm] = useState();
    useEffect(() => {
       dispatch(getAllCategoryAction());
    }, []);
@@ -166,8 +170,20 @@ const CategoriesDashboard = () => {
                      w='550'
                   >
                      <Input
+                        ref={search}
                         type='text'
                         placeholder='Search for categories'
+                        onChange={(e) => {
+                           setSearchTerm(e.target.value);
+                        }}
+                        onKeyUp={() => {
+                           handleOnSearch(
+                              search,
+                              searchTerm,
+                              searchCategoryByNameAction,
+                              dispatch
+                           );
+                        }}
                      />
                      <InputRightElement width='4.5rem'>
                         <Icon

@@ -48,9 +48,10 @@ const UpdateAcademic = () => {
                id,
                startDate,
                endDate,
+               ideaDeadline,
                values
-   
             );
+           
             dispatch(updateAcademicYearAction(id, dateToUpdate));
          }
       },
@@ -76,6 +77,7 @@ const UpdateAcademic = () => {
                   id,
                   startDate,
                   endDate,
+                  ideaDeadline,
                   values
                );
                dateToUpdate = {
@@ -253,7 +255,6 @@ const UpdateAcademic = () => {
                   )}
                </GridItem>
             </Grid>
-       
          </center>
       </>
    );

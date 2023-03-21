@@ -15,10 +15,23 @@ const categoryReducer = createSlice({
       getCategoryDropdownReducer: (state, action) => {
          state.categoryDropdown = action.payload;
       },
+      searchCategoryByNameReducer: (state, action) => {
+         if (action.payload !== '') {
+            state.categoryList = state.categoryList.filter((item) => {
+               return item.name
+                  .replace(/\s/g, '')
+                  .toLowerCase()
+                  .match(action.payload);
+            });
+         }
+      },
    },
 });
 
-export const { getAllCategoryReducer, getCategoryDropdownReducer } =
-   categoryReducer.actions;
+export const {
+   getAllCategoryReducer,
+   getCategoryDropdownReducer,
+   searchCategoryByNameReducer,
+} = categoryReducer.actions;
 
 export default categoryReducer.reducer;

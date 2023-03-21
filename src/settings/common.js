@@ -87,50 +87,113 @@ export const validateIdeaDeadline = (ideaDeadline, startDate, endDate) => {
    }
    return valid;
 };
-export const createObjectDateToUpdate = (id, startDate, endDate, values) => {
+export const createObjectDateToUpdate = (
+   id,
+   startDate,
+   endDate,
+   ideaDeadline,
+   values
+) => {
    let dateToUpdate = {};
-   if (values.startDate == startDate && values.endDate == endDate) {
-      dateToUpdate = {
-         id: id,
-         name: values.name,
-         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
-            .add(1, 'day')
-            .toISOString(),
-         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
-            .add(1, 'day')
-            .toISOString(),
-      };
-   } else if (values.startDate !== startDate && values.endDate !== endDate) {
-      dateToUpdate = {
-         id: id,
-         name: values.name,
-         startDate: moment(values.startDate).add(1, 'day').toISOString(),
-         endDate: moment(values.endDate).add(1, 'day').toISOString(),
-      };
-   } else if (values.startDate == startDate && values.endDate !== endDate) {
-      dateToUpdate = {
-         id: id,
-         name: values.name,
-         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
-            .add(1, 'day')
-            .toISOString(),
-         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
-            .add(1, 'day')
-            .toISOString(),
-      };
+   if (ideaDeadline !== 'Invalid date') {
+      if (values.startDate == startDate && values.endDate == endDate) {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            ideaDeadline: moment(values.ideaDeadline, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      } else if (values.startDate !== startDate && values.endDate !== endDate) {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate).add(1, 'day').toISOString(),
+            endDate: moment(values.endDate).add(1, 'day').toISOString(),
+            ideaDeadline: moment(values.ideaDeadline, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      } else if (values.startDate == startDate && values.endDate !== endDate) {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            ideaDeadline: moment(values.ideaDeadline, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      } else {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            ideaDeadline: moment(values.ideaDeadline, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      }
+      return dateToUpdate;
    } else {
-      dateToUpdate = {
-         id: id,
-         name: values.name,
-         startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
-            .add(1, 'day')
-            .toISOString(),
-         endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
-            .add(1, 'day')
-            .toISOString(),
-      };
+      if (values.startDate == startDate && values.endDate == endDate) {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      } else if (values.startDate !== startDate && values.endDate !== endDate) {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate).add(1, 'day').toISOString(),
+            endDate: moment(values.endDate).add(1, 'day').toISOString(),
+         };
+      } else if (values.startDate == startDate && values.endDate !== endDate) {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      } else {
+         dateToUpdate = {
+            id: id,
+            name: values.name,
+            startDate: moment(values.startDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+            endDate: moment(values.endDate, 'DD.MM.YYYY HH:mm')
+               .add(1, 'day')
+               .toISOString(),
+         };
+      }
+      return dateToUpdate;
    }
-   return dateToUpdate;
 };
 export const renderOptionDepartment = (array) => {
    let arrayStaff = [];
@@ -268,3 +331,11 @@ export const resetFormInput = (...input) => {
    });
 };
 
+export const handleOnSearch = (ref, value, func, dispatch) => {
+   if (ref.current) {
+      clearTimeout(ref.current);
+   }
+   ref.current = setTimeout(() => {
+      dispatch(func(value.trim().replace(/\s/g, '').toLowerCase()));
+   }, 300);
+};

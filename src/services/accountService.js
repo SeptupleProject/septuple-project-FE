@@ -23,3 +23,4 @@ export const updateUserPasswordService = (id, data) => {
 export const deleteUserService = (id) => {
    return http.delete(`api/Users/${id}`);
 };
+

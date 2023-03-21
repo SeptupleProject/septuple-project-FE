@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 let userSignedIn = '';
 
@@ -42,6 +42,13 @@ const accountReducer = createSlice({
       getlistCoordinatorReducer: (state, action) => {
          state.coordinatorList = action.payload;
       },
+      searchUserByEmailReducer: (state, action) => {
+         if (action.payload !== '') {
+            state.userList = state.userList.filter((item) => {
+               return item.email.match(action.payload);
+            });
+         }
+      },
    },
 });
 
@@ -52,6 +59,7 @@ export const {
    getUserDetailReducer,
    getlistStaffReducer,
    getlistCoordinatorReducer,
+   searchUserByEmailReducer,
 } = accountReducer.actions;
 
 export default accountReducer.reducer;

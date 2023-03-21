@@ -1,7 +1,5 @@
 import { createBrowserHistory } from 'history';
-import { BrowserRouter, Switch } from 'react-router-dom';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import {  Switch } from 'react-router-dom';
 import { HomeTemplate } from './templates/HomeTemplate';
 import { Router } from 'react-router-dom';
 import { FormTemplate } from './templates/FormTemplate';
