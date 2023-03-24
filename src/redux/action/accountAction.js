@@ -139,6 +139,8 @@ export const createUserAction = (data) => {
       try {
          await createUserService(data);
          alert.success('Account has been created');
+         let result = await getListUserService();
+         dispatch(getListUserReducer(result.data));
          setTimeout(() => {
             history.replace('/user-dashboard');
          }, '1000');
@@ -153,6 +155,8 @@ export const updateUserAction = (id, data) => {
       try {
          await updateUserService(id, data);
          alert.success('Updated successfully', null, Slide);
+         let result = await getListUserService();
+         dispatch(getListUserReducer(result.data));
          setTimeout(() => {
             history.replace('/user-dashboard');
          }, '1000');
@@ -181,6 +185,8 @@ export const deleteUserAction = (id) => {
       try {
          await deleteUserService(id);
          alert.error('Account has been removed', null, Slide, 'dark');
+         let result = await getListUserService();
+         dispatch(getListUserReducer(result.data));
       } catch (error) {
          alert.error(error);
       }
