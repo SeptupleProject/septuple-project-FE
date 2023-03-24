@@ -18,8 +18,6 @@ import {
    ModalCloseButton,
    useDisclosure,
    FormControl,
-   FormErrorMessage,
-   FormHelperText,
    VStack,
    FormLabel,
 } from '@chakra-ui/react';
@@ -28,7 +26,6 @@ import { history } from '../../../App';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { ToastContainer } from 'react-toastify';
 import {
    updateUserAction,
    updateUserPasswordAction,
@@ -223,9 +220,7 @@ const UpdateUser = () => {
                            onChange={formik.handleChange}
                            name='role'
                            size='lg'
-                           placeholder={renderUserRole(
-                              formik.initialValues.role
-                           )}
+                           placeholder={renderUserRole(userDetail.role)}
                            className='updateInput'
                            width={'85%'}
                         >
@@ -255,7 +250,6 @@ const UpdateUser = () => {
                </ButtonGroup>
             </Card>
          </Center>
-     
       </>
    );
 };
